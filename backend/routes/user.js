@@ -8,11 +8,11 @@ const {userRole} = require('../middleware/is-role')
 
 const router = express.Router();
 
-router.get("/start-assessment", isAuth, userRole(), userController.getStartAssessment)
+router.get("/start-assessment",  userController.getStartAssessment)
 
-router.get("/assessment", isAuth, userRole(), userController.getAssessment)
+router.get("/assessment",  userController.getAssessment)
 
-router.post("/assessment", isAuth, userRole(), userController.postAssessment)
+router.post("/assessment",  userController.postAssessment)
 
 
 module.exports = router;

@@ -6,17 +6,21 @@ const User = require("../models/user")
 exports.getStartAssessment = (async (req, res, next) => {
   try {
     const user = await User.findById(req.session.user._id)
-
+    console.log(user)
     if(!user) {
       return res.status(404).send()
     }
-    res.render("user/start-assessment", {
-      user,
-      pageTitle: "User dashboard",
-      path: "/user/start-assessment"
+    // res.render("user/start-assessment", {
+    //   user,
+    //   pageTitle: "User dashboard",
+    //   path: "/user/start-assessment"
+    // })
+    res.status(200).json({
+      message: "Users fetched",
+      user: user
     })
   } catch (e){
-    console.log(e)
+    console.log("Is there an error " + e)
     res.status(500).send(e)
   }   
 })
