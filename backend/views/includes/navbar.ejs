@@ -16,7 +16,7 @@
         <a class="nav-link <%= path === '/admin/archived-users' ? 'active' : '' %>" href="/admin/archived-users">Archived Users</a>
       </li>
       <li class="nav-item">
-          <a class="nav-link <%= path === '/admin/add-scenarios' ? 'active' : '' %>" href="/admin/add-scenarios">Create Scenario</a>
+          <a class="nav-link <%= path === '/admin/create-scenarios' ? 'active' : '' %>" href="/admin/create-scenarios">Create Scenario</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <%= path === '/admin/list-scenarios' ? 'active' : '' %>" href="/admin/list-scenarios">List Scenarios</a>
@@ -36,7 +36,7 @@
           </li>
         <% } else if (isAuthenticated && isRole === "Content Manager") { %>
           <li class="nav-item">
-            <a class="nav-link <%= path === '/admin/add-scenarios' ? 'active' : '' %>" href="/admin/add-scenarios">Create Scenario</a>
+            <a class="nav-link <%= path === '/admin/create-scenarios' ? 'active' : '' %>" href="/admin/create-scenarios">Create Scenario</a>
           </li>
           <li class="nav-item">
             <a class="nav-link <%= path === '/admin/list-scenarios' ? 'active' : '' %>" href="/admin/list-scenarios">List Scenarios</a>

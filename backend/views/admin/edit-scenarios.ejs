@@ -4,12 +4,12 @@
 
 	<div class="container col-md-6">
     <h1  class="text-center"><% if (editing) { %>Edit Scenario<% } else { %>Create Scenario<% } %></h1>
-        <form action="/admin/<% if (editing) { %>edit-scenarios<% } else { %>add-scenarios<% } %>" method="POST" name="add_name" id="add_service">
+        <form action="/admin/<% if (editing) { %>edit-scenarios<% } else { %>create-scenarios<% } %>" method="POST" name="add_name" id="add_service">
             <div class="row">
                 <div class="col-md">
                     <input class="form-control" list="datalistOptions" id="exampleDataList" name="mission" required placeholder="Mission" value="<% if (editing) { %><%= scenario.mission %><% } %>">
                     <datalist id="datalistOptions">
-                        <% unique.forEach(function(mission) { %>
+                        <% filteredMissions.forEach(function(mission) { %>
                             <option><%= mission %></option>
                             <% }); %>
                     </datalist>
@@ -106,7 +106,7 @@
             
             </br>
             
-            <button type="submit" class="btn btn-primary" id="submitButton"><% if (editing) { %>Edit Scenario<% } else { %>Add Scenario<% } %></button>
+            <button type="submit" class="btn btn-primary" id="submitButton"><% if (editing) { %>Edit Scenario<% } else { %>Create Scenario<% } %></button>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             
         </form>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserAssesmentComponent } from './user-assesment.component';
+import { ArchivedScenariosComponent } from './archived-scenarios.component';
 
-describe('UserAssesmentComponent', () => {
-  let component: UserAssesmentComponent;
-  let fixture: ComponentFixture<UserAssesmentComponent>;
+describe('ArchivedScenariosComponent', () => {
+  let component: ArchivedScenariosComponent;
+  let fixture: ComponentFixture<ArchivedScenariosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserAssesmentComponent ]
+      declarations: [ ArchivedScenariosComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserAssesmentComponent);
+    fixture = TestBed.createComponent(ArchivedScenariosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

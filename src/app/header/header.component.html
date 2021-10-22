@@ -1,0 +1,58 @@
+<!-- <mat-toolbar color="primary">
+    <span><a routerLink="/">MyMessages</a></span>
+    <span class="spacer"></span>
+    <ul>
+      <li *ngIf="userIsAuthenticated">
+        <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
+      </li>
+      <li *ngIf="!userIsAuthenticated">
+        <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
+      </li>
+      <li *ngIf="!userIsAuthenticated">
+        <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent">Signup</a>
+      </li>
+      <li *ngIf="userIsAuthenticated">
+        <a mat-button (click)="onLogout()">Logout</a>
+      </li>
+    </ul>
+  </mat-toolbar> -->
+
+  <mat-toolbar color="primary">
+    <span><a *ngIf="admin" routerLink="/admin/panel">Admin Panel</a></span>
+    <span class="spacer"></span>
+    <ul>
+      <li>
+        <a *ngIf="admin" mat-button routerLink="/admin/list-users" routerLinkActive="mat-accent">List Users</a>
+      </li>
+      <li>
+        <a *ngIf="admin" mat-button routerLink="/admin/archived-users" routerLinkActive="mat-accent">Archived Users</a>
+      </li>
+      <li>
+        <a *ngIf="admin || contentManager" mat-button routerLink="/admin/create-scenarios" routerLinkActive="mat-accent">Create scenarios</a>
+      </li>
+      <li>
+        <a *ngIf="admin || contentManager" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">List scenarios</a>
+      </li>
+      <li>
+        <a *ngIf="admin || contentManager" mat-button routerLink="/admin/archived-scenarios" routerLinkActive="mat-accent">Archived scenarios</a>
+      </li>
+      <li>
+        <a *ngIf="admin" mat-button routerLink="/admin/assign-scenarios" routerLinkActive="mat-accent">Assign scenarios</a>
+      </li>
+      <li>
+        <a *ngIf="admin || reviewer" mat-button routerLink="/admin/user-submission" routerLinkActive="mat-accent">User submission</a>
+      </li>
+    </ul>
+    
+    <span class="spacer"></span>
+    <ul>
+      <li>
+        <a *ngIf="admin || reviewer || contentManager" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">Login</a>
+      </li>
+      <li>
+        <a *ngIf="admin || reviewer || contentManager" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">Logout</a>
+      </li>
+    </ul>
+
+
+  </mat-toolbar>

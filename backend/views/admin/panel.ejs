@@ -23,7 +23,7 @@
     <div class="row">  
         <div class="col-sm-4">  <input class="form-control" list="datalistOptions" id="exampleDataList" name="mission" required placeholder="Mission">
             <datalist id="datalistOptions">
-                <% unique.forEach(function(mission) { %>
+                <% filteredMissions.forEach(function(mission) { %>
                     <option><%= mission %></option>
                     <% }); %>
             </datalist></div>

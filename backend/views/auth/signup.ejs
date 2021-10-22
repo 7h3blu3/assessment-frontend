@@ -28,7 +28,7 @@
                     <div style="text-align:left">
                         <label for="">Please select your mission</label>
                         <select class="form-select col-md" name="mission" placeholder="Mission">
-                            <% unique.forEach(function(mission) { %>
+                            <% filteredMissions.forEach(function(mission) { %>
                                 <option><%= mission %></option>
                                 <% }); %>
                         </select>

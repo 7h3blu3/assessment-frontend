@@ -44,7 +44,7 @@ exports.getAssessment = (async (req, res, next) => {
     // }
 
     // console.log(findDuplicates(strArray)) // All duplicates
-    // console.log([...new Set(findDuplicates(strArray))]) // Unique duplicates
+    // console.log([...new Set(findDuplicates(strArray))]) // filteredMissions duplicates
     
       //Assign random scenario from type1
       if(user.testCounter === 1){

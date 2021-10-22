@@ -1,0 +1,33 @@
+<mat-accordion multi="true" *ngIf="scenarios.length > 0">
+    <mat-expansion-panel *ngFor="let scenario of scenarios">
+      <mat-expansion-panel-header>
+        {{ scenario.title }}
+      </mat-expansion-panel-header>
+      <p>{{ scenario.time }}</p>
+      <p>{{ scenario.mission }}</p>
+      <!-- "scoreCard" : [ 
+      [ 
+          "Question 1", 
+          "10"
+      ], 
+      [ 
+          "Question 2", 
+          "30"
+      ], 
+      [ 
+          "Question 3", 
+          "30"
+      ], 
+      [ 
+          "Question 4", 
+          "30"
+      ]
+  ], -->
+      <p>{{ scenario.scoreCard }}</p>
+      <mat-action-row>
+        <button mat-button color="primary">EDIT</button>
+        <button mat-button color="warn">DELETE</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <p class="info-text mat-body-1" *ngIf="scenarios.length <= 0">No scenarios added yet!</p>

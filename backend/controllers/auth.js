@@ -35,8 +35,8 @@ exports.getSignup = (async (req, res, next) => {
   try {
       const allMissions = []
       scenario.forEach(element => allMissions.push(element.mission))
-      const unique = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-      unique.forEach(element => console.log(element))
+      const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+      filteredMissions.forEach(element => console.log(element))
 
       let message = req.flash('error');
       if (message.length > 0) {
@@ -48,7 +48,7 @@ exports.getSignup = (async (req, res, next) => {
         path: '/signup',
         pageTitle: 'Signup',
         errorMessage: message,
-        unique
+        filteredMissions
       })
     } catch(e){
       console.log(e)

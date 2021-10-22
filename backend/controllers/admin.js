@@ -17,14 +17,14 @@ exports.getPanel = (async (req, res, next) => {
       const scenario = await Scenario.find()
       const allMissions = []
       scenario.forEach(element => allMissions.push(element.mission))
-      const unique = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-      unique.forEach(element => console.log(element))
+      const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+      filteredMissions.forEach(element => console.log(element))
 
   try {
     res.render("admin/panel", {
       pageTitle: "Admin Panel",
       path: "/admin/panel",
-      unique
+      filteredMissions
     })
   } catch(e){
     console.log(e)
@@ -32,7 +32,6 @@ exports.getPanel = (async (req, res, next) => {
   }  
 })
 
-sfsdf
 // exports.postPanel = (async (req, res, next) => {
 //   const mission = req.body.mission
 
@@ -86,8 +85,8 @@ exports.getEditUsers = (async (req, res, next) => {
  
   const allMissions = []
   scenario.forEach(element => allMissions.push(element.mission))
-  const unique = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-  unique.forEach(element => console.log(element))
+  const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+  filteredMissions.forEach(element => console.log(element))
 
   try {
     const user = await User.findById(userId)
@@ -98,7 +97,7 @@ exports.getEditUsers = (async (req, res, next) => {
       pageTitle: 'Edit Users',
       path: '/admin/edit-users',
       user: user,
-      unique
+      filteredMissions
     })
   } catch(e){
     console.log(e)
@@ -202,30 +201,37 @@ exports.postDeleteUser = (async (req, res, next) => {
   }
 })
 
-// NOTE!!! - edit-scenarios.ejs page is used for ADD and EDIT scenarios 
-exports.getAddScenarios = (async (req, res, next) => {
+// NOTE!!! - edit-scenarios.ejs page is used for create and EDIT scenarios 
+exports.getcreateScenarios = (async (req, res, next) => {
 
   try {
     const scenario = await Scenario.find()
     
     const allMissions = []
     scenario.forEach(element => allMissions.push(element.mission))
-    const unique = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-    unique.forEach(element => console.log(element))
+    const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+    filteredMissions.forEach(element => console.log(element))
 
-    res.render('admin/edit-scenarios', {
+    res.status(200).json({
+      message: "Create scenario render success",
       pageTitle: 'Create Scenarios',
-      path: '/admin/add-scenarios',
-      editing: false,
-      unique
+      filteredMissions,
     })
+    // res.render('admin/edit-scenarios', {
+    //   pageTitle: 'Create Scenarios',
+    //   path: '/admin/create-scenarios',
+    //   editing: false,
+    //   filteredMissions
+    // })
   } catch(e){
-    console.log(e)
-    res.status(500).send(e)
+    console.log("Create scenario render failed" + e)
+    res.status(500).json({
+      message: "Create scenario render failed"
+    })
   }  
 })
 
-// NOTE!!! - edit-scenarios.ejs page is used for ADD and EDIT scenarios 
+// NOTE!!! - edit-scenarios.ejs page is used for create and EDIT scenarios 
 exports.getEditScenarios = (async (req, res, next) => {
   const editMode = req.query.edit
   const scenarioId = req.params.scenarioId
@@ -238,15 +244,15 @@ exports.getEditScenarios = (async (req, res, next) => {
 
     const allMissions = []
     findScenario.forEach(element => allMissions.push(element.mission))
-    const unique = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-    unique.forEach(element => console.log(element))
+    const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+    filteredMissions.forEach(element => console.log(element))
 
     res.render('admin/edit-scenarios', {
       pageTitle: 'Edit Scenarios',
       path: '/admin/edit-scenarios',
       editing: editMode,
       scenario: scenario,
-      unique,
+      filteredMissions,
     })
     console.log(findScenario)
   } catch(e){
@@ -258,13 +264,13 @@ exports.getEditScenarios = (async (req, res, next) => {
 exports.getListScenarios = (async (req, res, next) => {
   try{
     const scenarios = await Scenario.find()
-      res.render('admin/list-scenarios', {
-        scn: scenarios,
-        pageTitle: 'List Scenarios',
-        path: '/admin/list-scenarios'
-      })
+    res.status(200).json({
+      message: "Scenarios Fetched",
+      pageTitle: 'List Scenarios',
+      scenarios: scenarios
+    })
   } catch(e){
-    console.log(e)
+    console.log("There is an error with listing scenarios " + e)
     res.status(500).send(e)
   }  
 })
@@ -429,7 +435,7 @@ exports.postCloneScenario = (async (req, res, next) => {
   }
 })
 
-exports.postAddScenario = (async (req, res, next) => {
+exports.postcreateScenario = (async (req, res, next) => {
 
   const title = req.body.title
   const equalTo100 = req.body.grand_total

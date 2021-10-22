@@ -6,6 +6,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
 const userRoutes = require("./routes/user")
+const adminRoutes = require("./routes/admin");
+
 const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb://127.0.0.1:27017/Assessment'
@@ -70,6 +72,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/admin', adminRoutes);
 app.use("", userRoutes) 
 
 module.exports = app;
