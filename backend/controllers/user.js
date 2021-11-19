@@ -5,7 +5,9 @@ const User = require("../models/user")
 //User Page
 exports.getStartAssessment = (async (req, res, next) => {
   try {
-    const user = await User.findById(req.session.user._id)
+    // Will need to use this user when we get session and delete below one
+    // const user = await User.findById(req.session.user._id)
+    const user  = await User.find()
     console.log(user)
     if(!user) {
       return res.status(404).send()

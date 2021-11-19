@@ -1,1 +1,8 @@
 <p>start-assessment works!</p>
+<!-- <p> {{ user._id }}</p> -->
+<div *ngFor="let user of user">
+    <p>
+        {{ user.email}}
+    </p>
+</div>
+<!-- You can try and use emit for the feedback to zoom it or something -->

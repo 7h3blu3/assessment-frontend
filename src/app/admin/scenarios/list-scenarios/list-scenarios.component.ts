@@ -23,6 +23,7 @@ export class ListScenariosComponent implements OnInit, OnDestroy {
     })
   }
 
+
   ngOnDestroy() {
     this.scenarioSub.unsubscribe();
   }
