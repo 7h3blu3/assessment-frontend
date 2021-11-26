@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(public authService: AuthService) { }
   private authStatusSub: Subscription;
@@ -30,10 +30,10 @@ export class LoginComponent implements OnInit {
     }
     this.isLoading = true;
     console.log("Actually valid")
-    this.authService.login(form.value.email, form.value.password);
+    this.authService.login(form.value.email, form.value.password, form.value.mission);
   }
 
   ngOnDestroy() {
-    this.authStatusSub.unsubscribe()
+    // this.authStatusSub.unsubscribe()
   }
 }

@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 })
 
 exports.getLogin = (req, res, next) => {
-  let message = req.flash('error');
+  // let message = req.flash('error');
   if (message.length > 0) {
     message = message[0];
   } else {
@@ -29,6 +29,7 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
+// Have to sent the data from the GET 
 exports.getSignup = (async (req, res, next) => {
   const scenario = await Scenario.find()
     
@@ -38,23 +39,44 @@ exports.getSignup = (async (req, res, next) => {
       const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
       filteredMissions.forEach(element => console.log(element))
 
-      let message = req.flash('error');
-      if (message.length > 0) {
-        message = message[0];
-      } else {
-        message = null;
-      }
-      res.render('auth/signup', {
-        path: '/signup',
-        pageTitle: 'Signup',
-        errorMessage: message,
-        filteredMissions
+      res.status(200).json({
+        userId: user._id,
+        userType,
+        message: "Soccess"
       })
     } catch(e){
       console.log(e)
       res.status(500).send(e)
     } 
 })
+
+
+// exports.getSignup = (async (req, res, next) => {
+//   const scenario = await Scenario.find()
+    
+//   try {
+//       const allMissions = []
+//       scenario.forEach(element => allMissions.push(element.mission))
+//       const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+//       filteredMissions.forEach(element => console.log(element))
+
+//       let message = req.flash('error');
+//       if (message.length > 0) {
+//         message = message[0];
+//       } else {
+//         message = null;
+//       }
+//       res.render('auth/signup', {
+//         path: '/signup',
+//         pageTitle: 'Signup',
+//         errorMessage: message,
+//         filteredMissions
+//       })
+//     } catch(e){
+//       console.log(e)
+//       res.status(500).send(e)
+//     } 
+// })
 
 // exports.postLogin = (req, res, next) => {
 //   const email = req.body.email;
@@ -170,6 +192,7 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email
     const user = new User({
                   email: email,
+                  mission: mission,
                   password: hash
                 });
   user.save()
@@ -187,47 +210,48 @@ exports.postSignup = (req, res, next) => {
 })
  
 }
-exports.postSignup = (req, res, next) => {
-  const email = req.body.email
-  const password = req.body.password
-  const mission = req.body.mission
-  const confirmPassword = req.body.confirmPassword
-  User.findOne({ email: email })
-    .then(userDoc => {
-      if (userDoc) {
-        req.flash(
-          'error',
-          'E-Mail exists already, please pick a different one.'
-        );
-        return res.redirect('/signup');
-      }
-      return bcrypt
-        .hash(password, 12)
-        .then(hashedPassword => {
-          const user = new User({
-            email: email,
-            mission: mission,
-            password: hashedPassword
-          });
-          return user.save();
-        })
-        .then(result => {
-          res.redirect('/login');
-          return transporter.sendMail({
-            to: email,
-            from: 'bg@ibm.com',
-            subject: 'Signup succeeded!',
-            html: '<h1>You successfully signed up!</h1>'
-          });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
+
+// exports.postSignup = (req, res, next) => {
+//   const email = req.body.email
+//   const password = req.body.password
+//   const mission = req.body.mission
+//   const confirmPassword = req.body.confirmPassword
+//   User.findOne({ email: email })
+//     .then(userDoc => {
+//       if (userDoc) {
+//         req.flash(
+//           'error',
+//           'E-Mail exists already, please pick a different one.'
+//         );
+//         return res.redirect('/signup');
+//       }
+//       return bcrypt
+//         .hash(password, 12)
+//         .then(hashedPassword => {
+//           const user = new User({
+//             email: email,
+//             mission: mission,
+//             password: hashedPassword
+//           });
+//           return user.save();
+//         })
+//         .then(result => {
+//           res.redirect('/login');
+//           return transporter.sendMail({
+//             to: email,
+//             from: 'bg@ibm.com',
+//             subject: 'Signup succeeded!',
+//             html: '<h1>You successfully signed up!</h1>'
+//           });
+//         })
+//         .catch(err => {
+//           console.log(err);
+//         });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// };
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
