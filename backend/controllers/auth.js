@@ -56,41 +56,137 @@ exports.getSignup = (async (req, res, next) => {
     } 
 })
 
+// exports.postLogin = (req, res, next) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
+//   User.findOne({ email: email })
+//     .then(user => {
+//       if (!user) {
+//         req.flash('error', 'Invalid email or password.');
+//         return res.redirect('/login');
+//       }
+//       bcrypt
+//         .compare(password, user.password)
+//         .then(doMatch => {
+//           if (doMatch) {
+//             req.session.isLoggedIn = true;
+//             req.session.user = user;
+//             req.session.save(err => {
+//               console.log(err);
+              
+//             });
+//           }
+//           req.flash('error', 'Invalid email or password.');
+//           if (user.userType === "User") {
+//             res.redirect('start-assessment');
+//           } else {
+//             res.redirect("/admin/panel")
+//           }
+//         })
+//         .catch(err => {
+//           console.log(err);
+//           res.redirect('/login');
+//         });
+//     })
+//     .catch(err => console.log(err));
+// };
+
+
+// exports.postLogin = (req, res, next) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
+//   console.log("We should be in the post")
+//   User.findOne({ email: email })
+//     .then(user => {
+//       if (!user) {
+//         return res.status(401).json({
+//           message: "Invalid authentication"
+//         })
+//       }
+//       bcrypt
+//         .compare(password, user.password)
+//         .then(doMatch => {
+//           if (doMatch) {
+//             req.session.isLoggedIn = true;
+//             req.session.user = user;
+//             req.session.save(err => {
+//               console.log(err);
+              
+//             });
+//           } else {
+//             return res.status(401).json({
+//               message: "Password does not match"
+//             })
+//           }
+//           res.status(200).json({
+//             userId: user._id,
+//             userType,
+//             message: "Soccess"
+//           })
+//           // if (user.userType === "User") {
+//           //   res.redirect('start-assessment');
+//           // } else {
+//           //   res.redirect("/admin/panel")
+//           // }
+//         })
+//         .catch(err => {
+//           console.log("Could not log in " + err);
+//         });
+//     })
+//     .catch(err => console.log("Could not log in 2" + err));
+// };
+
+
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+  console.log("We should be in the post")
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        req.flash('error', 'Invalid email or password.');
-        return res.redirect('/login');
+        return res.status(401).json({
+          message: "Invalid authentication"
+        })
       }
-      bcrypt
-        .compare(password, user.password)
-        .then(doMatch => {
-          if (doMatch) {
-            req.session.isLoggedIn = true;
-            req.session.user = user;
-            req.session.save(err => {
-              console.log(err);
-              
-            });
-          }
-          req.flash('error', 'Invalid email or password.');
-          if (user.userType === "User") {
-            res.redirect('start-assessment');
-          } else {
-            res.redirect("/admin/panel")
-          }
+          res.status(200).json({
+            userId: user._id,
+            userType,
+            message: "Soccess"
+          })
+          // if (user.userType === "User") {
+          //   res.redirect('start-assessment');
+          // } else {
+          //   res.redirect("/admin/panel")
+          // }
         })
         .catch(err => {
-          console.log(err);
-          res.redirect('/login');
+          console.log("Could not log in " + err);
         });
-    })
-    .catch(err => console.log(err));
-};
+    }
 
+exports.postSignup = (req, res, next) => {
+  bcrypt.hash(req.body.password, 10)
+  .then(hash => {
+    const email = req.body.email
+    const user = new User({
+                  email: email,
+                  password: hash
+                });
+  user.save()
+  .then(result => {
+    res.status(201).json({
+      message: "User created",
+      result: result,
+    })
+  }).catch(err => {
+    res.status(500).json({
+      error:err
+    })
+    console.log("Error during signup " + err)
+  })
+})
+ 
+}
 exports.postSignup = (req, res, next) => {
   const email = req.body.email
   const password = req.body.password

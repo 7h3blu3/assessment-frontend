@@ -10,9 +10,10 @@ router.get("/", alreadyLogged(), authController.getLogin)
 
 router.get('/login', alreadyLogged(), authController.getLogin);
 
-router.get('/signup', alreadyLogged(), authController.getSignup);
+router.get('/signup', authController.getSignup);
+// router.get('/signup', alreadyLogged(), authController.getSignup);
 
-router.post('/login', alreadyLogged(), authController.postLogin);
+router.post('/login', authController.postLogin);
 
 router.post('/signup', alreadyLogged(), authController.postSignup);
 

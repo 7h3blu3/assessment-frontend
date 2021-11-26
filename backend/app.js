@@ -5,8 +5,9 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
-const userRoutes = require("./routes/user")
+const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 
 const User = require('./models/user');
 
@@ -73,6 +74,10 @@ app.use((req, res, next) => {
 });
 
 app.use('/admin', adminRoutes);
-app.use("", userRoutes) 
+app.use("", userRoutes, authRoutes) 
+
+
+
+
 
 module.exports = app;

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +23,9 @@ import { UserSubmissionComponent } from './admin/users/user-submission/user-subm
 import { SubmissionGradeComponent } from './admin/submission-grade/submission-grade.component';
 import { AssessmentComponent } from './user/assessment/assessment.component';
 import { StartAssessmentComponent } from './user/start-assessment/start-assessment.component';
+import { LoginComponent } from './auth/login/login.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,8 @@ import { StartAssessmentComponent } from './user/start-assessment/start-assessme
     SubmissionGradeComponent,
     AssessmentComponent,
     StartAssessmentComponent,
+    LoginComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +55,8 @@ import { StartAssessmentComponent } from './user/start-assessment/start-assessme
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
+    FormsModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

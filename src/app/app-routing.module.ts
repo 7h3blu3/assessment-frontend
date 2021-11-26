@@ -8,6 +8,8 @@ import { ListScenariosComponent } from './admin/scenarios/list-scenarios/list-sc
 import { ArchivedUsersComponent } from './admin/users/archived-users/archived-users.component';
 import { ListUsersComponent } from './admin/users/list-users/list-users.component';
 import { UserSubmissionComponent } from './admin/users/user-submission/user-submission.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 import { StartAssessmentComponent } from './user/start-assessment/start-assessment.component';
 
 const routes: Routes = [
@@ -20,6 +22,9 @@ const routes: Routes = [
   { path: "admin/archived-scenarios", component:ArchivedScenariosComponent },
   { path: "admin/assign-scenarios", component:AssignScenariosComponent },
   { path: "admin/user-submission", component:UserSubmissionComponent },
+  { path: "login", component:LoginComponent },
+  { path: "signup", component:SignupComponent },
+
 ];
 
 @NgModule({

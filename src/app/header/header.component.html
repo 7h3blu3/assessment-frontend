@@ -47,7 +47,10 @@
     <span class="spacer"></span>
     <ul>
       <li>
-        <a *ngIf="admin || reviewer || contentManager" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">Login</a>
+        <a *ngIf="admin || reviewer || contentManager" mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+      </li>
+      <li>
+        <a *ngIf="admin || reviewer || contentManager" mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
       </li>
       <li>
         <a *ngIf="admin || reviewer || contentManager" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">Logout</a>
