@@ -2,6 +2,13 @@ mat-form-field {
     width: 100%;
 }
 
+
 mat-spinner {
     margin:auto;
 }
+
+.main-div{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+  }

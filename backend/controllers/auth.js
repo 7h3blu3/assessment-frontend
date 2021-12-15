@@ -35,15 +35,23 @@ exports.getSignup = (async (req, res, next) => {
     
   try {
       const allMissions = []
+      const store = []
+
       scenario.forEach(element => allMissions.push(element.mission))
       const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-      filteredMissions.forEach(element => console.log(element))
-
-      res.status(200).json({
-        userId: user._id,
-        userType,
-        message: "Soccess"
+    
+      filteredMissions.forEach(element => {
+        var missions = {
+          name:element 
+        }
+        store.push(missions)
       })
+      console.log("This the missions outside foreach", store)
+
+
+
+      res.status(200).json(store)
+
     } catch(e){
       console.log(e)
       res.status(500).send(e)
@@ -166,13 +174,27 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
+        console.log("Invalid authentication")
+
         return res.status(401).json({
           message: "Invalid authentication"
         })
-      }
-          res.status(200).json({
+        
+      }bcrypt
+      .compare(password, user.password)
+      .then(doMatch => {
+        if (doMatch) {
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          req.session.save(err => {
+            console.log("Is there an error " + err);
+            
+          });
+        }
+      })
+        res.status(200).json({
             userId: user._id,
-            userType,
+            // userType,
             message: "Soccess"
           })
           // if (user.userType === "User") {
@@ -192,11 +214,13 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email
     const user = new User({
                   email: email,
-                  mission: mission,
+                  mission: req.body.mission,
                   password: hash
                 });
+                console.log("whats the user", user)
   user.save()
   .then(result => {
+    console.log("User created!")
     res.status(201).json({
       message: "User created",
       result: result,

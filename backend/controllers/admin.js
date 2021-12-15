@@ -51,14 +51,18 @@ exports.getListUsers = (async (req, res, next) => {
   try {
     const users = await User.find()
     console.log(users)
-    res.render("admin/list-users", {
-      user: users,
-      pageTitle: "List Users",
-      path: '/admin/list-users'
-    })
+
+    // res.render("admin/list-users", {
+    //   user: users,
+    //   pageTitle: "List Users",
+    //   path: '/admin/list-users'
+    // })
+    res.status(200).json(users)
   } catch(e){
     console.log(e)
-    res.status(500).send(e)
+    res.status(500).json({
+      message: "Create scenario render failed"
+    })
   }  
 })
 
@@ -66,14 +70,12 @@ exports.getListArchivedUsers = (async (req, res, next) => {
   try {
     const usersBackup = await userBackup.find()
 
-    res.render("admin/archived-users", {
-      user: usersBackup,
-      pageTitle: "List Archived Users",
-      path: '/admin/archived-users'
-    })
+    res.status(200).json(usersBackup)
   } catch(e){
     console.log(e)
-    res.status(500).send(e)
+    res.status(500).json({
+      error: e
+    })
   }  
 })
 
@@ -150,7 +152,7 @@ exports.postArchivedUsers = (async (req, res, next) => {
     await usersBackup.save()
     await User.findByIdAndDelete(userId)
     console.log('User archived!')
-    res.redirect('/admin/archived-users')
+    // res.redirect('/admin/archived-users')
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -278,14 +280,13 @@ exports.getListScenarios = (async (req, res, next) => {
 exports.getListArchivedScenarios = (async (req, res, next) => {
   try{
     const scenariosBackup = await scenarioBackup.find()
-      res.render('admin/archived-scenarios', {
-        scn: scenariosBackup,
-        pageTitle: 'List Archived Scenarios',
-        path: '/admin/archived-scenarios'
-      })
+      
+    res.status(200).json(scenariosBackup)
   } catch(e){
-    console.log(e)
-    res.status(500).send(e)
+    console.log("Archiving user failed" + e)
+    res.status(500).json({
+      message: "Archiving user failed"
+    })
   }  
 })
 
@@ -294,18 +295,16 @@ exports.getAssignScenarios = (async (req, res, next) => {
   try{
       const user = await User.find({})   
       const scenarioFindType3 = await Scenario.find({type: "Type3"})
-
-      res.render("admin/assign-scenarios", {
-        user,
-        scenarioFindType3,
-        pageTitle: "Assign Scenarios",
-        path: "/admin/assign-scenarios"
+      console.log("Log this ", scenarioFindType3)
+      res.status(200).json({
+        user: user,
+        type3: scenarioFindType3
       })
-      
-  } catch(e){
-    console.log(e)
-    res.status(500).send(e)
-  }  
+    } catch(e){
+      res.status(500).json({
+        message: "Assigning scenario failed"
+      })
+    }  
 })
 
 exports.postAssignScenario = (async (req, res, next) => {
@@ -534,16 +533,16 @@ exports.getUserSubmission = (async (req, res, next) => {
     const currentUser = await User.findById(currentUserId)
     
     console.log(currentUser)
-    res.render("admin/user-submission", {
-      user,
-      currentUser,
-      pageTitle: "User Submission",
-      path: "/admin/user-submission"
-    })
-  } catch(e) {
-    console.log(e)
-    res.status(500).send(e)
-  }
+    res.status(200).json({
+        user: user,
+        currentUser: currentUser
+      })
+    } catch(e){
+      console.log(e)
+      res.status(500).json({
+        message: "Assigning scenario failed"
+      })
+    }  
 })
 
 exports.getGradedSubmission = (async (req, res, next) => {

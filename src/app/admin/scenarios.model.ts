@@ -7,6 +7,8 @@ export interface Scenarios {
   type: string;
   time: number;
   scoreCard: object;
+  passingGrade: number;
+  userId: string;
 //   passingGrade: number;
   //   userId: {
   //     type: Schema.Types.ObjectId,

@@ -1,0 +1,31 @@
+.main-div{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    width: 100%;
+  }
+
+   h1 {
+    font-size: 24x;
+    text-align: center;
+  }
+
+
+  .btn-hidden {
+    padding: 0.2;
+    border: none;
+    background: none;
+  }
+
+  button:focus{
+    outline:none !important;
+}
+
+::ng-deep .my-panel .mat-dialog-container {
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    padding: 5px !important;
+}

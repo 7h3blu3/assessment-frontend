@@ -13,6 +13,53 @@ ul{
     display:flex;
 }
 
+.mat-accent {
+    color: aqua;
+}
 .spacer {
     flex: 1 1 auto;
 }
+
+  /* .mat-tab-label {
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: red;
+    font-weight: 700;
+} */
+
+
+
+/* .main-div{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+  } */
+  
+/* active tab */
+::ng-deep .mat-tab-label-active {
+    color:#1F89CE;
+
+    } 
+    
+    ::ng-deep .mat-tab-label {
+
+        color:aqua;
+        opacity: 1;
+    } 
+    ::ng-deep .mat-tab-list {
+        color:white;
+        background-color: rgb(40, 40, 168);
+    } 
+
+
+
+    /* ink bar */
+     ::ng-deep .mat-ink-bar {
+    background-color: var(--primary-color,aqua) !important;
+    opacity: 1;
+    } 
+
+
+    /* https://newbedev.com/angular-material-customize-tab */
+    /* https://stackblitz.com/edit/angular-mat-tab-labels-style?file=src%2Fapp%2Ftab-group-basic-example.css */

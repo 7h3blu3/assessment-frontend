@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { fromEventPattern, Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
+import Swal from "sweetalert2"
 
 interface Food {
   value: string;
@@ -15,14 +17,13 @@ interface Food {
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private authStatusSub: Subscription;
+  selectedMission: any;
   isLoading = false;
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
-  ];
+  storedMissions: any;
+  email: any;
 
-  constructor(public authService: AuthService) { }
+
+  constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     // this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
@@ -30,14 +31,36 @@ export class SignupComponent implements OnInit, OnDestroy {
     //     this.isLoading = false;
     //   }
     // )
+    this.getSignUpData()
+   
+  }
+
+  getSignUpData(){
+    this.authService.getSignUpData().subscribe(missions => {
+      this.storedMissions = missions
+    })
   }
 
   onSignup(form: NgForm) {
     if(form.invalid)  {
+      console.log("It is invalid")
       return;
     } 
-    this.isLoading = true;
-    this.authService.createUser(form.value.email, form.value.password, form.value.mission)
+    
+    // this.isLoading = true;
+    console.log("Should be the selected mission", this.selectedMission)
+    this.authService.createUser(form.value.email, form.value.password, this.selectedMission)
+    //   console.log(response)
+    //   this.email = response
+    //   console.log("What is in here ", this.email.result)
+    // })
+    // Swal.fire({
+    //   title: "Welcome " + form.value.email,
+    //   text: "Please wait a few moments",
+      
+    // })
+    // Swal.showLoading()
+    // this.router.navigate(['/']);
   }
 
   ngOnDestroy() {

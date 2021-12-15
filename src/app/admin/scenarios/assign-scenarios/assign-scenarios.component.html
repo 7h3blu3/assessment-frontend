@@ -1,1 +1,37 @@
-<p>assign-scenarios works!</p>
+<div class="row main-div">
+    <div class="col-md-10">
+        <mat-card>
+            <h1 class="text-center">Assign Scenario</h1>
+
+
+            <form *ngIf="!isLoading">
+
+                <div class="row main-div"> 
+                    <div class="col-md-5"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label> Type </mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let user of users"  name="email" id="email" [value]="user.email"> 
+                                        {{user.email}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+                   <div class="col-md-5"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label>Scenario Type3</mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let scenario of selectedType3"  name="selectedType3" id="selectedType3" [value]="scenario.title"> 
+                                        {{scenario.title}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+
+                </div>
+
+         </form>
+
+        </mat-card>
+    <div>
+</div>

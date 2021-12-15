@@ -1,2 +1,115 @@
-<p> {{ missions[1]}}</p>
-<p> {{ missions[0]}}</p>
+
+<div class="row main-div">
+    <div class="col-md-10"> 
+        <mat-card>
+            <h1  class="text-center">{{  viewType == true ? 'Create a Scenario' : 'Edit a Scenario'}}</h1>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+            <!-- <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading"> -->
+            <form *ngIf="!isLoading">
+
+                <div class="row main-div"> 
+                    <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label>{{ "Mission" }}</mat-label>
+                                <mat-select [(value)]="selectedMission">
+                                    <mat-option *ngFor="let store of storeResult"  name="mission" id="mission" [value]="store.name"> 
+                                        {{store.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label>{{ "Level" }}</mat-label>
+                                <mat-select [(value)]="selectedMission">
+                                    <mat-option *ngFor="let store of storeResult"  name="mission" id="mission" [value]="store.name"> 
+                                        {{store.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label>{{ "Type" }}</mat-label>
+                                <mat-select [(value)]="selectedMission">
+                                    <mat-option *ngFor="let type of types"  name="type" id="type" [value]="type"> 
+                                        {{type}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row main-div"> 
+                    <div class="col-md-5"> 
+                        <h3 class="h3-center-margin">Scenario Title</h3>
+                        <mat-form-field >
+                            <input  matInput ngModel id="title" name="title" type="text" placeholder="Title" #title="ngModel" required/>
+                            <!-- <mat-error *ngIf="title.invalid">Please enter a valid email</mat-error> -->
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2"> 
+                        <h3 class="h3-center-margin">Passing Grade</h3>
+                        <mat-form-field >
+                            <input  matInput ngModel id="passingGrade" name="passingGrade" type="number" placeholder="Value between 0-90" 
+                            #passingGrade="ngModel" required/>
+                            <!-- <mat-error *ngIf="passingGrade.invalid">Please enter a valid email</mat-error> -->
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2"> 
+                        <h3 class="h3-center-margin">Time for Scenario</h3>
+                        <mat-form-field >
+                            <input  matInput ngModel id="time" name="time" type="number" placeholder="Time in minutes 15-120"
+                             #time="ngModel" required/>
+                            <!-- <mat-error *ngIf="time.invalid">Please enter a valid email</mat-error> -->
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row main-div"> 
+                    <div class="col-md-9">
+                        <h3 class="h3-center-margin">Scenario Description</h3>
+                        <textarea matInput *ngIf="viewType" cols="115" rows="10" id="description" name="description"></textarea>
+                        <textarea  matInput *ngIf="!viewType" cols="105" rows="10" id="description" name="description"></textarea>
+
+                    </div>
+
+                    <div class="col-md-9">
+                        <!-- <h3 class="margin">Link for logs</h3> -->
+                            <mat-form-field >
+                                <input  matInput ngModel id="time" name="time" type="text" placeholder="Place the link for logs"
+                                #time="ngModel" required/>
+                                <!-- <mat-error *ngIf="time.invalid">Please enter a valid email</mat-error> -->
+                            </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row main-div"> 
+                    <div class="col-md-9">
+                        <h1  class="text-center">Score Card</h1>
+                    </div>
+                </div>
+
+                <div class="row main-div"> 
+                    <div class="col-md-3">
+                        <h3 class="h3-center-margin">Total Points</h3>
+                        <mat-form-field >
+                            <input  matInput ngModel min="100" max="100" id="grandTotal" name="grandTotal" type="number" 
+                            placeholder="Sum of values must be 100" #grandTotal="ngModel" required/>
+                            <!-- <mat-error *ngIf="grandTotal.invalid">Please enter a valid email</mat-error> -->
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Should check from here on how to add more rows -->
+                <!-- https://stackoverflow.com/questions/57732024/how-to-add-new-row-in-the-table-on-click-a-button-in-angular-7 -->
+
+         </form>
+
+        </mat-card> 
+    </div>
+</div>

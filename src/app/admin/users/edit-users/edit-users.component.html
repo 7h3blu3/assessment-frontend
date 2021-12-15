@@ -1,0 +1,78 @@
+<div class="row main-div">
+    <div class="col-md-10">
+        <mat-card>
+            <h1 class="text-center">Edit User</h1>
+
+
+            <form *ngIf="!isLoading">
+
+                <div class="row main-div"> 
+
+                    <div class="col-md-3"> 
+                    <h3><mat-icon> email</mat-icon> {{data.email}}</h3>  
+                    </div>
+
+                    <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label> Type </mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let type of userType"  name="userType" id="userType" [value]="type.name"> 
+                                        {{type.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+                   <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label>Level</mat-label>
+                                <mat-select>
+                                    <mat-option *ngFor="let level of userLevel"  name="level" id="level" [value]="level.level"> 
+                                        {{level.level}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+
+                   
+
+                    <div class="col-md-3"> 
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ "Mission" }}</mat-label>
+                            <mat-select [(value)]="selectedMission" required>
+                                <mat-option *ngFor="let store of storedMissions"  name="mission" id="mission" [value]="store.name"> 
+                                    {{store.name}}
+                                </mat-option>
+                            </mat-select>
+                            <!-- <mat-error *ngIf="missionSelect.invalid">Select a mission</mat-error> -->
+                        </mat-form-field>
+                        </div>
+                     <!-- 
+                    <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label> "Level" </mat-label>
+                                <mat-select [(value)]="selectedMission">
+                                    <mat-option *ngFor="let store of storeResult"  name="mission" id="mission" [value]="store.name"> 
+                                        {{store.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label> "Type" </mat-label>
+                                <mat-select [(value)]="selectedMission">
+                                    <mat-option *ngFor="let type of types"  name="type" id="type" [value]="type"> 
+                                        {{type}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </div> -->
+                </div>
+
+
+         </form>
+
+        </mat-card>
+    <div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from '../../admin.service';
 
 @Component({
   selector: 'app-assign-scenarios',
@@ -6,10 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./assign-scenarios.component.css']
 })
 export class AssignScenariosComponent implements OnInit {
-
-  constructor() { }
+  isLoading = false;
+  users: any;
+  selectedType3: any;
+  constructor(public adminService: AdminService) { }
 
   ngOnInit(): void {
+    this.getAssignedScenarioView()
   }
 
+  getAssignedScenarioView() {
+    this.adminService.getAssignedScenarios().subscribe(result =>{
+      this.users = result.user
+      this.selectedType3 = result.type3
+      console.log(this.selectedType3[0].title)
+    })
+  }
 }

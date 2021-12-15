@@ -10,6 +10,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { ListScenariosComponent } from './admin/scenarios/list-scenarios/list-scenarios.component';
@@ -27,6 +34,7 @@ import { StartAssessmentComponent } from './user/start-assessment/start-assessme
 import { LoginComponent } from './auth/login/login.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SignupComponent } from './auth/signup/signup.component';
+import { EditUsersComponent } from './admin/users/edit-users/edit-users.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +53,7 @@ import { SignupComponent } from './auth/signup/signup.component';
     StartAssessmentComponent,
     LoginComponent,
     SignupComponent,
+    EditUsersComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,8 +68,15 @@ import { SignupComponent } from './auth/signup/signup.component';
     FormsModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatTabsModule,
+    MatDialogModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatIconModule,
   ],
-  providers: [],
+  providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef , useValue: {} }],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

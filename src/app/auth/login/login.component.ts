@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth.service';
@@ -11,7 +12,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, private router: Router) { }
   private authStatusSub: Subscription;
   isLoading = false;
 
@@ -29,8 +30,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading = true;
-    console.log("Actually valid")
-    this.authService.login(form.value.email, form.value.password, form.value.mission);
+    console.log("This should be hashed ", form.value.password)
+    this.authService.login(form.value.email, form.value.password);
+    this.router.navigate(['/admin/list-users']);
   }
 
   ngOnDestroy() {

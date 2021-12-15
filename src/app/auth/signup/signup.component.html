@@ -1,21 +1,46 @@
-<mat-card>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
-        <mat-form-field>
-            <input matInput ngModel name="email" type="email" placeholder="E-mail" #emailInput="ngModel" required
-                email />
-            <mat-error *ngIf="emailInput.invalid">Please enter a valid email</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput ngModel name="password" type="password" placeholder="Password" #passwordInput="ngModel"
-                required>
-            <mat-error *ngIf="passwordInput.invalid">Please enter a valid password</mat-error>
-        </mat-form-field>
-        <mat-label>Favorite food</mat-label>
-        <mat-select>
-            <!-- <mat-option *ngFor="let food of foods" [value]="mission.value"> {{mission.viewValue}}
-            </mat-option> -->
-        </mat-select>
-        <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading">Signup</button>
-    </form>
-</mat-card>
+<div class="row main-div">
+    <div class="col-sm-4">
+        <mat-card>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+            <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+                
+                <div class="row main-div">
+
+                    <div class="col-sm-10 form-group ">
+                    <mat-form-field >
+                        <input  matInput ngModel name="email" type="email" placeholder="E-mail" #emailInput="ngModel" required
+                            email />
+                        <mat-error *ngIf="emailInput.invalid">Please enter a valid email</mat-error>
+                    </mat-form-field>
+                    </div>
+                
+                <div class="col-sm-10 form-group ">
+                <mat-form-field>
+                    <input matInput ngModel name="password" type="password" placeholder="Password" #passwordInput="ngModel"
+                        required>
+                    <mat-error *ngIf="passwordInput.invalid">Please enter a valid password</mat-error>
+                    <!-- https://stackblitz.com/edit/angular-sjkfft?file=src%2Fapp%2FmatErrorMessages.directive.ts -->
+                </mat-form-field>
+              </div>
+
+                 <div class="col-sm-5 form-group ">
+                <mat-form-field>
+                <mat-label>{{ "Mission" }}</mat-label>
+                    <mat-select [(value)]="selectedMission" required>
+                        <mat-option *ngFor="let store of storedMissions"  name="mission" id="mission" [value]="store.name"> 
+                            {{store.name}}
+                        </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="missionSelect.invalid">Select a mission</mat-error> -->
+                </mat-form-field>
+               </div>
+            </div>
+            
+            <div class="main-div ">
+                <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading">Signup</button>
+            </div>
+
+            </form>
+        </mat-card>
+    </div>
+</div>

@@ -77,6 +77,22 @@ app.use('/admin', adminRoutes);
 app.use("", userRoutes, authRoutes) 
 
 
+// When its not working try like this
+// app.get("/list-users", getListUsers = (async (req, res, next) => {
+//   try {
+//     const users = await User.find()
+//     console.log(users)
+// (200).json({
+//       message: "Listing users successfully",
+//       user: users,
+//     })
+//   } catch(e){
+//     console.log(e)
+//     res.status(500).json({
+//       message: "Create scenario render failed"
+//     })
+//   }  
+// }))
 
 
 
