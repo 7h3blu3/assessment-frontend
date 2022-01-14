@@ -34,9 +34,9 @@ router.get("/submission-grade/:userId/:scenarioId", adminController.getSubmissio
 
 router.post("/edit-users", adminController.postEditUsers)
 
-router.post("/archived-users", adminController.postArchivedUsers)
+router.post("/archived-users/:id", adminController.postArchivedUsers)
 
-router.post("/restore-users",  adminController.postRestoreUsers)
+router.post("/restore-users/:id",  adminController.postRestoreUsers)
 
 router.post("/delete-user", adminController.postDeleteUser)
 
@@ -44,13 +44,13 @@ router.post("/create-scenarios", adminController.postcreateScenario)
 
 router.post("/edit-scenarios",  adminController.postEditScenario)
 
-router.post("/move-scenario",  adminController.postMoveScenario)
+router.post("/archive-scenario/:id",  adminController.postArchiveScenario)
 
 router.post("/clone-scenario",  adminController.postCloneScenario)
 
 router.post("/delete-scenario",  adminController.postDeleteScenario)
 
-router.post("/restore-scenario",  adminController.postRestoreScenario)
+router.post("/restore-scenario/:id",  adminController.postRestoreScenario)
 
 router.post("/assign-scenarios", adminController.postAssignScenario)
 

@@ -50,13 +50,6 @@ exports.getPanel = (async (req, res, next) => {
 exports.getListUsers = (async (req, res, next) => {
   try {
     const users = await User.find()
-    console.log(users)
-
-    // res.render("admin/list-users", {
-    //   user: users,
-    //   pageTitle: "List Users",
-    //   path: '/admin/list-users'
-    // })
     res.status(200).json(users)
   } catch(e){
     console.log(e)
@@ -128,8 +121,9 @@ exports.postEditUsers = (async (req, res, next) => {
 })
 
 exports.postArchivedUsers = (async (req, res, next) => {
-  const userId = req.body.userId
-
+  const userId = req.params.id
+  console.log("The user id is " + userId)
+  console.log("The user id isss ", userId)
   try {
     const user = await User.findById(userId)
 
@@ -152,7 +146,6 @@ exports.postArchivedUsers = (async (req, res, next) => {
     await usersBackup.save()
     await User.findByIdAndDelete(userId)
     console.log('User archived!')
-    // res.redirect('/admin/archived-users')
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -160,11 +153,9 @@ exports.postArchivedUsers = (async (req, res, next) => {
 })
 
 exports.postRestoreUsers = (async (req, res, next) => {
-  const userBackupId = req.body.userBackupId
-
+  const userBackupId = req.params.id
   try {
     const userBckp = await userBackup.findById(userBackupId)
-
     const user = new User({
       userType: userBckp.userType,
       level: userBckp.level,
@@ -184,7 +175,6 @@ exports.postRestoreUsers = (async (req, res, next) => {
     await user.save()
     await userBackup.findByIdAndDelete(userBackupId)
     console.log('User Restored!')
-    res.redirect('/admin/archived-users')
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -282,6 +272,7 @@ exports.getListArchivedScenarios = (async (req, res, next) => {
     const scenariosBackup = await scenarioBackup.find()
       
     res.status(200).json(scenariosBackup)
+
   } catch(e){
     console.log("Archiving user failed" + e)
     res.status(500).json({
@@ -325,7 +316,7 @@ exports.postAssignScenario = (async (req, res, next) => {
     const findUser = await User.findOne({email: email})
     const user = await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: scenario[0]}}, {new: true, runValidators: true, useFindAndModify:false})
     
-    res.redirect('/admin/assign-scenarios')
+    // res.redirect('/admin/assign-scenarios')
     if(!user) {
       return res.status(400).send("yo")
   }
@@ -350,7 +341,8 @@ exports.postDeleteScenario = (async (req, res, next) => {
 })
 
 exports.postRestoreScenario = (async (req, res, next) => {
-  const scenarioBackupId = req.body.scenarioBackupId
+  const scenarioBackupId = req.params.id
+  console.log("What the id ", scenarioBackupId)
   try {
     const scenarioBckp = await scenarioBackup.findById(scenarioBackupId)
     const scenario = new Scenario ({
@@ -363,7 +355,7 @@ exports.postRestoreScenario = (async (req, res, next) => {
       time: scenarioBckp.time,
       _id: scenarioBckp._id,
       scoreCard: scenarioBckp.scoreCard,
-      userId: req.user,
+      // userId: req.user,
     })
     await scenario.save()
     await scenarioBackup.findByIdAndDelete(scenarioBackupId)
@@ -375,8 +367,8 @@ exports.postRestoreScenario = (async (req, res, next) => {
   }
 })
 
-exports.postMoveScenario = (async (req, res, next) => {
-  const scenarioId = req.body.scenarioId
+exports.postArchiveScenario = (async (req, res, next) => {
+  const scenarioId = req.params.id
 
   try{
     const scenario = await Scenario.findById(scenarioId)
@@ -392,14 +384,13 @@ exports.postMoveScenario = (async (req, res, next) => {
       time: scenario.time,
       _id: scenario._id,
       scoreCard: scenario.scoreCard,
-      userId: req.user,
+      // userId: req.user,
     })
     
     const result = await scenariosBackup.save()
     await Scenario.findByIdAndDelete(scenarioId)
     console.log(result)
     console.log('Scenario archived!')
-    res.redirect('/admin/list-scenarios')
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
@@ -421,7 +412,7 @@ exports.postCloneScenario = (async (req, res, next) => {
       passingGrade: scenario.passingGrade,
       time: scenario.time,
       scoreCard: scenario.scoreCard,
-      userId: req.user,
+      // userId: req.user,
     })
     
     const result = await scenarioClone.save()

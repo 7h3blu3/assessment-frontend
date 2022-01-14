@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from '../../admin.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-archived-users',
@@ -42,4 +43,30 @@ export class ArchivedUsersComponent implements OnInit {
       this.isLoading = false;
     })
   }
+
+  restoreUser(userId: string) {
+    Swal.fire({
+    title: 'Are you sure you want to restore this user ?',
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonColor: 'green',
+    cancelButtonColor: '#3F51B5',
+    confirmButtonText: 'Restore!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title:'Restored!',
+        text:'User has been successfully restored!',
+        icon:'success',
+        confirmButtonColor: '#3F51B5',
+      })
+      //This is the actual code
+      this.adminService.restoreUsers(userId)
+    }
+    
+  })
+
+    console.log("Show me the data ", userId)
+  }
+
 }

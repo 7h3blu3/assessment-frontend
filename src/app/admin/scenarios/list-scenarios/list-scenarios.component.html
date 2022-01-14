@@ -8,7 +8,7 @@
     <span class="section-header" mat-sort-header="Type">Type</span>
     <span class="section-header" mat-sort-header="Time">Time</span>
     <span class="section-header" mat-sort-header="Passing Grade">Passing Grade</span>
-    <span class="section-header" mat-sort-header="ircs">Description</span>
+    <span class="section-header" mat-sort-header="Description">Description</span>
 
   </section>
 
@@ -17,20 +17,20 @@
         <!-- <mat-panel-title>
           {{ scenario.title }}
         </mat-panel-title> -->
-        <span class="mat-cell">{{scenario.title}}</span>
+        <span class="mat-cell text">{{scenario.title}}</span>
         <span class="mat-cell">{{scenario.mission}}</span>
         <span class="mat-cell">{{scenario.level}}</span>
         <span class="mat-cell">{{scenario.type}}</span>
         <span class="mat-cell">{{scenario.time}}</span>
         <span class="mat-cell">{{scenario.passingGrade}}</span>
-        <span class="mat-cell"> <mat-panel-description>
-          This is a summary of the content
+        <span class="mat-cell text"> <mat-panel-description>
+          {{scenario.description}}
         </mat-panel-description></span>
       </mat-expansion-panel-header>
 
       <div class="row">
         <div class="col-sm-10">
-          <h2>Description</h2>
+          <h2>{{scenario.title}}</h2>
         </div>
         <div class="col-sm-2">
           <h2>Score Card</h2>
@@ -68,7 +68,7 @@
       
       <mat-action-row>
         <button mat-button color="primary" (click)="openDialog()">EDIT</button>
-        <button mat-button color="warn">Archive</button>
+        <button mat-button color="warn" (click)="archiveScenario(scenario.id)">Archive</button>
         <button mat-button class="cloneButton">Clone</button>
       </mat-action-row>
     </mat-expansion-panel>

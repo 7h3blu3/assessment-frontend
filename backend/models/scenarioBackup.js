@@ -36,11 +36,11 @@ const scenarioSchema = new Schema({
   passingGrade: {
     type: Number
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
+  // userId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   required: true
+  // }
 })
 
 module.exports = mongoose.model('ScenarioBackup', scenarioSchema)

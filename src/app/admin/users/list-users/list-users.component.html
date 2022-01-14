@@ -38,7 +38,7 @@
 
                           <ng-container matColumnDef="ARCHIVE">
                             <th mat-header-cell *matHeaderCellDef> Archive </th>
-                            <td mat-cell *matCellDef="let element"> <button class="btn-hidden"><mat-icon>archive</mat-icon></button></td>
+                            <td mat-cell *matCellDef="let element"> <button class="btn-hidden" (click)="archiveUser(element._id)"><mat-icon>archive</mat-icon></button></td>
                           </ng-container>
 
                           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

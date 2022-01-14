@@ -20,7 +20,16 @@ export class AssignScenariosComponent implements OnInit {
     this.adminService.getAssignedScenarios().subscribe(result =>{
       this.users = result.user
       this.selectedType3 = result.type3
+      // result.array.forEach(element => {
+      //   console.log(element)
+      // });
+      console.log(result)
       console.log(this.selectedType3[0].title)
     })
   }
+
+  assignScenario(userId: string){
+    this.adminService.assignScenario(userId)
+  }
+
 }

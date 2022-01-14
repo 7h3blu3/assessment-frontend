@@ -1,8 +1,55 @@
-<p>start-assessment works!</p>
-<!-- <p> {{ user._id }}</p> -->
-<div *ngFor="let user of user">
-    <p>
-        {{ user.email}}
-    </p>
-</div>
-<!-- You can try and use emit for the feedback to zoom it or something -->
+<h1>Welcome to the Assesment</h1>
+<mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="user.length > 0">
+
+  <section matSort class="mat-elevation-z2 mat-header-row">
+    <span class="section-header" mat-sort-header="Title">Scenario Title</span>
+    <span class="section-header" mat-sort-header="Mission">Mission</span>
+    <span class="section-header" mat-sort-header="Level">Level</span>
+    <span class="section-header" mat-sort-header="Result">Result</span>
+    <span class="section-header" mat-sort-header="Passing Grade">Passing Grade</span>
+    <span class="section-header" mat-sort-header="Score">Score</span>
+    <span class="section-header" mat-sort-header="Feedback">Feedback</span>
+
+  </section>
+
+    <mat-expansion-panel *ngFor="let user of user">
+      <mat-expansion-panel-header class="mat-row ripple-color">
+        <!-- <mat-panel-title>
+          {{ scenario.title }}
+        </mat-panel-title> -->
+        <span class="mat-cell">{{user.email}}</span>
+        <!-- <span class="mat-cell">{{user.title}}</span>
+
+        <span class="mat-cell">{{user.mission}}</span>
+        <span class="mat-cell">{{user.level}}</span>
+        <span class="mat-cell">{{user.result}}</span>
+        <span class="mat-cell">{{user.passingGrade}}</span>
+        <span class="mat-cell">{{user.score}}</span>
+        <span class="mat-cell">{{user.feedback}}</span> -->
+        <span class="mat-cell text"> <mat-panel-description>
+          Portion of the feedback will be shown right here!
+        </mat-panel-description></span>
+      </mat-expansion-panel-header>
+
+      <div class="row">
+        <div class="col-sm-10">
+          <h2>Feedback</h2>
+        </div>
+        <div class="col-sm-2">
+          <h2>Score Card</h2>
+        </div>
+     </div> 
+
+      <!-- <div class="row">
+        <div class="col-sm-10">
+          <p>{{user.feedback}}</p>
+        </div>
+        <div  class="col-sm-2">
+          <p>{{ scenario.scoreCard }}</p>
+        </div>
+      </div> -->
+
+
+    </mat-expansion-panel>
+  </mat-accordion>
+  <p class="info-text mat-body-1" *ngIf="user.length <= 0">No scenarios added yet!</p>

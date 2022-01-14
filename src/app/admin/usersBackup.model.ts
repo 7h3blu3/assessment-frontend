@@ -1,4 +1,5 @@
 export interface usersBackup {
+    id: string;
     email: string;
     userType: string;
     assignedTests: [];
