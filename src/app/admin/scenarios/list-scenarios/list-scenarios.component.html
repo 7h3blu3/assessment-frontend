@@ -29,43 +29,36 @@
       </mat-expansion-panel-header>
 
       <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-6">
           <h2>{{scenario.title}}</h2>
         </div>
-        <div class="col-sm-2">
-          <h2>Score Card</h2>
+        <div class="col-sm-5">
+          <h2>Question</h2>
+        </div>
+        <div class="col-sm-1">
+          <h2>Score</h2>
         </div>
      </div> 
 
       <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-6">
           <p>{{scenario.description}}</p>
         </div>
-        <div  class="col-sm-2">
-          <p>{{ scenario.scoreCard }}</p>
+        <div class="col-sm-5">
+          <p *ngFor="let easy of easy" >{{easy.question}}</p>
+        </div>
+        <div class="col-sm-1">
+          <p *ngFor="let easy of easy" >{{easy.weight}}</p>
         </div>
       </div>
 
+      <div class="row">
+        <div  class="col-sm-12">
+          <span class="horizontal-line"></span>
+          <span style="padding-right: 10px;">Logs:</span> <a href>{{scenario.logsUrl}}</a>
+        </div>
+      </div>
 
-      <!-- "scoreCard" : [ 
-      [ 
-          "Question 1", 
-          "10"
-      ], 
-      [ 
-          "Question 2", 
-          "30"
-      ], 
-      [ 
-          "Question 3", 
-          "30"
-      ], 
-      [ 
-          "Question 4", 
-          "30"
-      ]
-  ], -->
-      
       <mat-action-row>
         <button mat-button color="primary" (click)="openDialog()">EDIT</button>
         <button mat-button color="warn" (click)="archiveScenario(scenario.id)">Archive</button>
@@ -73,6 +66,13 @@
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
+  <!-- <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="posts.length > 0"> </mat-paginator> -->
+  <mat-paginator #paginator
+                      
+  [pageIndex]="0"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  ></mat-paginator>
   <p class="info-text mat-body-1" *ngIf="scenarios.length <= 0">No scenarios added yet!</p>
 
   <!-- <mat-accordion>

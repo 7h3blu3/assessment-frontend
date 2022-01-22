@@ -96,8 +96,13 @@ export class ListUsersComponent implements OnInit {
         })
         this.adminService.archiveUsers(userId)
       }
+      setTimeout(()=>{
+        this.getUsers()
+      }, 10)
     })
       console.log("Show me the data ", userId)
+
+      
     }
 
   showUser(element) {

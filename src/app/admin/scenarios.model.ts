@@ -1,3 +1,5 @@
+import { Url } from "url";
+
 export interface Scenarios {
   id: string;
   mission: string;
@@ -6,9 +8,10 @@ export interface Scenarios {
   description: string;
   type: string;
   time: number;
-  scoreCard: object;
   passingGrade: number;
   userId: string;
+  logsUrl: string
+  scoreCard: any;
 //   passingGrade: number;
   //   userId: {
   //     type: Schema.Types.ObjectId,

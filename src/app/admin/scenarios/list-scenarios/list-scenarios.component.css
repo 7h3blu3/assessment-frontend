@@ -83,3 +83,19 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.horizontal-line{
+  display:block;
+  width:100%;
+  border-top: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.vertical-line{
+  border-left: thick solid #ff0000;
+
+}
+
+hr{
+  display:inline-block
+}

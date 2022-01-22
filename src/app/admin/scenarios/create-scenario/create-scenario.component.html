@@ -12,8 +12,8 @@
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Mission" }}</mat-label>
                                 <mat-select [(value)]="selectedMission">
-                                    <mat-option *ngFor="let store of storeResult"  name="mission" id="mission" [value]="store.name"> 
-                                        {{store.name}}
+                                    <mat-option *ngFor="let mission of filteredMissions"  name="mission" id="mission" [value]="mission"> 
+                                        {{mission}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -22,9 +22,9 @@
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Level" }}</mat-label>
-                                <mat-select [(value)]="selectedMission">
-                                    <mat-option *ngFor="let store of storeResult"  name="mission" id="mission" [value]="store.name"> 
-                                        {{store.name}}
+                                <mat-select [(value)]="selectedLevel">
+                                    <mat-option *ngFor="let level of filteredLevels"  name="level" id="level" [value]="level"> 
+                                        {{level}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -34,7 +34,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Type" }}</mat-label>
                                 <mat-select [(value)]="selectedMission">
-                                    <mat-option *ngFor="let type of types"  name="type" id="type" [value]="type"> 
+                                    <mat-option *ngFor="let type of filteredTypes"  name="type" id="type" [value]="type"> 
                                         {{type}}
                                     </mat-option>
                                 </mat-select>
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="row main-div"> 
-                    <div class="col-md-9">
+                    <div class="col-md-9 padding-bottom">
                         <h3 class="h3-center-margin">Scenario Description</h3>
                         <textarea matInput  cols="115" rows="10" id="description" name="description"></textarea>
                     </div>
@@ -84,6 +84,7 @@
                                 <!-- <mat-error *ngIf="time.invalid">Please enter a valid email</mat-error> -->
                             </mat-form-field>
                     </div>
+                    
                 </div>
 
                 <div class="row main-div"> 
@@ -101,8 +102,12 @@
                             <!-- <mat-error *ngIf="grandTotal.invalid">Please enter a valid email</mat-error> -->
                         </mat-form-field>
                     </div>
+                    
                 </div>
-
+                
+                <div class="row main-div"> 
+                    <button class="col-md-5" mat-raised-button color="primary">Create Scenario</button>
+                </div>
                 <!-- Should check from here on how to add more rows -->
                 <!-- https://stackoverflow.com/questions/57732024/how-to-add-new-row-in-the-table-on-click-a-button-in-angular-7 -->
 

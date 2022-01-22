@@ -63,7 +63,9 @@ export class ArchivedUsersComponent implements OnInit {
       //This is the actual code
       this.adminService.restoreUsers(userId)
     }
-    
+    setTimeout(()=>{
+      this.getUsers()
+    }, 10)
   })
 
     console.log("Show me the data ", userId)

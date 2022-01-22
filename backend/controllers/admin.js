@@ -204,17 +204,7 @@ exports.getcreateScenarios = (async (req, res, next) => {
     const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
     filteredMissions.forEach(element => console.log(element))
 
-    res.status(200).json({
-      message: "Create scenario render success",
-      pageTitle: 'Create Scenarios',
-      filteredMissions,
-    })
-    // res.render('admin/edit-scenarios', {
-    //   pageTitle: 'Create Scenarios',
-    //   path: '/admin/create-scenarios',
-    //   editing: false,
-    //   filteredMissions
-    // })
+    res.status(200).json(filteredMissions)
   } catch(e){
     console.log("Create scenario render failed" + e)
     res.status(500).json({
@@ -427,63 +417,135 @@ exports.postCloneScenario = (async (req, res, next) => {
 
 exports.postcreateScenario = (async (req, res, next) => {
 
-  const title = req.body.title
-  const equalTo100 = req.body.grand_total
-  const description = req.body.description
   const mission = req.body.mission
   const level = req.body.level
   const type = req.body.type
-  const grade = req.body.grade
+  const title = req.body.title
+  const description = req.body.description
+  const passingGrade = req.body.passingGrade
   const time = req.body.time
-  // const question = req.body.key
-  // const weight = req.body.value
-  // const scoreCard = [question,weight]
-  const scoreCard = req.body.key
-  var chunk = []
-  scoreCard, chunk
-  var total = []
+  const logsUrl = req.body.logsUrl
+  const scoreCard = req.body.scoreCard
 
-  while (scoreCard.length > 0) {
+  // const equalTo100 = req.body.grand_total
+  // const scoreCard = req.body.key
+  // var chunk = []
+  // scoreCard, chunk
+  // var total = []
 
-    chunk = scoreCard.splice(0,2)
-    total.push(chunk)
-    console.log(chunk)
 
-  }
-  console.log('----')
-  console.log(total)
+
+  /** This I dont think will be usable
+  const question = req.body.key
+  const weight = req.body.value
+  const scoreCard = [question,weight]
+  while (scoreCard.length > 0) { 
+  */
+
+  //   chunk = scoreCard.splice(0,2)
+  //   total.push(chunk)
+  //   console.log(chunk)
+
+  // }
+  // console.log('----')
+  // console.log(total)
 
   
   try {
     const scenario = new Scenario({
       mission: mission,
       level: level,
-      title: title,
       type: type,
+      title: title,
       description: description,
-      userId: req.user,
+      passingGrade: passingGrade,
       time:time,
-      passingGrade: grade,
-      scoreCard: total
+      logsUrl: logsUrl,
+      scoreCard:scoreCard
+      // userId: req.user,
+      // scoreCard: total
     })
-    while (true)
-      {
-        if(equalTo100 === "100") {
-          scenario.save()
-          console.log('Created Scenario')
-          res.redirect('/admin/list-scenarios')
-          break;    
-        }
-        else {
-          console.log("We need a 100")
-          break;
-      }
-    }
+    scenario.save()
+    console.log("This is the angular saved scenario ", scenario)
+    // while (true)
+    //   {
+    //     if(equalTo100 === "100") {
+    //       scenario.save()
+    //       console.log('Created Scenario')
+    //       res.redirect('/admin/list-scenarios')
+    //       break;    
+    //     }
+    //     else {
+    //       console.log("We need a 100")
+    //       break;
+    //   }
+    // }
+
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
   }
 })
+
+// exports.postcreateScenario = (async (req, res, next) => {
+
+//   const title = req.body.title
+//   const equalTo100 = req.body.grand_total
+//   const description = req.body.description
+//   const mission = req.body.mission
+//   const level = req.body.level
+//   const type = req.body.type
+//   const grade = req.body.grade
+//   const time = req.body.time
+//   // const question = req.body.key
+//   // const weight = req.body.value
+//   // const scoreCard = [question,weight]
+//   const scoreCard = req.body.key
+//   var chunk = []
+//   scoreCard, chunk
+//   var total = []
+
+//   while (scoreCard.length > 0) {
+
+//     chunk = scoreCard.splice(0,2)
+//     total.push(chunk)
+//     console.log(chunk)
+
+//   }
+//   console.log('----')
+//   console.log(total)
+
+  
+//   try {
+//     const scenario = new Scenario({
+//       mission: mission,
+//       level: level,
+//       title: title,
+//       type: type,
+//       description: description,
+//       userId: req.user,
+//       time:time,
+//       passingGrade: grade,
+//       scoreCard: total
+//     })
+//     while (true)
+//       {
+//         if(equalTo100 === "100") {
+//           scenario.save()
+//           console.log('Created Scenario')
+//           res.redirect('/admin/list-scenarios')
+//           break;    
+//         }
+//         else {
+//           console.log("We need a 100")
+//           break;
+//       }
+//     }
+//   } catch (e) {
+//     console.log(e)
+//     res.status(400).send(e)
+//   }
+// })
 
 exports.postEditScenario = (async (req, res, next) => {
   const scnId = req.body.scenarioId;

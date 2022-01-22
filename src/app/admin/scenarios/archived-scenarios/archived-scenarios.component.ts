@@ -39,6 +39,7 @@ export class ArchivedScenariosComponent implements OnInit {
     this.adminService.getArchivedScenarios().subscribe((scenarios:ScenariosBackup[]) => {
       this.scenarios = scenarios;
       this.isLoading = false;
+      
     })
   }
 
@@ -61,7 +62,9 @@ export class ArchivedScenariosComponent implements OnInit {
       //This is the actual code
       this.adminService.restoreScenarios(scenarioId)
     }
-    
+    setTimeout(()=>{
+      this.getScenarios()
+    }, 10)
   })
 
     console.log("Show me the data ", scenarioId)

@@ -69,7 +69,6 @@ export class AdminService {
         'http://localhost:3000/admin/list-scenarios'
       ).pipe(map((scenariosData) => 
       {
-        console.log(scenariosData.scenarios)
         return scenariosData.scenarios.map(scenario => {
           return{
               id: scenario._id,
@@ -82,11 +81,11 @@ export class AdminService {
               scoreCard: scenario.scoreCard,
               passingGrade: scenario.passingGrade,
               userId: scenario.userId,
+              logsUrl:scenario.logsUrl
           }
         })
       }))
       .subscribe((transformedScenarios) => {
-        console.log(transformedScenarios)
         this.scenarios = transformedScenarios;
         this.scenariosUpdated.next([...this.scenarios]);
       }),catchError(this.handleError)
@@ -234,22 +233,56 @@ export class AdminService {
     return this.http.get( 'http://localhost:3000/admin/archived-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
   }
   
-  archiveScenarios(scenarioId:string) {
+  // archiveScenarios(scenarioId:string) {
 
-    // const userBackup: usersBackup = {id:scenarioId}
+  //   // const userBackup: usersBackup = {id:scenarioId}
 
-      var userBackup: any
-        return this.http
-        .post('http://localhost:3000/admin/archive-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
-        .subscribe((response) => {
-          console.log("this is the response ", response)
-          console.log(response)
-          const updatedScenarios = this.scenarios.filter(scenario => scenario.id !== scenarioId)
-          this.scenarios = updatedScenarios
-          this.scenariosUpdated.next([...this.scenarios]);
+  //     var userBackup: any
+  //       return this.http
+  //       .post('http://localhost:3000/admin/archive-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
+  //       .subscribe((response) => {
+  //         console.log("this is the response ", response)
+  //         console.log(response)
+  //         const updatedScenarios = this.scenarios.filter(scenario => scenario.id !== scenarioId)
+  //         this.scenarios = updatedScenarios
+  //         this.scenariosUpdated.next([...this.scenarios]);
          
-    }) 
+  //   }) 
+  // }
+
+  archiveScenarios(scenarioId, data): Observable<any> {
+
+        return this.http.post<any>('http://localhost:3000/admin/archive-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
   }
+
+  // archiveScenarios(id:string, scenarios:Scenarios) {
+
+  //   // const userBackup: usersBackup = {id:scenarioId}
+
+  //     const scenario: Scenarios= {
+  //       id: id,
+  //       mission:scenarios.mission,
+  //       level: scenarios.level,
+  //       title: scenarios.title,
+  //       description: scenarios.description,
+  //       type: scenarios.type,
+  //       time: scenarios.time,
+  //       scoreCard: scenarios.scoreCard,
+  //       passingGrade: scenarios.passingGrade,
+  //       userId: scenarios.userId
+  //     }
+
+  //       return this.http
+  //       .post('http://localhost:3000/admin/archive-scenario/' + id, scenario).pipe(map(res => { return res }), catchError(this.handleError))
+  //       .subscribe((response) => {
+  //         console.log("this is the response ", response)
+  //         console.log(response)
+  //         const updatedScenarios = this.scenarios.filter(scenario => scenario.id !== id)
+  //         this.scenarios = updatedScenarios
+  //         this.scenariosUpdated.next([...this.scenarios]);
+         
+  //   }) 
+  // }
 
   restoreScenarios(scenarioId:string) {
 
@@ -290,14 +323,19 @@ export class AdminService {
       return this.missionsUpdated.asObservable()
   }
 
-  getCreateScenarios() {
-    this.http.get<{ message: string; pageTitle: string; filteredMissions: [] }>(
-      'http://localhost:3000/admin/create-scenarios'
-    ).subscribe((filteredMissionsData) => {
-        this.missions = filteredMissionsData.filteredMissions
-        this.missionsUpdated.next([...this.missions])
-    })
-  }
+  createScenario(data): Observable<any> {
+
+    return this.http.post<any>('http://localhost:3000/admin/create-scenarios', data).pipe(map(res => { return res }), catchError(this.handleError))
+}
+
+  // getCreateScenarios() {
+  //   this.http.get<{ filteredMissions: [] }>(
+  //     'http://localhost:3000/admin/create-scenarios'
+  //   ).subscribe((filteredMissionsData) => {
+  //       this.missions = filteredMissionsData.filteredMissions
+  //       this.missionsUpdated.next([...this.missions])
+  //   })
+  // }
 
   //.subscribe(
   // We can pass 3 arguments in the subscribe

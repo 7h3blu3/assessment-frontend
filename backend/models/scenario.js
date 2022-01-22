@@ -12,6 +12,9 @@ const scenarioSchema = new Schema({
     type: String,
     required: true
   },
+  type: {
+    type: String
+  },
   title: {
     type: String,
     required:true
@@ -20,18 +23,22 @@ const scenarioSchema = new Schema({
     type:String,
     required:true
   },
-  type: {
-    type: String
+  passingGrade: {
+    type: Number
   },
   time: {
     type: Number
   },
+  logsUrl: {
+    type: String,
+  },
   scoreCard: {
-    type: Object
+    type: [{
+      question: String,
+      weight: Number
+    }]
   },
-  passingGrade: {
-    type: Number
-  },
+ 
   // userId: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'User',

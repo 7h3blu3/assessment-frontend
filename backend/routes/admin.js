@@ -16,7 +16,7 @@ router.get("/archived-users", adminController.getListArchivedUsers)
 
 router.get("/edit-users/:userId", adminController.getEditUsers)
 
-router.get("/create-scenarios", adminController.getcreateScenarios)
+// router.get("/create-scenarios", adminController.getcreateScenarios)
 
 router.get("/edit-scenarios/:scenarioId", adminController.getEditScenarios)
  
