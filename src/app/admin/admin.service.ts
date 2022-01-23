@@ -336,7 +336,8 @@ export class AdminService {
       Swal.fire({
         title: 'Scenario Saved.',
         icon: 'success',
-        text: 'Scenario ' + data.title + 'has been added to the database.',
+        text: 'Scenario ' + data.title + ' has been added to the database.',
+        confirmButtonColor:'#3F51B5',
         allowOutsideClick: false,
       });   
      return res

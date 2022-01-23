@@ -5,14 +5,14 @@
             <h1  class="text-center">{{  viewType == true ? 'Create a Scenario' : 'Edit a Scenario'}}</h1>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
             <!-- <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading"> -->
-            <form id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="createScenario(data)" #dialogForm="ngForm">
+            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="createScenario(data)" #dialogForm="ngForm">
 
                 <div class="row main-div"> 
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Mission" }}</mat-label>
-                                <mat-select [(value)]="selectedMission">
-                                    <mat-option *ngFor="let mission of filteredMissions" name="mission" id="mission" [value]="mission"> 
+                                <mat-select [(value)]="selectedMission" required>
+                                    <mat-option *ngFor="let mission of filteredMissions" name="mission" id="mission" [value]="mission" > 
                                         {{mission}}
                                     </mat-option>
                                 </mat-select>
@@ -23,7 +23,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Level" }}</mat-label>
                                 <mat-select [(value)]="selectedLevel">
-                                    <mat-option *ngFor="let level of levels"  name="level" id="level" [value]="level"> 
+                                    <mat-option *ngFor="let level of levels"  name="level" id="level" [value]="level" required> 
                                         {{level}}
                                     </mat-option>
                                 </mat-select>
@@ -73,7 +73,7 @@
                 <div class="row main-div"> 
                     <div class="col-md-9 padding-bottom">
                         <h3 class="h3-center-margin">Scenario Description</h3>
-                        <textarea matInput [(ngModel)]="data.description" cols="115" rows="10" id="description" name="description"></textarea>
+                        <textarea matInput [(ngModel)]="data.description" cols="115" rows="10" id="description" name="description" required></textarea>
                     </div>
 
                     <div class="col-md-9">
@@ -182,6 +182,7 @@
                 </div>
                 
                 <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
+                    <!-- <button class="col-md-5" mat-raised-button color="primary" [disabled]="dialogForm.form.invalid">Create Scenario</button> -->
                     <button class="col-md-5" mat-raised-button color="primary">Create Scenario</button>
                 </div>
                 <!-- Should check from here on how to add more rows -->

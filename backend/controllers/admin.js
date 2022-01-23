@@ -378,7 +378,13 @@ exports.postArchiveScenario = (async (req, res, next) => {
     })
     
     const result = await scenariosBackup.save()
-    await Scenario.findByIdAndDelete(scenarioId)
+    Scenario.findByIdAndDelete(scenarioId).then((deletedScenario)=>{
+      res.status(201).json({
+        scenario: {
+          ...deletedScenario
+        }
+    })
+  })
     console.log(result)
     console.log('Scenario archived!')
   } catch (e) {
@@ -471,7 +477,12 @@ exports.postcreateScenario = (async (req, res, next) => {
           ...createdScenario
         }
       })
-    })
+    }).catch(error => {
+      res.status(500).json({
+          message: "Creating a scenario failed!"
+      })
+      console.log("create post error " + error)
+  })
     console.log("This is the angular saved scenario ", scenario)
     // while (true)
     //   {

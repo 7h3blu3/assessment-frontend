@@ -40,12 +40,12 @@ export class CreateScenarioComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log("shoulb be empty ", this.data.title)
+    console.log("What in the hell ", this.data)
+    
     this.adminService.getScenarios() 
     this.scenarioSub = this.adminService.getScenariosUpdateListener().subscribe((scenarios:Scenarios[]) => {
       this.scenarios = scenarios;
       this.isLoading = false;
-
 
       
       this.scenarios.forEach(element => {
