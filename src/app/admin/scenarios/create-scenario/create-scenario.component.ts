@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AdminService } from '../../admin.service';
 import { Scenarios } from '../../scenarios.model';
-import { scoreCard } from '../../scenarios.model';
+import { ScoreCard } from '../../scenarios.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -32,11 +32,13 @@ export class CreateScenarioComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Scenarios, 
-    @Inject(MAT_DIALOG_DATA) public scoreCard: scoreCard, 
+    @Inject(MAT_DIALOG_DATA) public scoreCard: ScoreCard, 
     public router: Router,
     public adminService: AdminService, ) {
     this.missions = [];
     this.count = 0;
+    this.data = new Scenarios
+    this.scoreCard = new ScoreCard
    }
 
   ngOnInit(): void {

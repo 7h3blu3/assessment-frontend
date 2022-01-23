@@ -1,4 +1,4 @@
-export interface Scenarios {
+export class Scenarios {
   id: string;
   mission: string;
   level: string;
@@ -27,19 +27,20 @@ export interface Scenarios {
   //     ref: 'User',
   //     required: true
   //   }
+  
 }
 
-export interface scoreCard {
-  question: string,
-  weight:number,
-  question2: string,
-  weight2:number,
-  question3?: string,
-  weight3?:number,
-  question4?: string,
-  weight4?:number,
-  question5?: string,
-  weight5?:number,
+export class ScoreCard {
+  question: string;
+  weight:number;
+  question2: string;
+  weight2:number;
+  question3?: string;
+  weight3?:number;
+  question4?: string;
+  weight4?:number;
+  question5?: string;
+  weight5?:number;
 }
 
 export interface ScenariosBackup {
