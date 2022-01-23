@@ -1,18 +1,18 @@
 
-<div class="row main-div">
+<div class="row main-div" style="padding-bottom: 45px;">
     <div class="col-md-10"> 
         <mat-card>
             <h1  class="text-center">{{  viewType == true ? 'Create a Scenario' : 'Edit a Scenario'}}</h1>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
             <!-- <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading"> -->
-            <form *ngIf="!isLoading">
+            <form id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="createScenario(data)" #dialogForm="ngForm">
 
                 <div class="row main-div"> 
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Mission" }}</mat-label>
                                 <mat-select [(value)]="selectedMission">
-                                    <mat-option *ngFor="let mission of filteredMissions"  name="mission" id="mission" [value]="mission"> 
+                                    <mat-option *ngFor="let mission of filteredMissions" name="mission" id="mission" [value]="mission"> 
                                         {{mission}}
                                     </mat-option>
                                 </mat-select>
@@ -23,7 +23,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Level" }}</mat-label>
                                 <mat-select [(value)]="selectedLevel">
-                                    <mat-option *ngFor="let level of filteredLevels"  name="level" id="level" [value]="level"> 
+                                    <mat-option *ngFor="let level of levels"  name="level" id="level" [value]="level"> 
                                         {{level}}
                                     </mat-option>
                                 </mat-select>
@@ -33,8 +33,8 @@
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Type" }}</mat-label>
-                                <mat-select [(value)]="selectedMission">
-                                    <mat-option *ngFor="let type of filteredTypes"  name="type" id="type" [value]="type"> 
+                                <mat-select [(value)]="selectedType">
+                                    <mat-option *ngFor="let type of types" name="type" id="type" [value]="type"> 
                                         {{type}}
                                     </mat-option>
                                 </mat-select>
@@ -46,7 +46,7 @@
                     <div class="col-md-5"> 
                         <h3 class="h3-center-margin">Scenario Title</h3>
                         <mat-form-field >
-                            <input  matInput ngModel id="title" name="title" type="text" placeholder="Title" #title="ngModel" required/>
+                            <input  matInput [(ngModel)]="data.title" id="title" name="title" type="text" placeholder="Title" #title="ngModel" required/>
                             <!-- <mat-error *ngIf="title.invalid">Please enter a valid email</mat-error> -->
                         </mat-form-field>
                     </div>
@@ -54,7 +54,7 @@
                     <div class="col-md-2"> 
                         <h3 class="h3-center-margin">Passing Grade</h3>
                         <mat-form-field >
-                            <input  matInput ngModel id="passingGrade" name="passingGrade" type="number" placeholder="Value between 0-90" 
+                            <input  matInput [(ngModel)]="data.passingGrade" id="passingGrade" name="passingGrade" type="number" placeholder="Value between 0-90" 
                             #passingGrade="ngModel" required/>
                             <!-- <mat-error *ngIf="passingGrade.invalid">Please enter a valid email</mat-error> -->
                         </mat-form-field>
@@ -63,7 +63,7 @@
                     <div class="col-md-2"> 
                         <h3 class="h3-center-margin">Time for Scenario</h3>
                         <mat-form-field >
-                            <input  matInput ngModel id="time" name="time" type="number" placeholder="Time in minutes 15-120"
+                            <input  matInput [(ngModel)]="data.time" id="time" name="time" type="number" placeholder="Time in minutes 15-120"
                              #time="ngModel" required/>
                             <!-- <mat-error *ngIf="time.invalid">Please enter a valid email</mat-error> -->
                         </mat-form-field>
@@ -73,14 +73,14 @@
                 <div class="row main-div"> 
                     <div class="col-md-9 padding-bottom">
                         <h3 class="h3-center-margin">Scenario Description</h3>
-                        <textarea matInput  cols="115" rows="10" id="description" name="description"></textarea>
+                        <textarea matInput [(ngModel)]="data.description" cols="115" rows="10" id="description" name="description"></textarea>
                     </div>
 
                     <div class="col-md-9">
                         <!-- <h3 class="margin">Link for logs</h3> -->
                             <mat-form-field >
-                                <input  matInput ngModel id="time" name="time" type="text" placeholder="Place the link for logs"
-                                #time="ngModel" required/>
+                                <input  matInput [(ngModel)]="data.logsUrl" id="logsUrl" name="logsUrl" type="logsUrl" placeholder="Place the link for logs"
+                                #logsUrl="ngModel" required/>
                                 <!-- <mat-error *ngIf="time.invalid">Please enter a valid email</mat-error> -->
                             </mat-form-field>
                     </div>
@@ -104,8 +104,84 @@
                     </div>
                     
                 </div>
-                
+
+                <!-- Scorecard -->
                 <div class="row main-div"> 
+                    <button type='button' class="col-md-5" mat-raised-button color="primary" (click)="counterUp()">Add</button>
+                    <button type='button' class="col-md-5" mat-raised-button color="primary" (click)="counterDown()">Remove</button>
+                    <div class="col-md-8">
+                    <h2>Questions</h2>
+                    <mat-form-field class="scoreCard-fields">
+                        <mat-label>Question - 1</mat-label>
+                        <input matInput [(ngModel)]="scoreCard.question" id="question" name="question" type="text" 
+                            placeholder="Type in your question" required/>
+                    </mat-form-field>
+                    </div>
+                    <div class="col-md-1">
+                        <h2>Weight</h2>
+                        <mat-form-field class="scoreCard-fields">
+                            <input matInput [(ngModel)]="scoreCard.weight" id="weight" name="weight" type="number" #weight="ngModel" required/>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-8">
+                        <mat-form-field class="scoreCard-fields">
+                            <mat-label>Question - 2</mat-label>
+                            <input matInput [(ngModel)]="scoreCard.question2" id="question2" name="question2" 
+                            type="text" #question2="ngModel" 
+                            placeholder="Type in your question" required/>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-1">
+                        <mat-form-field class="scoreCard-fields">
+                            <input matInput [(ngModel)]="scoreCard.weight2" id="weight2" name="weight2" type="number" #weight2="ngModel" required/>
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="count >= 1" class="col-md-8">
+                        <mat-form-field class="scoreCard-fields">
+                            <mat-label>Question - 3</mat-label>
+                            <input matInput [(ngModel)]="scoreCard.question3" id="question3" name="question3" 
+                            type="text" #question3="ngModel" 
+                            placeholder="Type in your question" required/>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="count >= 1" class="col-md-1">
+                        <mat-form-field class="scoreCard-fields">
+                            <input matInput [(ngModel)]="scoreCard.weight3" id="weight3" name="weight3" type="number" #weight3="ngModel" required/>
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="count >= 2" class="col-md-8">
+                        <mat-form-field class="scoreCard-fields">
+                            <mat-label>Question - 4</mat-label>
+                            <input matInput [(ngModel)]="scoreCard.question4" id="question4" name="question4" 
+                            type="text" #question4="ngModel" 
+                            placeholder="Type in your question" required/>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="count >= 2" class="col-md-1">
+                        <mat-form-field class="scoreCard-fields">
+                            <input matInput [(ngModel)]="scoreCard.weight4" id="weight4" name="weight4" type="number" #weight4="ngModel" required/>
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="count >= 3" class="col-md-8">
+                        <mat-form-field class="scoreCard-fields">
+                            <mat-label>Question - 5</mat-label>
+                            <input matInput [(ngModel)]="scoreCard.question5" id="question5" name="question5" 
+                            type="text" #question5="ngModel" 
+                            placeholder="Type in your question" required/>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="count >= 3" class="col-md-1">
+                        <mat-form-field class="scoreCard-fields">
+                            <input matInput [(ngModel)]="scoreCard.weight5" id="weight5" name="weight5" type="number" #weight5="ngModel" required/>
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+                <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
                     <button class="col-md-5" mat-raised-button color="primary">Create Scenario</button>
                 </div>
                 <!-- Should check from here on how to add more rows -->

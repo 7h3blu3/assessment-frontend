@@ -33,12 +33,20 @@ const scenarioSchema = new Schema({
     type: String,
   },
   scoreCard: {
-    type: [{
+   
       question: String,
-      weight: Number
-    }]
+      weight: Number,
+      question2: String,
+      weight2: Number,
+      question3: String,
+      weight3: Number,
+      question4: String,
+      weight4: Number,
+      question5: String,
+      weight5: Number,
+    
   },
- 
+  
   // userId: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'User',

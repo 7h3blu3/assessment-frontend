@@ -33,5 +33,15 @@ mat-spinner {
    }
 
    .padding-bottom {
-     padding-bottom: 5px;
+     padding-bottom: 10px;
    }
+
+   /* mat-form-field label {
+    font-size: 20px;
+  } */
+
+  .scoreCard-fields {
+    font-size: 20px;
+  }
+
+  

@@ -17,28 +17,18 @@ import Swal from 'sweetalert2';
 })
 export class ListScenariosComponent implements  OnInit, OnDestroy {
   scenarios: Scenarios[] = []
-  easy = [
-    {question: 'question2', weight: 40},
-    {question: 'question3', weight: 40},
-    {question: 'question4', weight: 20}
-]
   isLoading = false;
   scoreCard: any;
   // totalPosts = 0;
   // postsPerPage = 2;
   // currentPage = 1;
   // pageSizeOptions = [1, 2, 5, 10];
-  whatever: any;
-  scoreQuestion: any;
-  scoreWeight: any;
   private scenarioSub: Subscription;
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   constructor(public adminService: AdminService, public dialog: MatDialog) {
     this.scoreCard = [];
-    this.scoreQuestion = [];
-    this.scoreWeight = [];
-    this.whatever = [];
+
   }
 
   ngOnInit() {
@@ -53,55 +43,13 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
       this.scenarios = scenarios;
       this.isLoading = false;
 
-      
-      var count = 0;
+      console.log("scenarios " , this.scenarios)
       this.scenarios.forEach(element => this.scoreCard.push(element.scoreCard));
       console.log("This is the scorecard ", this.scoreCard)
-
-      console.log(this.scenarios)
-
+      console.log("This is the scorecard ", this.scoreCard[0].question)
 
 
 
-      this.scoreCard.forEach(element => {
-        console.log(count)
-        this.whatever.push(element[count].question)
-        count++;
-        if(element[count])
-        {
-          
-        }
-       
-        console.log("Whatever ", this.whatever)
-        // console.log("this is the question", element[0].question)
-        
-
-        for (const key in element) {
-          if (Object.prototype.hasOwnProperty.call(element, key)) {
-            const thisThing = element[key];
-            var dabe = thisThing.question
-            // this.scoreQuestion.push(thisThing.question)
-            // this.scoreWeight.push(thisThing.weight)
-            
-            console.log("Ne razbiram ", dabe)
-
-          }
-        }
-      });
-      // for (let index = 0; index < this.scoreCard.length; index++) {
-      //   this.whatever.push(this.scoreCard[index]);
-      //   console.log(this.whatever)
-        
-      // }
-      // for (let j = 0; j < this.whatever.length; j++) {
-      //   const elementk = this.whatever[j];
-        // console.log(elementk)
-      // }
-      // console.log("THISTIN ", this.scoreWeight)
-      // console.log("Whatever ", this.whatever)
-      // this.whatever.forEach(ok => {
-        // console.log(ok)
-      // });
     })
     
   }
