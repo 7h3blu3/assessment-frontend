@@ -323,9 +323,24 @@ export class AdminService {
       return this.missionsUpdated.asObservable()
   }
 
-  createScenario(data): Observable<any> {
-
-    return this.http.post<any>('http://localhost:3000/admin/create-scenarios', data).pipe(map(res => { return res }), catchError(this.handleError))
+  createScenarioService(data): Observable<any> {
+    Swal.fire({
+      title: 'Saving your ' + data.title + ' scenario...',
+      text: 'Please wait a few seconds.',
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
+    return this.http.post<any>('http://localhost:3000/admin/create-scenarios', data)
+    .pipe(map(res => {
+      console.log("Do we even get here")
+      Swal.fire({
+        title: 'Scenario Saved.',
+        icon: 'success',
+        text: 'Scenario ' + data.title + 'has been added to the database.',
+        allowOutsideClick: false,
+      });   
+     return res
+      }), catchError(this.handleError))
 }
 
   // getCreateScenarios() {

@@ -465,7 +465,13 @@ exports.postcreateScenario = (async (req, res, next) => {
       // userId: req.user,
       // scoreCard: total
     })
-    scenario.save()
+    scenario.save().then((createdScenario)=>{
+      res.status(201).json({
+        scenario: {
+          ...createdScenario
+        }
+      })
+    })
     console.log("This is the angular saved scenario ", scenario)
     // while (true)
     //   {

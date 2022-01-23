@@ -89,7 +89,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
       // this.adminService.archiveScenarios(scenarioId)
       // this.getScenarios()
       this.adminService.archiveScenarios(scenarioId, this.scenarios).subscribe((result) => {
-        console.log(result)
+        console.log("Do we get in the result here ", result)
         
       })
     }

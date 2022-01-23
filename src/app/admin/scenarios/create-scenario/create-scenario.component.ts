@@ -4,7 +4,8 @@ import { AdminService } from '../../admin.service';
 import { Scenarios } from '../../scenarios.model';
 import { scoreCard } from '../../scenarios.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-scenario',
@@ -32,6 +33,7 @@ export class CreateScenarioComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Scenarios, 
     @Inject(MAT_DIALOG_DATA) public scoreCard: scoreCard, 
+    public router: Router,
     public adminService: AdminService, ) {
     this.missions = [];
     this.count = 0;
@@ -107,12 +109,12 @@ export class CreateScenarioComponent implements OnInit {
       }
       console.log(this.data.scoreCard.question)
 
-    this.adminService.createScenario(data).subscribe((result) => {
-
+    this.adminService.createScenarioService(data).subscribe(result => {
+      
       console.log("This is the createScenario data " , result)
     })
 
-
+    
 
   }
 }
