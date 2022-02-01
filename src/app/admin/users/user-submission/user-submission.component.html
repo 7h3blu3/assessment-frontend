@@ -1,8 +1,8 @@
-<!-- <div class="row main-div">
+<div class="row main-div">
     <div class="col-md-10"> 
             
             <mat-card>
-                <h1 class="text-center">List users</h1>
+                <h1 class="text-center">List Submitted Scenarios</h1>
              <div class="row main-div">
                 <mat-spinner *ngIf="isLoading"></mat-spinner>
             </div>
@@ -11,35 +11,31 @@
                 <div class="col-md-10"> 
                     <table matSort mat-table [dataSource]="userData">
 
-                        <ng-container matColumnDef="EMAIL">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
-                            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                        <ng-container matColumnDef="DATETAKEN">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="dateTaken"> Date Taken </th>
+                            <td mat-cell *matCellDef="let element"> {{element.scenarioDateTaken}} </td>
                           </ng-container>
 
-                          <ng-container matColumnDef="USERTYPE">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header="userType"> Date Taken </th>
-                            <td mat-cell *matCellDef="let element"> {{element.userType}} </td>
+                          <ng-container matColumnDef="TITLE">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="userType"> Title </th>
+                            <td mat-cell *matCellDef="let element"> {{element.scenarioTitle}} </td>
                           </ng-container>
                           
+                          <ng-container matColumnDef="MISSION">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="level"> Mission </th>
+                            <td mat-cell *matCellDef="let element" > {{element.mission}} </td>
+                          </ng-container>
+
                           <ng-container matColumnDef="LEVEL">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header="level"> Title </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="mission"> Level </th>
                             <td mat-cell *matCellDef="let element" > {{element.level}} </td>
                           </ng-container>
 
-                          <ng-container matColumnDef="MISSION">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header="mission"> Mission </th>
-                            <td mat-cell *matCellDef="let element" > {{element.mission}} </td>
-                          </ng-container>
 
-                          <ng-container matColumnDef="MISSION">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header="mission"> Level </th>
-                            <td mat-cell *matCellDef="let element" > {{element.mission}} </td>
-                          </ng-container>
-
-
-                          <ng-container matColumnDef="ARCHIVE">
+                          <ng-container matColumnDef="OPERATION">
                             <th mat-header-cell *matHeaderCellDef> Archive </th>
-                            <td mat-cell *matCellDef="let element"><button mat-button color="primary" (click)="openDialog()">Grade</button></button></td>
+                            <td mat-cell *matCellDef="let element"><a mat-raised-button href="/admin/submission-grade">Grade</a></td>
+                            <!-- <td mat-cell *matCellDef="let element"><button mat-button color="primary" (click)="openDialog(element)">Grade</button></td> -->
                           </ng-container>
 
                           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -57,4 +53,4 @@
             </div>
             </mat-card>
     </div>
-</div> -->
+</div>

@@ -5,6 +5,7 @@ import { ArchivedScenariosComponent } from './admin/scenarios/archived-scenarios
 import { AssignScenariosComponent } from './admin/scenarios/assign-scenarios/assign-scenarios.component';
 import { CreateScenarioComponent } from './admin/scenarios/create-scenario/create-scenario.component';
 import { ListScenariosComponent } from './admin/scenarios/list-scenarios/list-scenarios.component';
+import { SubmissionGradeComponent } from './admin/submission-grade/submission-grade.component';
 import { ArchivedUsersComponent } from './admin/users/archived-users/archived-users.component';
 import { ListUsersComponent } from './admin/users/list-users/list-users.component';
 import { UserSubmissionComponent } from './admin/users/user-submission/user-submission.component';
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: "admin/archived-scenarios", component:ArchivedScenariosComponent },
   { path: "admin/assign-scenarios", component:AssignScenariosComponent },
   { path: "admin/user-submission", component:UserSubmissionComponent },
+  { path: "admin/submission-grade/:userId/:scenarioId", component:SubmissionGradeComponent },
   { path: "login", component:LoginComponent },
   { path: "signup", component:SignupComponent },
 

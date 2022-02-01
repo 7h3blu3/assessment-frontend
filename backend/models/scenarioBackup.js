@@ -10,11 +10,15 @@ const scenarioSchema = new Schema({
   },
   mission: {
     type: String,
-    required:true
+    required:true,
+    uppercase: true
   },
   level: {
-      type: String,
-      required: true,
+    type: String,
+    required: true
+  },
+  type: {
+    type: String
   },
   title: {
     type: String,
@@ -24,19 +28,28 @@ const scenarioSchema = new Schema({
     type:String,
     required:true
   },
-  type: {
-      type: String
+  passingGrade: {
+    type: Number
   },
   time: {
     type: Number
   },
+  logsUrl: {
+    type: String,
+  },
   scoreCard: {
-    type: Array
+      question: String,
+      weight: Number,
+      question2: String,
+      weight2: Number,
+      question3: String,
+      weight3: Number,
+      question4: String,
+      weight4: Number,
+      question5: String,
+      weight5: Number,
   },
-  passingGrade: {
-    type: Number
-  },
-  // userId: {
+   // userId: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'User',
   //   required: true

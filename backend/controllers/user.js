@@ -41,7 +41,7 @@ exports.getAssessment = (async (req, res, next) => {
     // for (var i = 0; i < user.alreadyAssigned.length; i++) {
     //   console.log("I should be printing all of the ID's " + user.alreadyAssigned[i]);
     //   if(user.alreadyAssigned[i] === scenarios._id){
-    //   user.assignedTests = []
+    //   user.assignedScenarios = []
     //  }
     // }
 
@@ -55,12 +55,12 @@ exports.getAssessment = (async (req, res, next) => {
         const rand = Math.floor(Math.random() * docCount)
         const randScenario = await Scenario.findOne({level: user.level,mission: user.mission,type: "Type1"}).skip(rand)
         console.log("Type1")
-        if(user.assignedTests < 1)
+        if(user.assignedScenarios < 1)
         user.testCounter = 2
         await user.save()
 
-          if(user.assignedTests < 1) {
-          user.assignedTests = randScenario._id
+          if(user.assignedScenarios < 1) {
+          user.assignedScenarios = randScenario._id
           await user.save()
           }
       //Assign random scenario from type2
@@ -69,12 +69,12 @@ exports.getAssessment = (async (req, res, next) => {
         const rand = Math.floor(Math.random() * docCount)
         const randScenario = await Scenario.findOne({level: user.level,mission: user.mission,type: "Type2"}).skip(rand)
         console.log("Type2")
-        if(user.assignedTests < 1)
+        if(user.assignedScenarios < 1)
         user.testCounter = 3             
         await user.save()
 
-          if(user.assignedTests < 1) {
-          user.assignedTests = randScenario._id
+          if(user.assignedScenarios < 1) {
+          user.assignedScenarios = randScenario._id
           await user.save()
         
         } 
@@ -82,13 +82,13 @@ exports.getAssessment = (async (req, res, next) => {
       } else if(user.testCounter === 3){
         const randScenario = await Scenario.findOne({_id: user.assignedType3[0]})
         console.log("Type3")
-        if(user.assignedTests < 1)
+        if(user.assignedScenarios < 1)
         user.testCounter = 4    
         user.assignedType3 = []        
         await user.save()
         
-        if(user.assignedTests < 1) {
-        user.assignedTests = randScenario._id
+        if(user.assignedScenarios < 1) {
+        user.assignedScenarios = randScenario._id
         await user.save()
         }
       }
@@ -96,7 +96,7 @@ exports.getAssessment = (async (req, res, next) => {
     if(!user) {
       return res.status(404).send()
     }
-    const scenario = await Scenario.findById(user.assignedTests)
+    const scenario = await Scenario.findById(user.assignedScenarios)
     // current timestamp in milliseconds
     const currentDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') //This formats current date like so: 2021-04-28 15:54:08
     const finishDate = new Date(Date.now() + ( 3600 * 1000 * (scenario.time / 60))).toISOString().replace(/T/, ' ').replace(/\..+/, '')
@@ -122,22 +122,48 @@ exports.getAssessment = (async (req, res, next) => {
 
 exports.postAssessment = (async (req, res, next) => {
   
-  const findUser = await User.findById(req.session.user._id)
+  // const findUser = await User.findById(req.session.user._id)
+  const findUser = await User.findById(req.body._id)
+  console.log("This is the id ", findUser)
   const userSubmit = req.body
+  // This will be requested from the user.session
+  const level = req.body.level
+  const mission = req.body.mission
   console.log(userSubmit)
   const nowDate = new Date().toUTCString()
-  const userSubmitted = [userSubmit.scenarioId , userSubmit.userInput, userSubmit.title, nowDate]
+  const userSubmitted = [
+    {
+      scenarioId:userSubmit.scenarioId, 
+      scenarioDescription:userSubmit.scenarioDescription, 
+      scenarioTitle:userSubmit.scenarioTitle, 
+      level: userSubmit.level,
+      mission: userSubmit.mission,
+      scenarioDateTaken:nowDate
+    }]
   console.log(nowDate)
   
-  console.log("This is the scenario id " + userSubmit.scenarioId)
+  console.log("This is the scenario ", userSubmit)
 
   
 
     try{
         
-          const user = await User.findByIdAndUpdate(req.session.user._id, {$push: {submittedTests: userSubmitted, Date, alreadyAssigned: findUser.assignedTests}},{new: true, runValidators: true,useFindAndModify: false})
+          const user = await User.findByIdAndUpdate(findUser, 
+            {
+              $push: 
+              {
+                submittedScenarios: userSubmitted,
+                alreadyAssigned: 
+                {
+                  scenarioId: userSubmit.scenarioId
+                }
+              }
+            },
+            {
+              new: true, runValidators: true,useFindAndModify: false}
+            )
           
-          user.assignedTests = []
+          user.assignedScenarios = []
           console.log(userSubmit.userInput)
           await user.save()
 

@@ -2,8 +2,8 @@ export class Users {
   id: string;
   email: string;
   userType: string;
-  assignedTests: [];
-  submittedTests: [];
+  assignedScenarios: [];
+  submittedScenarios: [];
   finalGrade: [];
   alreadyAssigned: [];
   assignedType3: [];
@@ -14,4 +14,8 @@ export class Users {
 
 export class UserId {
     id:string;
+}
+
+export class AssignedScenarios{
+  assignedScenarios: any;
 }

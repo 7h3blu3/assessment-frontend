@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Pipe, PipeTransform } from '@angular/core';
 
@@ -35,6 +35,9 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     this.getScenarios()
   }
   
+  // ngOnChanges() {
+  //   this.getScenarios()
+  // }
   getScenarios()
   {
     this.isLoading = true;

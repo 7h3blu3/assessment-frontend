@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AdminService } from '../../admin.service';
 import { Scenarios } from '../../scenarios.model';
-import { ScoreCard } from '../../scenarios.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -12,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './create-scenario.component.html',
   styleUrls: ['./create-scenario.component.css']
 })
-export class CreateScenarioComponent implements OnInit {
+export class CreateScenarioComponent implements OnInit, OnDestroy {
   scenarios: Scenarios[] = []
   missions: any;
   filteredMissions: any;
@@ -32,18 +31,28 @@ export class CreateScenarioComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Scenarios, 
-    @Inject(MAT_DIALOG_DATA) public scoreCard: ScoreCard, 
     public router: Router,
     public adminService: AdminService, ) {
     this.missions = [];
     this.count = 0;
-    this.data = new Scenarios
-    this.scoreCard = new ScoreCard
+    this.data = new Scenarios().deserialize({
+      scoreCard: {
+        // question:"",
+        // weight: "",
+        // question2: "",
+        // weight2: "",
+        // question3: "",
+        // weight3:"",
+        // question4: "",
+        // weight4:"",
+        // question5: "",
+        // weight5:"",
+      }
+
+    })
    }
 
   ngOnInit(): void {
-    console.log("What in the hell ", this.data)
-    
     this.adminService.getScenarios() 
     this.scenarioSub = this.adminService.getScenariosUpdateListener().subscribe((scenarios:Scenarios[]) => {
       this.scenarios = scenarios;
@@ -54,9 +63,7 @@ export class CreateScenarioComponent implements OnInit {
         this.missions.push(element.mission)
       });
       this.filteredMissions = this.missions.filter((item, i, ar) => ar.indexOf(item) === i)
-      console.log("Types ", this.types)
-      console.log("Missions ", this.filteredMissions)
-      console.log("Levels ", this.levels)
+
     })
   }
 
@@ -67,56 +74,39 @@ export class CreateScenarioComponent implements OnInit {
     this.count++
     else if(this.count == 2)
     this.count++
-    console.log("Count: ", this.count)
   }
 
   counterDown() {
     if(this.count == 1){
       this.count--
-      delete this.scoreCard.question3
-      delete this.scoreCard.weight3
+      delete this.data.scoreCard.question3
+      delete this.data.scoreCard.weight3
     }
     
     else if(this.count == 2){
       this.count--
-      delete this.scoreCard.question4
-      delete this.scoreCard.weight4
+      delete this.data.scoreCard.question4
+      delete this.data.scoreCard.weight4
     }
     else if(this.count == 3){
       this.count--
-      delete this.scoreCard.question5
-      delete this.scoreCard.weight5
+      delete this.data.scoreCard.question5
+      delete this.data.scoreCard.weight5
     }
-    
-    console.log("Count: ", this.count)
   }
 
   createScenario(data){
       this.data.mission = this.selectedMission
       this.data.level = this.selectedLevel
       this.data.type = this.selectedType
-      /** Here this is working but its soo wrong - I created brand new interface caled scoreCard in Scenarios
-       I however keep the scoreCard property in the Scenarios interface and I then here set the value to match it ... */
-      this.data.scoreCard = {
-        question:this.scoreCard.question,
-        weight:this.scoreCard.weight,
-        question2:this.scoreCard.question2,
-        weight2:this.scoreCard.weight2,
-        question3:this.scoreCard.question3!,
-        weight3:this.scoreCard.weight3!,
-        question4:this.scoreCard.question4!,
-        weight4:this.scoreCard.weight4!,
-        question5:this.scoreCard.question5!,
-        weight5:this.scoreCard.weight5!,
-      }
-      console.log(this.data.scoreCard.question)
-
-    this.adminService.createScenarioService(data).subscribe(result => {
+      this.adminService.createScenarioService(data).subscribe(result => {
       
       console.log("This is the createScenario data " , result)
     })
-
     
+  }
 
+  ngOnDestroy() {
+    this.scenarioSub.unsubscribe();
   }
 }

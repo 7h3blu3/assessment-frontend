@@ -10,6 +10,8 @@ export class AssignScenariosComponent implements OnInit {
   isLoading = false;
   users: any;
   selectedType3: any;
+  selectedTitle: any;
+  selectedUser: any;
   constructor(public adminService: AdminService) { }
 
   ngOnInit(): void {
@@ -23,13 +25,32 @@ export class AssignScenariosComponent implements OnInit {
       // result.array.forEach(element => {
       //   console.log(element)
       // });
+
       console.log(result)
-      console.log(this.selectedType3[0].title)
+
+      // this.users.forEach(element => {
+      //   console.log(element.email)
+
+      //   if(element.email){
+      //     console.log(element._id)
+      //   }
+      // });
+      // console.log(this.selectedType3[0].title)
     })
   }
 
-  assignScenario(userId: string){
-    this.adminService.assignScenario(userId)
+  assignScenario(){
+    
+    var data = {
+      user: this.selectedUser,
+      scenarioId: this.selectedTitle._id
+    }
+    console.log("This data ", data)
+    this.adminService.assignScenario(data).subscribe(result =>{
+      console.log("This is the data ", result)
+    })
+    this.selectedUser = ""
+    this.selectedTitle= ""
   }
 
 }

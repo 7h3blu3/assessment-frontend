@@ -4,14 +4,15 @@
             <h1 class="text-center">Assign Scenario</h1>
 
 
-            <form *ngIf="!isLoading">
+            <!-- <form *ngIf="!isLoading" #dialogForm="ngForm"> -->
+                <form *ngIf="!isLoading" ngNativeValidate method="post" (ngSubmit)="assignScenario(); dialogForm.resetForm()" #dialogForm="ngForm">
 
                 <div class="row main-div"> 
                     <div class="col-md-5"> 
                         <mat-form-field appearance="outline">
-                            <mat-label> Type </mat-label>
-                                <mat-select>
-                                    <mat-option *ngFor="let user of users"  name="email" id="email" [value]="user.email"> 
+                            <mat-label> User </mat-label>
+                                <mat-select [(value)]="selectedUser">
+                                    <mat-option *ngFor="let user of users" name="email" id="email" [value]="user.email"> 
                                         {{user.email}}
                                     </mat-option>
                                 </mat-select>
@@ -20,20 +21,20 @@
                    <div class="col-md-5"> 
                         <mat-form-field appearance="outline">
                             <mat-label>Scenario Type3</mat-label>
-                                <mat-select>
-                                    <mat-option *ngFor="let scenario of selectedType3"  name="selectedType3" id="selectedType3" [value]="scenario.title"> 
+                                <mat-select [(value)]="selectedTitle">
+                                    <mat-option *ngFor="let scenario of selectedType3"  name="selectedType3" id="selectedType3" [value]="scenario"> 
                                         {{scenario.title}}
                                     </mat-option>
                                 </mat-select>
-                                <mat-action-row>
-                                    <!-- <button mat-button color="primary" (click)="assignScenario()">Assign</button> -->
-
-                                  </mat-action-row>
+                                
                             </mat-form-field>
+                            
                     </div>
-
+                    
                 </div>
-
+                <div class="row main-div">
+                    <button class="col-md-5" mat-raised-button color="primary">Assign Scenario</button>
+                </div>
          </form>
 
         </mat-card>

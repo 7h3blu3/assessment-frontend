@@ -126,16 +126,25 @@ export class AdminService {
     }) 
   }
 
-  assignScenario(userId:string) {
-
-    const userData: UserId = {id: userId};
-    
+  assignScenario(data) {
+    Swal.fire({
+      title: 'Saving your ' + data.title + ' scenario...',
+      text: 'Please wait a few seconds.',
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
         return this.http
-        .post('http://localhost:3000/admin/assign-scenarios' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
-        .subscribe((response) => {
-          
-          console.log("this is the response ", response)
-    }) 
+        .post('http://localhost:3000/admin/assign-scenarios', data).pipe(map(res => { 
+          console.log("What is the data", data)
+      Swal.fire({
+        title: 'Scenario Assigned.',
+        icon: 'success',
+        html: 'Scenario has been assigned to <strong>' + data.user + '</strong>',
+        confirmButtonColor:'#3F51B5',
+        allowOutsideClick: false,
+      });   
+          return res 
+        }), catchError(this.handleError))
   }
   // archiveUsers(userId:string) {
 
@@ -182,8 +191,8 @@ export class AdminService {
   //           id: user.id,
   //           email: user.email,
   //           userType: user.userType,
-  //           assignedTests: user.assignedTests,
-  //           submittedTests: user.submittedTests,
+  //           assignedScenarios: user.assignedScenarios,
+  //           submittedScenarios: user.submittedScenarios,
   //           finalGrade: user.finalGrade,
   //           alreadyAssigned: user.alreadyAssigned,
   //           assignedType3: user.assignedType3,
@@ -336,7 +345,8 @@ export class AdminService {
       Swal.fire({
         title: 'Scenario Saved.',
         icon: 'success',
-        text: 'Scenario ' + data.title + ' has been added to the database.',
+        html: 'Scenario has been added to the database.',
+        // html: 'Scenario <strong>' + data.title + '</strong> has been added to the database.',
         confirmButtonColor:'#3F51B5',
         allowOutsideClick: false,
       });   

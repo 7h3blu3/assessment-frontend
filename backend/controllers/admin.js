@@ -131,11 +131,11 @@ exports.postArchivedUsers = (async (req, res, next) => {
       userType: user.userType,
       level: user.level,
       mission: user.mission,
-      assignedTests: user.assignedTests,
+      assignedScenarios: user.assignedScenarios,
       email: user.email,
       password: user.password,
       testCounter: user.testCounter,
-      submittedTests: user.submittedTests,
+      submittedScenarios: user.submittedScenarios,
       finalGrade: user.finalGrade,
       time: user.time,
       alreadyAssigned: user.alreadyAssigned,
@@ -160,11 +160,11 @@ exports.postRestoreUsers = (async (req, res, next) => {
       userType: userBckp.userType,
       level: userBckp.level,
       mission: userBckp.mission,
-      assignedTests: userBckp.assignedTests,
+      assignedScenarios: userBckp.assignedScenarios,
       email: userBckp.email,
       password: userBckp.password,
       testCounter: userBckp.testCounter,
-      submittedTests: userBckp.submittedTests,
+      submittedScenarios: userBckp.submittedScenarios,
       finalGrade: userBckp.finalGrade,
       time: userBckp.time,
       alreadyAssigned: userBckp.alreadyAssigned,
@@ -290,27 +290,28 @@ exports.getAssignScenarios = (async (req, res, next) => {
 
 exports.postAssignScenario = (async (req, res, next) => {
   const email = req.body.user
-  const id = req.body.scenarioId
-  const scenario = req.body.scenario.split(", ")
-  // const scenario = req.body.scenario
-
-  
-  const assignedAttributes = [scenario._id]
-
-  console.log(id)
-  console.log(scenario[0])
-  console.log(scenario[1])
-  console.log(scenario[2])
+  const scenarioType3Id = req.body.scenarioId
+ 
+  console.log("This is the mail ", email)
+  console.log("This is the id ", scenarioType3Id)
 
   try {
     const findUser = await User.findOne({email: email})
-    const user = await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: scenario[0]}}, {new: true, runValidators: true, useFindAndModify:false})
+    const user = await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: {scenarioType3Id}}}, {new: true, runValidators: true, useFindAndModify:false})
+    .then((assignedUser)=>{
+      console.log(assignedUser)
+      res.status(201).json({
+        user:{
+          ...assignedUser
+        }
+      })
+    }).catch(error => {
+      res.status(500).json({
+          message: "Assigning a scenario failed!"
+      })
+      console.log("Assigning scenario error " + error)
+    })
     
-    // res.redirect('/admin/assign-scenarios')
-    if(!user) {
-      return res.status(400).send("yo")
-  }
-  // res.redirect('list-scenarios')
   } catch (e) {
     console.log(e)
     res.status(400).send(e + "CATCH ERROR")
@@ -336,21 +337,31 @@ exports.postRestoreScenario = (async (req, res, next) => {
   try {
     const scenarioBckp = await scenarioBackup.findById(scenarioBackupId)
     const scenario = new Scenario ({
-      title: scenarioBckp.title,
-      description: scenarioBckp.description,
+      _id: scenarioBckp._id,
       mission: scenarioBckp.mission,
       level: scenarioBckp.level,
       type: scenarioBckp.type,
+      title: scenarioBckp.title,
+      description: scenarioBckp.description,
       passingGrade: scenarioBckp.passingGrade,
       time: scenarioBckp.time,
-      _id: scenarioBckp._id,
+      logsUrl: scenarioBckp.logsUrl,
       scoreCard: scenarioBckp.scoreCard,
       // userId: req.user,
     })
-    await scenario.save()
+    await scenario.save().then((restoredScenario)=>{
+      res.status(201).json({
+        scenario:{
+          ...restoredScenario
+        }
+      })
+    }).catch(error => {
+      res.status(500).json({
+          message: "Restoring a scenario failed!"
+      })
+      console.log("Restore scenario error " + error)
+    })
     await scenarioBackup.findByIdAndDelete(scenarioBackupId)
-    console.log('Scenario Restored!')
-    res.redirect('/admin/archived-scenarios')
   } catch (e) {
   console.log(e)
   res.status(400).send(e)
@@ -365,14 +376,15 @@ exports.postArchiveScenario = (async (req, res, next) => {
 
     const scenariosBackup = new scenarioBackup({
       // backupscenario: scenario
-      title: scenario.title,
-      description: scenario.description,
+      _id: scenario._id,
       mission: scenario.mission,
       level: scenario.level,
       type: scenario.type,
+      title: scenario.title,
+      description: scenario.description,
       passingGrade: scenario.passingGrade,
       time: scenario.time,
-      _id: scenario._id,
+      logsUrl: scenario.logsUrl,
       scoreCard: scenario.scoreCard,
       // userId: req.user,
     })
@@ -384,6 +396,11 @@ exports.postArchiveScenario = (async (req, res, next) => {
           ...deletedScenario
         }
     })
+  }).catch(error => {
+    res.status(500).json({
+        message: "Archiving a scenario failed!"
+    })
+    console.log("Archive scenario error " + error)
   })
     console.log(result)
     console.log('Scenario archived!')
@@ -644,17 +661,17 @@ exports.getSubmissionGrade = (async (req, res, next) => {
       const scenario = await Scenario.findById(scenarioId)
       var userInput = "1"
 
-      for (var i = 0; i < user.submittedTests.length; i++) {
-        console.log(user.submittedTests[i][0]);
-        if(user.submittedTests[i][0] === scenarioId){
-          userInput = user.submittedTests[i][1]
+      for (var i = 0; i < user.submittedScenarios.length; i++) {
+        console.log(user.submittedScenarios[i][0]);
+        if(user.submittedScenarios[i][0] === scenarioId){
+          userInput = user.submittedScenarios[i][1]
         }
     }
       console.log("-------------------")
       console.log(userInput)
       console.log("-------------------")
       console.log(" This is the user ID" + userId)
-      console.log(user.submittedTests)
+      console.log(user.submittedScenarios)
       console.log(" This is the scenario ID" + scenarioId)
 
       res.render("admin/submission-grade", {
@@ -675,8 +692,8 @@ exports.postSubmissionGrade = (async (req, res, next) => {
 const userId = req.body.userId
 const scenId = req.body.scenario_id
 console.log(scenId)
-const scenarioText = req.body.submission_grade_scenario_description
-const userText = req.body.submission_grade_user_description
+const scenarioDescription = req.body.scenarioDescription
+const userResponse = req.body.userResponse
 const scenarioTitle = req.body.scenario_title
 const passingGrade = req.body.passing_grade
 const scenarioMission = req.body.scenario_mission
@@ -697,8 +714,8 @@ if(Array.isArray(req.body.dropdown)) {
       grade = "Complete."
     }
     console.log("User ID " + userId)
-    console.log("Scenario Text " + scenarioText)
-    console.log("User text " + userText)
+    console.log("Scenario Text " + scenarioDescription)
+    console.log("User text " + userResponse)
     console.log("Dropdown " + dropdown)
     console.log("Total Points from Score Card: " + total)
     console.log(scoreCardComment)
@@ -715,8 +732,8 @@ else{
     grade = "Complete."
   }
   console.log("User ID " + userId)
-  console.log("Scenario Text " + scenarioText)
-  console.log("User text " + userText)
+  console.log("Scenario Text " + scenarioDescription)
+  console.log("User text " + userResponse)
   console.log("Dropdown " + dropdown)
   console.log("Total Points from Score Card: " + total)
   console.log(scoreCardComment)
@@ -726,16 +743,26 @@ else{
 try {
   
   
-  const all = [scenarioText,userText,scenarioTitle,scenarioMission,scenarioLevel,passingGrade,total,grade,scoreCardComment]
+  const all = [
+    scenarioDescription,
+    userResponse,
+    scenarioTitle,
+    scenarioMission,
+    scenarioLevel,
+    passingGrade,
+    total,
+    grade,
+    scoreCardComment
+  ]
   const user = await User.findByIdAndUpdate(userId, {$push: {finalGrade: all}}, {new: true, runValidators: true, useFindAndModify: false})
-  console.log(user.submittedTests)
-  console.log(user.submittedTests[0])
-  for(i = 0; i < user.submittedTests.length; i++){
-    if(user.submittedTests[i][0] === scenId){
+  console.log(user.submittedScenarios)
+  console.log(user.submittedScenarios[0])
+  for(i = 0; i < user.submittedScenarios.length; i++){
+    if(user.submittedScenarios[i][0] === scenId){
       console.log("GOT YA!")
-      user.submittedTests.splice(i,1)
+      user.submittedScenarios.splice(i,1)
     }
-    console.log(user.submittedTests[i])
+    console.log(user.submittedScenarios[i])
   }
   user.save()
   //user.finalGrade = [all]

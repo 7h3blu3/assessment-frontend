@@ -16,27 +16,6 @@ const userSchema = new Schema({
     type: String,
     default: "User"
   },
-  resetToken: String,
-  resetTokenExpiration: Date,
-  scenarioId: {
-    type: Schema.Types.ObjectId,
-          ref: 'Scenario'
-  },
-  assignedTests: {
-    type: Array
-  },
-  submittedTests:{
-      type: [Array]
-  },
-  finalGrade:{
-    type: [Array]
-  },  
-  alreadyAssigned: {
-    type: [Array]
-  },
-  assignedType3: {
-    type: [Array]
-  },
   mission: {
     type: String,
     uppercase: true
@@ -45,12 +24,58 @@ const userSchema = new Schema({
     type: String,
     default: "Foundation"
   },
+  assignedScenarios: {
+    type: [{
+      _id : false,
+      scenarioId:String
+    }]
+  },
+  submittedScenarios:{
+      type: [{
+        scenarioId: String,
+        scenarioDateTaken: String,
+        scenarioTitle: String,
+        scenarioDescription: String,
+        level: String,
+        mission: String
+      }]
+  },
+  finalGrade:{
+    type: [{
+      scenarioDescription: String,
+      userResponse: String,
+      scenarioTitle: String,
+      scenarioMission: String,
+      scenarioLevel: String,
+      passingGrade: Number,
+      // total,
+      // grade,
+      // scoreCardComment
+      }]
+  },  
+  alreadyAssigned: {
+    type: [{
+      _id : false,
+      scenarioId: String}]
+  },
+  assignedType3: {
+    type: [{
+      _id : false,
+      scenarioType3Id:String
+    }]
+  },
   testCounter: {
     type: Number,
     default: 1
   },
   time: {
     type: [Array]
+  },
+  resetToken: String,
+  resetTokenExpiration: Date,
+  scenarioId: {
+    type: Schema.Types.ObjectId,
+          ref: 'Scenario'
   }
 })
 

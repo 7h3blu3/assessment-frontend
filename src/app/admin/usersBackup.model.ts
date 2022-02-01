@@ -2,8 +2,8 @@ export interface usersBackup {
     id: string;
     email: string;
     userType: string;
-    assignedTests: [];
-    submittedTests: [];
+    assignedScenarios: [];
+    submittedScenarios: [];
     finalGrade: [];
     alreadyAssigned: [];
     assignedType3: [];

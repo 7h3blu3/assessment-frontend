@@ -27,10 +27,10 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
           ref: 'Scenario'
   },
-  assignedTests: {
-    type: Array
+  assignedScenarios: {
+    type: [{id:String}]
   },
-  submittedTests:{
+  submittedScenarios:{
       type: [Array]
   },
   finalGrade:{

@@ -1,6 +1,6 @@
 function adminRole (userType) {
     return (req, res, next) => {
-     if (req.user.userType === "User" && req.user.assignedTests.length === 1) {
+     if (req.user.userType === "User" && req.user.assignedScenarios.length === 1) {
         res.status(401)
         return res.redirect("../assessment");
     } else if (req.user.userType === "Reviewer") {
@@ -32,7 +32,7 @@ function userRole (userType) {
 
 function contentManagerRole (userType) {
     return (req, res, next) => {
-        if (req.user.userType === "User" && req.user.assignedTests.length === 1) {
+        if (req.user.userType === "User" && req.user.assignedScenarios.length === 1) {
             res.status(401)
             return res.redirect("../assessment");
         } else if (req.user.userType === "Reviewer") {
@@ -48,7 +48,7 @@ function contentManagerRole (userType) {
 
 function reviewerRole (userType) {
     return (req, res, next) => {
-    if (req.user.userType === "User" && req.user.assignedTests.length === 1) {
+    if (req.user.userType === "User" && req.user.assignedScenarios.length === 1) {
         res.status(401)
         return res.redirect("../assessment");
     } else if (req.user.userType === "Content Manager") {
@@ -65,7 +65,7 @@ function reviewerRole (userType) {
 function alreadyLogged (userType)  {
             return (req, res, next) => {
             if(req.session.isLoggedIn) {
-            if (req.user.userType === "User" && req.user.assignedTests.length === 1) {
+            if (req.user.userType === "User" && req.user.assignedScenarios.length === 1) {
                 res.status(401)
                 return res.redirect("../assessment")
             } else if (req.user.userType === "Reviewer") {
