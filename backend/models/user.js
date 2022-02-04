@@ -32,7 +32,9 @@ const userSchema = new Schema({
   },
   submittedScenarios:{
       type: [{
+        _id : false,
         scenarioId: String,
+        userId: String,
         scenarioDateTaken: String,
         scenarioTitle: String,
         scenarioDescription: String,

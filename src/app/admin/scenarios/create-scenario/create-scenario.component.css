@@ -5,7 +5,6 @@ mat-form-field {
 mat-spinner {
     margin:auto;
 }
-
 .main-div{
     padding-top: 2px;
     display: flex;
@@ -44,4 +43,6 @@ mat-spinner {
     font-size: 20px;
   }
 
-  
+  textarea.mat-input-element {
+    padding: 5px;
+}

@@ -655,32 +655,39 @@ exports.getGradedSubmission = (async (req, res, next) => {
 exports.getSubmissionGrade = (async (req, res, next) => {
   try{
       
-      const userId = req.params.userId
+      const userId = await req.params.userId
+      console.log(userId)
       const scenarioId = req.params.scenarioId
-      const user = await User.findById(userId)
+      const user = await User.findById(userId.toString())
+      console.log(user)
       const scenario = await Scenario.findById(scenarioId)
       var userInput = "1"
 
-      for (var i = 0; i < user.submittedScenarios.length; i++) {
-        console.log(user.submittedScenarios[i][0]);
-        if(user.submittedScenarios[i][0] === scenarioId){
-          userInput = user.submittedScenarios[i][1]
-        }
-    }
-      console.log("-------------------")
-      console.log(userInput)
-      console.log("-------------------")
-      console.log(" This is the user ID" + userId)
-      console.log(user.submittedScenarios)
-      console.log(" This is the scenario ID" + scenarioId)
+    //   for (var i = 0; i < user.submittedScenarios.length; i++) {
+    //     console.log(user.submittedScenarios[i][0]);
+    //     if(user.submittedScenarios[i][0] === scenarioId){
+    //       userInput = user.submittedScenarios[i][1]
+    //     }
+    // }
+      // console.log("-------------------")
+      // console.log(userInput)
+      // console.log("-------------------")
+      // console.log(" This is the user ID" + userId)
+      // console.log(user.submittedScenarios)
+      // console.log(" This is the scenario ID" + scenarioId)
 
-      res.render("admin/submission-grade", {
-        pageTitle: "Submission Grade",
-        path: "/admin/submission-grade",
-        user,
-        scenario,
-        userInput
+    //   res.render("admin/submission-grade", {
+    //     pageTitle: "Submission Grade",
+    //     path: "/admin/submission-grade",
+    //     user,
+    //     scenario,
+    //     userInput
 
+    // })
+    res.status(200).json({
+      user:user,
+      scenario: scenario,
+      userInput
     })
   } catch(e){
     console.log(e)

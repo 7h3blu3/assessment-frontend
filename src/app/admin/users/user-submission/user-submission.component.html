@@ -34,7 +34,7 @@
 
                           <ng-container matColumnDef="OPERATION">
                             <th mat-header-cell *matHeaderCellDef> Archive </th>
-                            <td mat-cell *matCellDef="let element"><a mat-raised-button href="/admin/submission-grade">Grade</a></td>
+                            <td mat-cell *matCellDef="let element"><a mat-raised-button href="/admin/submission-grade/{{element.userId}}/{{element.scenarioId}}">Grade</a></td>
                             <!-- <td mat-cell *matCellDef="let element"><button mat-button color="primary" (click)="openDialog(element)">Grade</button></td> -->
                           </ng-container>
 

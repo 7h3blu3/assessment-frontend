@@ -5,7 +5,7 @@ export class Scenarios implements Deserializable {
   mission: string;
   level: string;
   title: string;
-  description: string;
+  description?: string;
   type: string;
   time: number;
   passingGrade: number;

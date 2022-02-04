@@ -8,6 +8,7 @@ import { AdminService } from '../../admin.service';
 import { SubmissionGradeComponent } from '../../submission-grade/submission-grade.component';
 import { Users } from '../../users.model';
 
+
 @Component({
   selector: 'app-user-submission',
   templateUrl: './user-submission.component.html',
@@ -37,7 +38,6 @@ export class UserSubmissionComponent implements OnInit {
     //  this.displayedColumns = this.displayedAdminColumns
     //  else 
      this.displayedColumns = this.displayedReviewerColumns
-
     this.getUsers()
   }
 
@@ -47,11 +47,12 @@ export class UserSubmissionComponent implements OnInit {
       
       this.storeResult = result.user
 
-      console.log("what is the stored result ", this.storeResult)
+    
 
       this.storeResult.forEach(element => {
         this.submittedScenarios.push(...element.submittedScenarios)
       });
+      console.log("what is the stored result ", this.submittedScenarios)
       if(result) {
 
         this.userData = new MatTableDataSource(this.submittedScenarios)

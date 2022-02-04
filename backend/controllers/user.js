@@ -123,7 +123,7 @@ exports.getAssessment = (async (req, res, next) => {
 exports.postAssessment = (async (req, res, next) => {
   
   // const findUser = await User.findById(req.session.user._id)
-  const findUser = await User.findById(req.body._id)
+  const findUser = await User.findById(req.body.userId)
   console.log("This is the id ", findUser)
   const userSubmit = req.body
   // This will be requested from the user.session
@@ -134,6 +134,7 @@ exports.postAssessment = (async (req, res, next) => {
   const userSubmitted = [
     {
       scenarioId:userSubmit.scenarioId, 
+      userId: userSubmit.userId,
       scenarioDescription:userSubmit.scenarioDescription, 
       scenarioTitle:userSubmit.scenarioTitle, 
       level: userSubmit.level,

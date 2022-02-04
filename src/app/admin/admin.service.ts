@@ -354,6 +354,10 @@ export class AdminService {
       }), catchError(this.handleError))
 }
 
+getSubmissionGrade(userId:any, scenarioId: any): Observable<any>{
+  return this.http.get("http://localhost:3000/admin/submission-grade/" + userId + "/" + scenarioId).pipe(map(res => { return res }), catchError(this.handleError))
+}
+
   // getCreateScenarios() {
   //   this.http.get<{ filteredMissions: [] }>(
   //     'http://localhost:3000/admin/create-scenarios'
