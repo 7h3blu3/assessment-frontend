@@ -34,8 +34,7 @@ export class SubmissionGradeComponent implements OnInit {
     this.adminService.getSubmissionGrade(this.userId,this.scenarioId).subscribe(result => {
       console.log(result)
 
-      this.data = new userScenarios().deserialize(
-        {
+      this.data = new userScenarios().deserialize({
       scenarios: new Scenarios().deserialize(result.scenario),
       user:new Users().deserialize(result.user)
     })

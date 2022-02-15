@@ -706,7 +706,7 @@ const passingGrade = req.body.passing_grade
 const scenarioMission = req.body.scenario_mission
 const scenarioLevel = req.body.scenario_level
 const dropdown = req.body.dropdown
-const scoreCardComment = req.body.scenario_card_comment
+const feedback = req.body.scenario_card_comment
 var total = 0;
 if(Array.isArray(req.body.dropdown)) {
     for(i = 0; i< req.body.dropdown.length;i++){
@@ -725,7 +725,7 @@ if(Array.isArray(req.body.dropdown)) {
     console.log("User text " + userResponse)
     console.log("Dropdown " + dropdown)
     console.log("Total Points from Score Card: " + total)
-    console.log(scoreCardComment)
+    console.log(feedback)
     console.log(scenarioTitle)
 }
 else{
@@ -743,7 +743,7 @@ else{
   console.log("User text " + userResponse)
   console.log("Dropdown " + dropdown)
   console.log("Total Points from Score Card: " + total)
-  console.log(scoreCardComment)
+  console.log(feedback)
   console.log(scenarioTitle)
 }
 
@@ -759,7 +759,7 @@ try {
     passingGrade,
     total,
     grade,
-    scoreCardComment
+    feedback
   ]
   const user = await User.findByIdAndUpdate(userId, {$push: {finalGrade: all}}, {new: true, runValidators: true, useFindAndModify: false})
   console.log(user.submittedScenarios)

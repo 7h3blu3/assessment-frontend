@@ -51,8 +51,8 @@ const userSchema = new Schema({
       scenarioLevel: String,
       passingGrade: Number,
       // total,
-      // grade,
-      // scoreCardComment
+      currentGrade: Number,
+      feedback: String
       }]
   },  
   alreadyAssigned: {
