@@ -11,10 +11,12 @@ import { ListUsersComponent } from './admin/users/list-users/list-users.componen
 import { UserSubmissionComponent } from './admin/users/user-submission/user-submission.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { AssessmentComponent } from './user/assessment/assessment.component';
 import { StartAssessmentComponent } from './user/start-assessment/start-assessment.component';
 
 const routes: Routes = [
   { path: '', component: StartAssessmentComponent },
+  { path: 'assessment', component: AssessmentComponent },
   { path: "admin/panel", component:PanelComponent },
   { path: "admin/list-users", component:ListUsersComponent },
   { path: "admin/archived-users", component:ArchivedUsersComponent },
@@ -26,7 +28,6 @@ const routes: Routes = [
   { path: "admin/submission-grade/:userId/:scenarioId", component:SubmissionGradeComponent },
   { path: "login", component:LoginComponent },
   { path: "signup", component:SignupComponent },
-
 ];
 
 @NgModule({

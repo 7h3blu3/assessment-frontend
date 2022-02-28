@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AdminService } from '../../admin.service';
 import { Scenarios } from '../../scenarios.model';
@@ -11,13 +11,13 @@ import Swal from 'sweetalert2';
   templateUrl: './create-scenario.component.html',
   styleUrls: ['./create-scenario.component.css']
 })
-export class CreateScenarioComponent implements OnInit, OnDestroy {
+export class CreateScenarioComponent implements OnInit, OnChanges,OnDestroy {
   scenarios: Scenarios[] = []
   missions: any;
   filteredMissions: any;
   types = ["Type1", "Type2", "Type3"];
   levels = ["Proffesional", "Experienced"];
-
+  sumOf100: any;
   selectedMission: any;
   selectedLevel: any;
   selectedType: any;
@@ -51,6 +51,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
 
     })
    }
+   
 
   ngOnInit(): void {
     this.adminService.getScenarios() 
@@ -58,6 +59,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
       this.scenarios = scenarios;
       this.isLoading = false;
 
+      // this.sumOf100 = 20;
       
       this.scenarios.forEach(element => {
         this.missions.push(element.mission)
@@ -65,6 +67,10 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
       this.filteredMissions = this.missions.filter((item, i, ar) => ar.indexOf(item) === i)
 
     })
+  }
+
+  ngOnChanges(){
+  //  this.sumOf100 = this.data.scoreCard.weight2
   }
 
   counterUp() {
@@ -94,7 +100,25 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
       delete this.data.scoreCard.weight5
     }
   }
-
+  onUpdateSum() {
+    this.sumOf100 = this.data.scoreCard.weight
+    if(this.data.scoreCard.weight && this.data.scoreCard.weight2 && this.data.scoreCard.weight3 
+      && this.data.scoreCard.weight4 && this.data.scoreCard.weight5){
+      this.sumOf100 = this.data.scoreCard.weight + this.data.scoreCard.weight2 + this.data.scoreCard.weight3 
+      + this.data.scoreCard.weight4 + this.data.scoreCard.weight5 
+    }
+    else if (this.data.scoreCard.weight && this.data.scoreCard.weight2 && this.data.scoreCard.weight3 
+      && this.data.scoreCard.weight4){
+      this.sumOf100 = this.data.scoreCard.weight + this.data.scoreCard.weight2 + this.data.scoreCard.weight3 
+      + this.data.scoreCard.weight4
+    }
+    else if(this.data.scoreCard.weight && this.data.scoreCard.weight2 && this.data.scoreCard.weight3 ){
+      this.sumOf100 = this.data.scoreCard.weight + this.data.scoreCard.weight2 + this.data.scoreCard.weight3 
+    }
+    else if(this.data.scoreCard.weight && this.data.scoreCard.weight2){
+      this.sumOf100 = this.data.scoreCard.weight + this.data.scoreCard.weight2
+    }
+  }
   createScenario(data){
       this.data.mission = this.selectedMission
       this.data.level = this.selectedLevel

@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Scenarios, ScenariosBackup } from './scenarios.model';
 import { throwError as observableThrowError, Observable, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 
-import Swal from 'sweetalert2';
+
+import { EmailValidator } from '@angular/forms';
+
+import { Scenarios, ScenariosBackup } from './scenarios.model';
 import { UserId, Users } from './users.model';
 import { usersBackup } from './usersBackup.model';
-import { EmailValidator } from '@angular/forms';
+
+import Swal from 'sweetalert2';
+
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   private users: Users[] = [];
@@ -352,6 +356,28 @@ export class AdminService {
       });   
      return res
       }), catchError(this.handleError))
+}
+
+gradeUser(data, userId:any, scenarioId: any): Observable<any> {
+  // Swal.fire({
+  //   title: 'Saving your ' + data.title + ' scenario...',
+  //   text: 'Please wait a few seconds.',
+  //   allowOutsideClick: false,
+  // });
+  // Swal.showLoading();
+  return this.http.post<any>('http://localhost:3000/admin/submission-grade/'  + userId + "/" + scenarioId, data)
+  .pipe(map(res => {
+    // console.log("Do we even get here")
+    // Swal.fire({
+    //   title: 'Scenario Saved.',
+    //   icon: 'success',
+    //   html: 'Scenario has been added to the database.',
+    //   // html: 'Scenario <strong>' + data.title + '</strong> has been added to the database.',
+    //   confirmButtonColor:'#3F51B5',
+    //   allowOutsideClick: false,
+    // });   
+   return res
+    }), catchError(this.handleError))
 }
 
 getSubmissionGrade(userId:any, scenarioId: any): Observable<any>{

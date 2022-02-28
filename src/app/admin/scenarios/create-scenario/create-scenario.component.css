@@ -24,11 +24,16 @@ mat-spinner {
   .margin {
     margin: 0 0 0px;
   }
+  
+  .textArea-margin {
+    margin-right: 10px;
+  }
 
   textarea {
     font-size: 1em;
     border: 0.2px solid black;
     padding-top: 10px;
+    border-radius: 10px;
    }
 
    .padding-bottom {

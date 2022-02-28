@@ -54,6 +54,6 @@ router.post("/restore-scenario/:id",  adminController.postRestoreScenario)
 
 router.post("/assign-scenarios", adminController.postAssignScenario)
 
-router.post("/submission-grade", adminController.postSubmissionGrade)
+router.post("/submission-grade/:userId/:scenarioId", adminController.postSubmissionGrade)
 
 module.exports = router;

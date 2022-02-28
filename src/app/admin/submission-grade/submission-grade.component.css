@@ -26,16 +26,34 @@ mat-spinner {
     margin: 0 0 0px;
   }
 
+  .textArea-margin {
+    margin-right: 20px;
+  }
+  
   textarea {
+    
     font-size: 1em;
     background-color: #f8f8f8;
     border: 0.2px solid black;
     width: 100%;
+    border-radius: 10px;
    }
+
+   .example-card{
+    margin: 0 auto;
+    display: flex;
+}
+
+  .simple-flex{
+    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
 
    textarea.mat-input-element {
     padding: 10px 15px;
-    resize: none;
+    /* resize: none; */
 }
 
    .padding-bottom {

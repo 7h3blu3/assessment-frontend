@@ -43,12 +43,6 @@
     align-items: center;
     padding: 0 24px;
     box-sizing: border-box;
-  
-    /* ::after {
-      display: inline-block;
-      min-height: inherit;
-      content: '';
-    } */
   }
   
   .section-header {
@@ -82,3 +76,42 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  mat-form-field {
+    width: 100%;
+}
+
+mat-spinner {
+    margin:auto;
+}
+.main-div{
+    padding-top: 2px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .h3-center-margin {
+    margin: 0 0 0px;
+    text-align: center;
+  }
+  
+  .margin {
+    margin: 0 0 0px;
+  }
+
+  textarea {
+    font-size: 1em;
+    border: 0.2px solid black;
+    padding-top: 10px;
+   }
+
+   .padding-bottom {
+     padding-bottom: 10px;
+   }
+
+  .scoreCard-fields {
+    font-size: 20px;
+  }
+
+  textarea.mat-input-element {
+    padding: 5px;
+}

@@ -4,42 +4,75 @@
         <mat-card>
             <h1  class="text-center">Grade Assessment</h1>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
-            <!-- <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="createScenario(data); dialogForm.resetForm()" #dialogForm="ngForm"> -->
-                <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" #dialogForm="ngForm">
+            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="gradeUser(data); dialogForm.resetForm()" #dialogForm="ngForm">
+                <!-- <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" #dialogForm="ngForm"> -->
 
-                   <div class="row main-div"> 
+                   <div class="row main-div textArea-margin"> 
                         <div class="col-md-11">
                             <h3 class="h3-center-margin">Scenario Description
                                 <span style="padding-left: 20px;"><strong>Mission:</strong>{{data.scenarios.mission}}</span>
                                 <span style="padding-left: 20px;"><strong>Level:</strong>{{data.scenarios.level}}</span></h3> 
-                            <textarea matInput [(ngModel)]="data.scenarios.description" cols="115" rows="10" id="description" 
+                            <textarea matInput [(ngModel)]="data.scenarios.description" cols="115" rows="5" id="description" 
                             name="description" readonly=true></textarea>
                         </div>
                         
-                        <div class="col-md-11">
+                        <div class="col-md-11 ">
                             <h3 class="h3-center-margin">User Input</h3>
-                            <textarea matInput [(ngModel)]="data.scenarios.description" cols="115" rows="10" id="description" 
-                            name="description" readonly=true></textarea>
+                            <textarea matInput [(ngModel)]="userResponse" cols="115" rows="5" id="userResponse" 
+                            name="userResponse" readonly=true></textarea>
                         </div>
                            
-                        <div class="col-md-11">
+                        <div class="col-md-11" style="padding-top: 10px;">
                               <span style="padding-right: 10px; padding-bottom: 5px;">Logs:</span> <a href="{{data.scenarios.logsUrl}}" target="_blank">{{data.scenarios.logsUrl}}</a>
                               <span class="horizontal-line"></span>
                         </div>
-                        
-
                     </div>
 
-                    <div class="row main-div"> 
+                    <div class="row main-div textArea-margin"> 
                         <div class="col-md-11">
                             <h3 class="h3-center-margin">Feedback</h3>
-                            <textarea matInput [(ngModel)]="data.user.finalGrade.feedback" cols="115" rows="10" id="feedback" 
+                            <textarea style="background-color: white;" matInput [(ngModel)]="data.user.finalGrade.feedback" cols="115" rows="5" id="feedback" 
                             name="feedback"></textarea>
                         </div>
                     </div>
 
-         </form>
+                    <div class="row main-div" style="padding-top: 40px;"> 
+                   
+                        <mat-card class="example-card" class="row col-sm-11">
+                        <div class="row col-sm-10">
+                            <div  class="col-sm-5">
+                              <p>{{data.scenarios.scoreCard.question}}</p>
+                              <p>{{data.scenarios.scoreCard.question2}}</p>
+                              <p>{{data.scenarios.scoreCard.question3}}</p>
+                              <p>{{data.scenarios.scoreCard.question4}}</p>
+                              <p>{{data.scenarios.scoreCard.question5}}</p>
+                            </div>
+                            <div class="col-sm-1">
+                              <p>{{data.scenarios.scoreCard.weight}}</p>
+                              <p>{{data.scenarios.scoreCard.weight2}}</p>
+                              <p>{{data.scenarios.scoreCard.weight3}}</p>
+                              <p>{{data.scenarios.scoreCard.weight4}}</p>
+                              <p>{{data.scenarios.scoreCard.weight5}}</p>
+                            </div>
+                            <div  class="col-sm-3">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>{{ "Grade" }}</mat-label>
+                                        <mat-select required>
+                                            <mat-option *ngFor="let score of gradeScore" name="gradeScore" id="gradeScore" [value]="gradeScore" > 
+                                                {{score}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                              </div>
+                          </div>
+                    </mat-card>
+                    </div>
+                    <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
+                        <button class="col-md-5" mat-raised-button color="primary">Grade Scenario</button>
+                    </div>
 
+         </form>
+        
         </mat-card> 
     </div>
 </div>

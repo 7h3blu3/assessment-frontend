@@ -6,7 +6,8 @@ export class Users implements Deserializable{
   userType?: string;
   assignedScenarios?: [];
   submittedScenarios?: [];
-  finalGrade?: [];
+  finalGrade?: [
+  ];
   alreadyAssigned?: [];
   assignedType3?: [];
   mission?: string;

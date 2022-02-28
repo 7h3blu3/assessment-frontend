@@ -46,7 +46,8 @@
                     <div class="col-md-5"> 
                         <h3 class="h3-center-margin">Scenario Title</h3>
                         <mat-form-field >
-                            <input  matInput [(ngModel)]="data.title" id="title" name="title" type="text" placeholder="Title" #title="ngModel" required/>
+                            <input  matInput [(ngModel)]="data.title" id="title" name="title" type="text" placeholder="Title" #title="ngModel"
+                             required/>
                             <!-- <mat-error *ngIf="title.invalid">Please enter a valid email</mat-error> -->
                         </mat-form-field>
                     </div>
@@ -70,10 +71,10 @@
                     </div>
                 </div>
 
-                <div class="row main-div"> 
-                    <div class="col-md-9 padding-bottom">
+                <div class="row main-div "> 
+                    <div class="col-md-9 padding-bottom textArea-margin">
                         <h3 class="h3-center-margin">Scenario Description</h3>
-                        <textarea matInput [(ngModel)]="data.description" cols="115" rows="10" id="description" name="description" required></textarea>
+                        <textarea matInput [(ngModel)]="data.description" cols="115" rows="8" id="description" name="description" required></textarea>
                     </div>
 
                     <div class="col-md-9">
@@ -96,9 +97,10 @@
                 <div class="row main-div"> 
                     <div class="col-md-3">
                         <h3 class="h3-center-margin">Total Points</h3>
-                        <mat-form-field appearance="outline">
-                            <input style="text-align: center;" matInput ngModel min="100" max="100" id="grandTotal" name="grandTotal" type="number" 
-                            placeholder="Sum of values must be 100" #grandTotal="ngModel" required/>
+                        <mat-form-field appearance="outline" >
+                            <input style="text-align: center;" matInput  [(ngModel)]="sumOf100" min="100" max="100" id="grandTotal" name="grandTotal" type="number" 
+                            placeholder="Sum of values must be 100"(input)="onUpdateSum()"  #grandTotal="ngModel" required/>
+                            <!-- <p>{{data?.scoreCard?.weight + data?.scoreCard?.weight2}}</p> -->
                         </mat-form-field>
                     </div>
                     
@@ -119,7 +121,8 @@
                     <div class="col-md-1">
                         <h2>Weight</h2>
                         <mat-form-field class="scoreCard-fields">
-                            <input matInput [(ngModel)]="data.scoreCard.weight" id="weight" name="weight" type="number" #weight="ngModel" required/>
+                            <input matInput min="0" max="100"[(ngModel)]="data.scoreCard.weight" id="weight" name="weight" type="number" #weight="ngModel" 
+                            required (input)="onUpdateSum()"/>
                         </mat-form-field>
                     </div>
 
@@ -133,7 +136,8 @@
                     </div>
                     <div class="col-md-1">
                         <mat-form-field class="scoreCard-fields">
-                            <input matInput [(ngModel)]="data.scoreCard.weight2" id="weight2" name="weight2" type="number" #weight2="ngModel" required/>
+                            <input matInput min="0" max="100" [(ngModel)]="data.scoreCard.weight2" (input)="onUpdateSum()" id="weight2" name="weight2" type="number" #weight2="ngModel" 
+                            required/>
                         </mat-form-field>
                     </div>
 
@@ -147,7 +151,7 @@
                     </div>
                     <div *ngIf="count >= 1" class="col-md-1">
                         <mat-form-field class="scoreCard-fields">
-                            <input matInput [(ngModel)]="data.scoreCard.weight3" id="weight3" name="weight3" type="number" #weight3="ngModel" required/>
+                            <input matInput [(ngModel)]="data.scoreCard.weight3" (input)="onUpdateSum()" id="weight3" name="weight3" type="number" #weight3="ngModel" required/>
                         </mat-form-field>
                     </div>
 
@@ -161,7 +165,7 @@
                     </div>
                     <div *ngIf="count >= 2" class="col-md-1">
                         <mat-form-field class="scoreCard-fields">
-                            <input matInput [(ngModel)]="data.scoreCard.weight4" id="weight4" name="weight4" type="number" #weight4="ngModel" required/>
+                            <input matInput [(ngModel)]="data.scoreCard.weight4" (input)="onUpdateSum()" id="weight4" name="weight4" type="number" #weight4="ngModel" required/>
                         </mat-form-field>
                     </div>
 
@@ -175,7 +179,7 @@
                     </div>
                     <div *ngIf="count >= 3" class="col-md-1">
                         <mat-form-field class="scoreCard-fields">
-                            <input matInput [(ngModel)]="data.scoreCard.weight5" id="weight5" name="weight5" type="number" #weight5="ngModel" required/>
+                            <input matInput [(ngModel)]="data.scoreCard.weight5" (input)="onUpdateSum()" id="weight5" name="weight5" type="number" #weight5="ngModel" required/>
                         </mat-form-field>
                     </div>
                 </div>

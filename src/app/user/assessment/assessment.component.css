@@ -1,0 +1,59 @@
+mat-form-field {
+    width: 100%;
+}
+
+mat-spinner {
+    margin:auto;
+}
+
+.main-div{
+    padding-top: 2px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .h3-center-margin {
+    margin: 0 0 0px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 25px;
+    text-align: center;
+  }
+
+  .margin {
+    margin: 0 0 0px;
+  }
+
+  textarea {
+    font-size: 1em;
+    background-color: #f8f8f8;
+    border: 0.2px solid black;
+    width: 100%;
+   }
+
+   textarea.mat-input-element {
+    padding: 10px 15px;
+    resize: none;
+    border-radius: 10px;
+}
+
+   .padding-bottom {
+     padding-bottom: 10px;
+   }
+
+   /* mat-form-field label {
+    font-size: 20px;
+  } */
+
+  .scoreCard-fields {
+    font-size: 20px;
+  }
+
+  .horizontal-line{
+    display:block;
+    width:100%;
+    border-top: 1px solid #ccc;
+    padding-bottom: 5px;
+  }

@@ -1,1 +1,39 @@
-<p>assessment works!</p>
+<div class="row main-div" style="padding-bottom: 45px;">
+    <div class="col-md-10"> 
+        <mat-card>
+            <h1  class="text-center">{{data.scenario.title}}</h1>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="Submit(data); dialogForm.resetForm()" #dialogForm="ngForm">
+                <!-- <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" #dialogForm="ngForm"> -->
+
+                   <div class="row main-div"> 
+                        <div class="col-md-11">
+                            <h3 class="h3-center-margin">Scenario Description
+                                 <span style="padding-left: 20px;"><strong>Mission:</strong>{{data.scenario.mission}}</span> 
+                                 <span style="padding-left: 20px;"><strong>Level:</strong>{{data.scenario.level}}</span></h3>
+                            <textarea matInput [(ngModel)]="data.scenario.description" cols="115" rows="10" id="description" 
+                          name="description" readonly=true></textarea> 
+                        </div>
+                        
+                        <div class="col-md-11">
+                            <h3 class="h3-center-margin">User Input</h3>
+                            <textarea style="background-color: white;" matInput [(ngModel)]="data.user.submittedScenarios.userResponse" cols="115" rows="10" id="userResponse"  
+                       name="userResponse" ></textarea>
+                        </div>
+                           
+                        <div class="col-md-11">
+                              <span style="padding-right: 10px; padding-bottom: 5px;">Logs:</span> <a href="{{data.scenario.logsUrl}}" 
+                              target="_blank">{{data.scenario.logsUrl}}</a>
+                              <span class="horizontal-line"></span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
+                        <button class="col-md-5" mat-raised-button color="primary">Submit</button>
+                    </div>
+
+         </form>
+        </mat-card> 
+    </div>
+</div>

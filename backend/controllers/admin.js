@@ -696,60 +696,65 @@ exports.getSubmissionGrade = (async (req, res, next) => {
 })
 
 exports.postSubmissionGrade = (async (req, res, next) => {
-const userId = req.body.userId
-const scenId = req.body.scenario_id
-console.log(scenId)
+// const userId = req.body.userId
+const userId = req.params.userId
+const scenId = req.params.scenarioId
+// const scenId = req.body.scenario_id
+
+console.log("This is the scenario id ", scenId)
+console.log("This is the user id ", userId)
 const scenarioDescription = req.body.scenarioDescription
 const userResponse = req.body.userResponse
 const scenarioTitle = req.body.scenario_title
 const passingGrade = req.body.passing_grade
 const scenarioMission = req.body.scenario_mission
 const scenarioLevel = req.body.scenario_level
-const dropdown = req.body.dropdown
+// const dropdown = req.body.dropdown
 const feedback = req.body.scenario_card_comment
 var total = 0;
-if(Array.isArray(req.body.dropdown)) {
-    for(i = 0; i< req.body.dropdown.length;i++){
-      console.log("result " + req.body.points[i]* req.body.dropdown[i])
-      total += req.body.points[i]* req.body.dropdown[i]
-    }
-    var grade = "";
-    if(total < passingGrade){
-      grade = "Not Complete."
-    }
-    else {
-      grade = "Complete."
-    }
-    console.log("User ID " + userId)
-    console.log("Scenario Text " + scenarioDescription)
-    console.log("User text " + userResponse)
-    console.log("Dropdown " + dropdown)
-    console.log("Total Points from Score Card: " + total)
-    console.log(feedback)
-    console.log(scenarioTitle)
-}
-else{
-  total += req.body.points * req.body.dropdown
-  console.log('narrr')
-  var grade = "";
-  if(total < passingGrade){
-    grade = "Not Complete."
-  }
-  else {
-    grade = "Complete."
-  }
-  console.log("User ID " + userId)
-  console.log("Scenario Text " + scenarioDescription)
-  console.log("User text " + userResponse)
-  console.log("Dropdown " + dropdown)
-  console.log("Total Points from Score Card: " + total)
-  console.log(feedback)
-  console.log(scenarioTitle)
-}
+// if(Array.isArray(req.body.dropdown)) {
+//     for(i = 0; i< req.body.dropdown.length;i++){
+//       console.log("result " + req.body.points[i]* req.body.dropdown[i])
+//       total += req.body.points[i]* req.body.dropdown[i]
+//     }
+//     var grade = "";
+//     if(total < passingGrade){
+//       grade = "Not Complete."
+//     }
+//     else {
+//       grade = "Complete."
+//     }
+//     console.log("User ID " + userId)
+//     console.log("Scenario Text " + scenarioDescription)
+//     console.log("User text " + userResponse)
+//     console.log("Dropdown " + dropdown)
+//     console.log("Total Points from Score Card: " + total)
+//     console.log(feedback)
+//     console.log(scenarioTitle)
+// }
+// else{
+//   total += req.body.points * req.body.dropdown
+//   console.log('narrr')
+//   var grade = "";
+//   if(total < passingGrade){
+//     grade = "Not Complete."
+//   }
+//   else {
+//     grade = "Complete."
+//   }
+//   console.log("User ID " + userId)
+//   console.log("Scenario Text " + scenarioDescription)
+//   console.log("User text " + userResponse)
+//   console.log("Dropdown " + dropdown)
+//   console.log("Total Points from Score Card: " + total)
+//   console.log(feedback)
+//   console.log(scenarioTitle)
+// }
 
 try {
   
   
+  //The logic here must be reworked tomorrow
   const all = [
     scenarioDescription,
     userResponse,
@@ -757,8 +762,8 @@ try {
     scenarioMission,
     scenarioLevel,
     passingGrade,
-    total,
-    grade,
+    // total,
+    // grade,
     feedback
   ]
   const user = await User.findByIdAndUpdate(userId, {$push: {finalGrade: all}}, {new: true, runValidators: true, useFindAndModify: false})
@@ -771,7 +776,18 @@ try {
     }
     console.log(user.submittedScenarios[i])
   }
-  user.save()
+  user.save().then((gradedUser)=>{
+    res.status(201).json({
+      user: {
+        ...gradedUser
+      }
+    })
+  }).catch(error => {
+    res.status(500).json({
+        message: "Grading a user failed!"
+    })
+    console.log("Grading post error " + error)
+})
   //user.finalGrade = [all]
   console.log(all)
   transporter.sendMail({
@@ -780,7 +796,6 @@ try {
     subject: 'Grade Completed!',
     html: '<h1>Your work has been graded. Please review!</h1>'
   })
-  res.redirect('user-submission')
   } catch (e) {
     console.log(e)
     res.status(400).send(e + "CATCH ERROR")

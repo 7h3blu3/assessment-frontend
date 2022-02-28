@@ -38,6 +38,7 @@ const userSchema = new Schema({
         scenarioDateTaken: String,
         scenarioTitle: String,
         scenarioDescription: String,
+        userResponse: String,
         level: String,
         mission: String
       }]
