@@ -23,7 +23,7 @@ export class Scenarios implements Deserializable {
     question5?: string,
     weight5?:number,
   };
-
+  grandTotal: number;
   deserialize(input: any): this {
       return Object.assign(this, input)
   }

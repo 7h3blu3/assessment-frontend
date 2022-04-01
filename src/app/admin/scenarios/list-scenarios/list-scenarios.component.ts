@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { Scenarios } from '../../scenarios.model';
@@ -26,6 +26,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   private scenarioSub: Subscription;
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
   constructor(public adminService: AdminService, public dialog: MatDialog) {
     this.scoreCard = [];
 
@@ -33,6 +34,12 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
 
   ngOnInit() {
     this.getScenarios()
+
+    //https://stackblitz.com/edit/table-like-mat-accordion-xzo8ng?file=app%2Fapp.component.ts
+    // setTimeout(() => {
+    //   this.userData.sort = this.sort
+    //   this.userData.paginator =  this.paginator
+    // })
   }
   
   // ngOnChanges() {
@@ -57,15 +64,18 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     
   }
 
-  openDialog(): void {
+  openDialog(scenario): void {
+    console.log("What is the scenario ", scenario)
     const dialogRef = this.dialog.open(CreateScenarioComponent, {
-
       width: '75%',
-      height: '80%',
+      height: '85%',
       panelClass: 'my-panel',
-      data: {},
-     
-    });
+      data: scenario,  
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      this.adminService.getScenarios();
+    })
+  
 
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log('The dialog was closed');

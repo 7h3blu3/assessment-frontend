@@ -3,6 +3,7 @@ const scenarioBackup = require("../models/scenarioBackup")
 const nodemailer = require('nodemailer')
 const User = require("../models/user")
 const userBackup = require("../models/userBackup")
+const levelMissionType = require("../models/levelMissionType")
 
 const transporter = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
@@ -106,14 +107,21 @@ exports.postEditUsers = (async (req, res, next) => {
   const updatedLevel = req.body.level
   const updatedMission = req.body.mission
 
+ 
   try {
     const user = await User.findById(userId)
     user.userType = updatedType
     user.level = updatedLevel
     user.mission = updatedMission
-    user.save()
-    console.log('User updated!')
-      res.redirect('/admin/list-users')
+    user.save().then((assignedUser)=>{
+      console.log(assignedUser)
+      res.status(201).json(user)
+    }).catch(error => {
+      res.status(500).json({
+          message: "Assigning a scenario failed!"
+      })
+      console.log("Assigning scenario error " + error)
+    })
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -213,36 +221,6 @@ exports.getcreateScenarios = (async (req, res, next) => {
   }  
 })
 
-// NOTE!!! - edit-scenarios.ejs page is used for create and EDIT scenarios 
-exports.getEditScenarios = (async (req, res, next) => {
-  const editMode = req.query.edit
-  const scenarioId = req.params.scenarioId
-  try {
-    if (!editMode) {
-      return res.redirect('/admin/panel')
-    }
-    const scenario = await Scenario.findById(scenarioId)
-    const findScenario = await Scenario.find()
-
-    const allMissions = []
-    findScenario.forEach(element => allMissions.push(element.mission))
-    const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
-    filteredMissions.forEach(element => console.log(element))
-
-    res.render('admin/edit-scenarios', {
-      pageTitle: 'Edit Scenarios',
-      path: '/admin/edit-scenarios',
-      editing: editMode,
-      scenario: scenario,
-      filteredMissions,
-    })
-    console.log(findScenario)
-  } catch(e){
-    console.log(e)
-    res.status(500).send(e)
-  }  
-})
-
 exports.getListScenarios = (async (req, res, next) => {
   try{
     const scenarios = await Scenario.find()
@@ -287,6 +265,48 @@ exports.getAssignScenarios = (async (req, res, next) => {
       })
     }  
 })
+
+exports.getLevelMissionType = (async (req, res, next) => {
+  try{
+      const findLevelMissionType = await levelMissionType.find()   
+
+      console.log("findLevelMissionType " , findLevelMissionType)
+      res.status(200).json(findLevelMissionType)
+    } catch(e){
+      res.status(500).json({
+        message: "get findLevelMissionType failed"
+      })
+    }  
+})
+
+exports.postLevelMissionType = (async (req, res, next) => {
+  const mission = req.body.mission
+  const level = req.body.level
+  const type = req.body.type
+
+  try {
+
+    var storeLevelMissionType = new levelMissionType({
+    mission: mission,
+    level:level,
+    type:type
+    })
+
+    await storeLevelMissionType.save().then((findLevelMissionType)=>{
+      console.log(findLevelMissionType)
+      res.status(201).json(findLevelMissionType)
+    }).catch(error => {
+      res.status(500).json({
+          message: "Posting findLevelMissionType failed"
+      })
+      console.log("Posting findLevelMissionType " + error)
+    })
+  } catch(e){
+    console.log(e)
+    res.status(500).send(e)
+  }  
+})
+
 
 exports.postAssignScenario = (async (req, res, next) => {
   const email = req.body.user
@@ -449,30 +469,7 @@ exports.postcreateScenario = (async (req, res, next) => {
   const time = req.body.time
   const logsUrl = req.body.logsUrl
   const scoreCard = req.body.scoreCard
-
-  // const equalTo100 = req.body.grand_total
-  // const scoreCard = req.body.key
-  // var chunk = []
-  // scoreCard, chunk
-  // var total = []
-
-
-
-  /** This I dont think will be usable
-  const question = req.body.key
-  const weight = req.body.value
-  const scoreCard = [question,weight]
-  while (scoreCard.length > 0) { 
-  */
-
-  //   chunk = scoreCard.splice(0,2)
-  //   total.push(chunk)
-  //   console.log(chunk)
-
-  // }
-  // console.log('----')
-  // console.log(total)
-
+  const grandTotal = req.body.grandTotal
   
   try {
     const scenario = new Scenario({
@@ -484,9 +481,9 @@ exports.postcreateScenario = (async (req, res, next) => {
       passingGrade: passingGrade,
       time:time,
       logsUrl: logsUrl,
-      scoreCard:scoreCard
+      scoreCard:scoreCard,
+      grandTotal: grandTotal
       // userId: req.user,
-      // scoreCard: total
     })
     scenario.save().then((createdScenario)=>{
       res.status(201).json({
@@ -501,20 +498,6 @@ exports.postcreateScenario = (async (req, res, next) => {
       console.log("create post error " + error)
   })
     console.log("This is the angular saved scenario ", scenario)
-    // while (true)
-    //   {
-    //     if(equalTo100 === "100") {
-    //       scenario.save()
-    //       console.log('Created Scenario')
-    //       res.redirect('/admin/list-scenarios')
-    //       break;    
-    //     }
-    //     else {
-    //       console.log("We need a 100")
-    //       break;
-    //   }
-    // }
-
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
@@ -583,14 +566,18 @@ exports.postcreateScenario = (async (req, res, next) => {
 
 exports.postEditScenario = (async (req, res, next) => {
   const scnId = req.body.scenarioId;
-  const updatedTitle = req.body.title
-  const updatedDesc = req.body.description
   const updatedMission = req.body.mission
   const updatedLevel = req.body.level
   const updatedType = req.body.type
-  const updatedGrade = req.body.grade
+  const updatedTitle = req.body.title
+  const updatedDesc = req.body.description
+  const updatedGrade = req.body.passingGrade
   const updatedTime = req.body.time
-  const updatedScoreCard = req.body.key
+  const updatedLogsUrl = req.body.logsUrl
+  const updatedScoreCard = req.body.scoreCard
+  const updatedGrandTotal = req.body.grandTotal
+
+  console.log("The updated logs ", updatedLogsUrl)
 
   try {
     const scenario = await Scenario.findById(scnId)
@@ -601,10 +588,22 @@ exports.postEditScenario = (async (req, res, next) => {
     scenario.type = updatedType
     scenario.grade = updatedGrade
     scenario.time = updatedTime
+    scenario.logsUrl = updatedLogsUrl
     scenario.scoreCard = updatedScoreCard
-    scenario.save()
-    console.log('Scenario updated!')
-    res.redirect('/admin/list-scenarios')
+    scenario.grandTotal = updatedGrandTotal
+    scenario.save().then((createdScenario)=>{
+      res.status(201).json({
+        scenario: {
+          ...createdScenario
+        }
+      })
+    }).catch(error => {
+      res.status(500).json({
+          message: "Updating scenario failed!"
+      })
+      console.log("create post error " + error)
+  })
+    console.log("This is the angular updated scenario ", scenario)
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
@@ -619,7 +618,6 @@ exports.getUserSubmission = (async (req, res, next) => {
     const currentUserId = await req.session.user._id
     const currentUser = await User.findById(currentUserId)
     
-    console.log(currentUser)
     res.status(200).json({
         user: user,
         currentUser: currentUser
@@ -632,62 +630,20 @@ exports.getUserSubmission = (async (req, res, next) => {
     }  
 })
 
-exports.getGradedSubmission = (async (req, res, next) => {
-  try{
-    const user = await User.find({})
-    const currentUserId = await req.session.user._id
-    const currentUser = await User.findById(currentUserId)
-    
-    console.log(currentUser)
-    res.render("admin/graded-submission", {
-      user,
-      currentUser,
-      pageTitle: "User Submission",
-      path: "/admin/user-submission"
-    })
-  } catch(e) {
-    console.log(e)
-    res.status(500).send(e)
-  }
-})
-
-
 exports.getSubmissionGrade = (async (req, res, next) => {
   try{
       
       const userId = await req.params.userId
-      console.log(userId)
       const scenarioId = req.params.scenarioId
+
       const user = await User.findById(userId.toString())
-      console.log(user)
       const scenario = await Scenario.findById(scenarioId)
-      var userInput = "1"
+      // var userInput = "1"
 
-    //   for (var i = 0; i < user.submittedScenarios.length; i++) {
-    //     console.log(user.submittedScenarios[i][0]);
-    //     if(user.submittedScenarios[i][0] === scenarioId){
-    //       userInput = user.submittedScenarios[i][1]
-    //     }
-    // }
-      // console.log("-------------------")
-      // console.log(userInput)
-      // console.log("-------------------")
-      // console.log(" This is the user ID" + userId)
-      // console.log(user.submittedScenarios)
-      // console.log(" This is the scenario ID" + scenarioId)
-
-    //   res.render("admin/submission-grade", {
-    //     pageTitle: "Submission Grade",
-    //     path: "/admin/submission-grade",
-    //     user,
-    //     scenario,
-    //     userInput
-
-    // })
     res.status(200).json({
       user:user,
       scenario: scenario,
-      userInput
+      // userInput
     })
   } catch(e){
     console.log(e)
@@ -705,77 +661,38 @@ console.log("This is the scenario id ", scenId)
 console.log("This is the user id ", userId)
 const scenarioDescription = req.body.scenarioDescription
 const userResponse = req.body.userResponse
-const scenarioTitle = req.body.scenario_title
-const passingGrade = req.body.passing_grade
-const scenarioMission = req.body.scenario_mission
-const scenarioLevel = req.body.scenario_level
-// const dropdown = req.body.dropdown
-const feedback = req.body.scenario_card_comment
-var total = 0;
-// if(Array.isArray(req.body.dropdown)) {
-//     for(i = 0; i< req.body.dropdown.length;i++){
-//       console.log("result " + req.body.points[i]* req.body.dropdown[i])
-//       total += req.body.points[i]* req.body.dropdown[i]
-//     }
-//     var grade = "";
-//     if(total < passingGrade){
-//       grade = "Not Complete."
-//     }
-//     else {
-//       grade = "Complete."
-//     }
-//     console.log("User ID " + userId)
-//     console.log("Scenario Text " + scenarioDescription)
-//     console.log("User text " + userResponse)
-//     console.log("Dropdown " + dropdown)
-//     console.log("Total Points from Score Card: " + total)
-//     console.log(feedback)
-//     console.log(scenarioTitle)
-// }
-// else{
-//   total += req.body.points * req.body.dropdown
-//   console.log('narrr')
-//   var grade = "";
-//   if(total < passingGrade){
-//     grade = "Not Complete."
-//   }
-//   else {
-//     grade = "Complete."
-//   }
-//   console.log("User ID " + userId)
-//   console.log("Scenario Text " + scenarioDescription)
-//   console.log("User text " + userResponse)
-//   console.log("Dropdown " + dropdown)
-//   console.log("Total Points from Score Card: " + total)
-//   console.log(feedback)
-//   console.log(scenarioTitle)
-// }
+const scenarioTitle = req.body.scenarioTitle
+const scenarioMission = req.body.scenarioMission
+const scenarioLevel = req.body.scenarioLevel
+const passingGrade = req.body.passingGrade
+const status = req.body.status
+const currentGrade = req.body.currentGrade
+const feedback = req.body.feedback
 
 try {
-  
-  
-  //The logic here must be reworked tomorrow
-  const all = [
-    scenarioDescription,
-    userResponse,
-    scenarioTitle,
-    scenarioMission,
-    scenarioLevel,
-    passingGrade,
-    // total,
-    // grade,
-    feedback
-  ]
-  const user = await User.findByIdAndUpdate(userId, {$push: {finalGrade: all}}, {new: true, runValidators: true, useFindAndModify: false})
-  console.log(user.submittedScenarios)
-  console.log(user.submittedScenarios[0])
-  for(i = 0; i < user.submittedScenarios.length; i++){
-    if(user.submittedScenarios[i][0] === scenId){
-      console.log("GOT YA!")
-      user.submittedScenarios.splice(i,1)
-    }
-    console.log(user.submittedScenarios[i])
-  }
+
+  finalGradeData = [{   
+    scenarioId: scenId,
+    scenarioDescription: scenarioDescription,
+    userResponse: userResponse,
+    scenarioTitle: scenarioTitle,
+    scenarioMission: scenarioMission,
+    scenarioLevel: scenarioLevel,
+    passingGrade: passingGrade,
+    status: status,
+    currentGrade: currentGrade,
+    feedback: feedback
+  }]
+
+  const user = await User.findByIdAndUpdate(userId, {$push: {finalGrade: finalGradeData}}, {new: true, runValidators: true, useFindAndModify:false})
+
+  transporter.sendMail({
+    to: user.email,
+    from: 'bg@ibm.com',
+    subject: 'Grade Completed!',
+    html: '<h1>Your work has been graded. Please review!</h1>'
+  })
+
   user.save().then((gradedUser)=>{
     res.status(201).json({
       user: {
@@ -788,14 +705,6 @@ try {
     })
     console.log("Grading post error " + error)
 })
-  //user.finalGrade = [all]
-  console.log(all)
-  transporter.sendMail({
-    to: user.email,
-    from: 'bg@ibm.com',
-    subject: 'Grade Completed!',
-    html: '<h1>Your work has been graded. Please review!</h1>'
-  })
   } catch (e) {
     console.log(e)
     res.status(400).send(e + "CATCH ERROR")

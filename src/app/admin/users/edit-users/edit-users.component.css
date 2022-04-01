@@ -18,3 +18,7 @@
     width: 100%;
     height: auto;
 }
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0;
+}

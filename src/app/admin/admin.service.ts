@@ -85,7 +85,8 @@ export class AdminService {
               scoreCard: scenario.scoreCard,
               passingGrade: scenario.passingGrade,
               userId: scenario.userId,
-              logsUrl:scenario.logsUrl
+              logsUrl:scenario.logsUrl,
+              grandTotal: scenario.grandTotal
           }
         })
       }))
@@ -103,6 +104,10 @@ export class AdminService {
     return this.http.get("http://localhost:3000/admin/archived-users").pipe(map(res => { return res }), catchError(this.handleError))
   }
 
+  getLevelMissionType(): Observable<any>{
+    return this.http.get("http://localhost:3000/admin/levelMissionType").pipe(map(res => { return res }), catchError(this.handleError))
+  }
+
   archiveUsers(userId:string) {
 
     const userData: UserId = {id: userId};
@@ -110,7 +115,7 @@ export class AdminService {
         return this.http
         .post('http://localhost:3000/admin/archived-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
         .subscribe((response) => {
-          const updatedUsers = this.users.filter(user => user.id !== userId)
+          const updatedUsers = this.users.filter(user => user._id !== userId)
           this.users = updatedUsers
           console.log(updatedUsers)
           // this.updatedU
@@ -150,152 +155,15 @@ export class AdminService {
           return res 
         }), catchError(this.handleError))
   }
-  // archiveUsers(userId:string) {
-
-  //   const userData: UserId = {id: userId};
-  //   var isConfirmed = false;
-  //   Swal.fire({
-  //     title: 'Are you sure you want to archive this user ?',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#FA4A1E',
-  //     cancelButtonColor: '#3F51B5',
-  //     confirmButtonText: 'Archive!'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         title:'Archived!',
-  //         text:'User has been successfully archived.',
-  //         icon:'success',
-  //         confirmButtonColor: '#3F51B5',
-  //       })
-  //       return this.http
-  //       .post('http://localhost:3000/admin/archived-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
-  //       .subscribe((response) => {
-  //         isConfirmed = true;
-  //         const updatedUsers = this.users.filter(user => user.id !== userId)
-  //         this.users = updatedUsers
-  //         console.log(updatedUsers)
-  //         // this.updatedU
-  //         console.log("this is the response ", response)
-  //       })
-  //     }
-  //     return
-  //   }) 
-  // }
-
-  // getUsers() {
-  //    this.http
-  //      .get<{users:any }>(
-  //        "http://localhost:3000/admin/list-users"
-  //      )
-  //      .pipe(map((usersData)=> {
-  //       return usersData.users.map(user => {
-  //         return{
-  //           id: user.id,
-  //           email: user.email,
-  //           userType: user.userType,
-  //           assignedScenarios: user.assignedScenarios,
-  //           submittedScenarios: user.submittedScenarios,
-  //           finalGrade: user.finalGrade,
-  //           alreadyAssigned: user.alreadyAssigned,
-  //           assignedType3: user.assignedType3,
-  //           mission: user.mission,
-  //           level: user.level,
-  //           time: user.time
-  //         }
-  //        })
-  //      }))
-  //      .subscribe((transformedUser) => {
-  //     this.users = transformedUser;
-  //     this.usersUpdated.next([...this.users]);
-  //      }),catchError(this.handleError)
-  //  }
-
- 
-
-  // getArchivedScenarios() {
-  //   this.http
-  //     .get<{ message: string; scenarios: any }>(
-  //       'http://localhost:3000/admin/archived-scenarios'
-  //     ).pipe(map((archivedScenariosData) => {
-  //       const storeResult = { scenario:archivedScenariosData}
-  //       console.log("This is in the map ", storeResult.scenario)
-  //       return archivedScenariosData.map(Archivedscenario => {
-  //         return{
-  //             id: Archivedscenario._id,
-  //             mission: Archivedscenario.mission,
-  //             level: Archivedscenario.level,
-  //             title: Archivedscenario.title,
-  //             description: Archivedscenario.description,
-  //             type: Archivedscenario.type,
-  //             time: Archivedscenario.time,
-  //             scoreCard: Archivedscenario.scoreCard,
-  //             passingGrade: Archivedscenario.passingGrade,
-  //             userId: Archivedscenario.userId,
-  //         }
-  //       })
-  //     }))
-  //     .subscribe((transformedScenarios) => {
-  //       this.scenariosBckp = transformedScenarios;
-  //       this.scenariosBckpUpdated.next([...this.scenariosBckp]);
-  //     }),catchError(this.handleError)
-  // }
-
+  
   getArchivedScenarios(): Observable<any> {
     return this.http.get( 'http://localhost:3000/admin/archived-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
   }
-  
-  // archiveScenarios(scenarioId:string) {
-
-  //   // const userBackup: usersBackup = {id:scenarioId}
-
-  //     var userBackup: any
-  //       return this.http
-  //       .post('http://localhost:3000/admin/archive-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
-  //       .subscribe((response) => {
-  //         console.log("this is the response ", response)
-  //         console.log(response)
-  //         const updatedScenarios = this.scenarios.filter(scenario => scenario.id !== scenarioId)
-  //         this.scenarios = updatedScenarios
-  //         this.scenariosUpdated.next([...this.scenarios]);
-         
-  //   }) 
-  // }
 
   archiveScenarios(scenarioId, data): Observable<any> {
 
         return this.http.post<any>('http://localhost:3000/admin/archive-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
   }
-
-  // archiveScenarios(id:string, scenarios:Scenarios) {
-
-  //   // const userBackup: usersBackup = {id:scenarioId}
-
-  //     const scenario: Scenarios= {
-  //       id: id,
-  //       mission:scenarios.mission,
-  //       level: scenarios.level,
-  //       title: scenarios.title,
-  //       description: scenarios.description,
-  //       type: scenarios.type,
-  //       time: scenarios.time,
-  //       scoreCard: scenarios.scoreCard,
-  //       passingGrade: scenarios.passingGrade,
-  //       userId: scenarios.userId
-  //     }
-
-  //       return this.http
-  //       .post('http://localhost:3000/admin/archive-scenario/' + id, scenario).pipe(map(res => { return res }), catchError(this.handleError))
-  //       .subscribe((response) => {
-  //         console.log("this is the response ", response)
-  //         console.log(response)
-  //         const updatedScenarios = this.scenarios.filter(scenario => scenario.id !== id)
-  //         this.scenarios = updatedScenarios
-  //         this.scenariosUpdated.next([...this.scenarios]);
-         
-  //   }) 
-  // }
 
   restoreScenarios(scenarioId:string) {
 
@@ -358,6 +226,52 @@ export class AdminService {
       }), catchError(this.handleError))
 }
 
+
+
+editUser(data): Observable<any> {
+  Swal.fire({
+    title: 'Editing user ' + data.email,
+    text: 'Please wait a few seconds.',
+    allowOutsideClick: false,
+  });
+  Swal.showLoading();
+
+  return this.http.post<any>('http://localhost:3000/admin/edit-users', data)
+  .pipe(map(res => {
+    Swal.fire({
+      title: 'User <strong>' + data.email + '</strong> has been Edited!',
+      icon: 'success',
+      // html: 'Scenario has been added to the database.',
+      // html: 'Scenario <strong>' + data.title + '</strong> has been added to the database.',
+      confirmButtonColor:'#3F51B5',
+      allowOutsideClick: false,
+    });   
+   return res
+    }), catchError(this.handleError))
+}
+
+editScenario(data): Observable<any> {
+  Swal.fire({
+    title: 'Editing Scenario ' + data.title,
+    text: 'Please wait a few seconds.',
+    allowOutsideClick: false,
+  });
+  Swal.showLoading();
+
+  return this.http.post<any>('http://localhost:3000/admin/edit-scenarios', data)
+  .pipe(map(res => {
+    Swal.fire({
+      title: 'Scenario <strong>' + data.title + '</strong> has been Edited!',
+      icon: 'success',
+      // html: 'Scenario has been added to the database.',
+      // html: 'Scenario <strong>' + data.title + '</strong> has been added to the database.',
+      confirmButtonColor:'#3F51B5',
+      allowOutsideClick: false,
+    });   
+   return res
+    }), catchError(this.handleError))
+}
+
 gradeUser(data, userId:any, scenarioId: any): Observable<any> {
   // Swal.fire({
   //   title: 'Saving your ' + data.title + ' scenario...',
@@ -368,14 +282,14 @@ gradeUser(data, userId:any, scenarioId: any): Observable<any> {
   return this.http.post<any>('http://localhost:3000/admin/submission-grade/'  + userId + "/" + scenarioId, data)
   .pipe(map(res => {
     // console.log("Do we even get here")
-    // Swal.fire({
-    //   title: 'Scenario Saved.',
-    //   icon: 'success',
-    //   html: 'Scenario has been added to the database.',
-    //   // html: 'Scenario <strong>' + data.title + '</strong> has been added to the database.',
-    //   confirmButtonColor:'#3F51B5',
-    //   allowOutsideClick: false,
-    // });   
+    Swal.fire({
+      title: 'Scenario Graded.',
+      icon: 'success',
+      html: 'Scenario has been graded successfully.',
+      // html: 'Scenario <strong>' + data.title + '</strong> has been added to the database.',
+      confirmButtonColor:'#3F51B5',
+      allowOutsideClick: false,
+    });   
    return res
     }), catchError(this.handleError))
 }

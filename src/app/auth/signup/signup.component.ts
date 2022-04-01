@@ -38,6 +38,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   getSignUpData(){
     this.authService.getSignUpData().subscribe(missions => {
       this.storedMissions = missions
+      console.log("What are the stored missions ", this.storedMissions)
     })
   }
 

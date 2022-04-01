@@ -16,9 +16,7 @@ router.get("/archived-users", adminController.getListArchivedUsers)
 
 router.get("/edit-users/:userId", adminController.getEditUsers)
 
-// router.get("/create-scenarios", adminController.getcreateScenarios)
-
-router.get("/edit-scenarios/:scenarioId", adminController.getEditScenarios)
+router.get("/levelMissionType", adminController.getLevelMissionType)
  
 router.get("/list-scenarios", adminController.getListScenarios)
 
@@ -33,6 +31,8 @@ router.get("/submission-grade/:userId/:scenarioId", adminController.getSubmissio
 // router.post("/panel", isAuth, adminRole(), adminController.postPanel)
 
 router.post("/edit-users", adminController.postEditUsers)
+
+router.post("/levelMissionType", adminController.postLevelMissionType)
 
 router.post("/archived-users/:id", adminController.postArchivedUsers)
 

@@ -47,9 +47,15 @@ export class UserSubmissionComponent implements OnInit {
       
       this.storeResult = result.user
 
-    
+      console.log("What do I mean by this.storeResult ", this.storeResult)
 
       this.storeResult.forEach(element => {
+        // element.submittedScenarios.forEach(submittedScenarios => {
+        //   element.finalGrade.forEach(finalGrade => {
+        //     if(submittedScenarios.scenarioId != finalGrade.scenarioId) this.submittedScenarios.push(...element.submittedScenarios)
+        //   });
+        // });
+        
         this.submittedScenarios.push(...element.submittedScenarios)
       });
       console.log("what is the stored result ", this.submittedScenarios)
@@ -80,7 +86,6 @@ export class UserSubmissionComponent implements OnInit {
     //   console.log('The dialog was closed');
     //   this.animal = result;
     // });
-  }    //   this.animal = result;
-    // });
+  }    
 
 }

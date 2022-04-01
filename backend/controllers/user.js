@@ -7,20 +7,12 @@ exports.getStartAssessment = (async (req, res, next) => {
   try {
     // Will need to use this user when we get session and delete below one
     // const user = await User.findById(req.session.user._id)
-    const user  = await User.find()
-    console.log(user)
+    const user  = await User.findById("605dae4e0c8a8344b0febed0")
+    console.log("User id ", user._id.toString())
     if(!user) {
       return res.status(404).send()
     }
-    // res.render("user/start-assessment", {
-    //   user,
-    //   pageTitle: "User dashboard",
-    //   path: "/user/start-assessment"
-    // })
-    res.status(200).json({
-      message: "Users fetched",
-      user: user
-    })
+    res.status(200).json(user)
   } catch (e){
     console.log("Is there an error " + e)
     res.status(500).send(e)

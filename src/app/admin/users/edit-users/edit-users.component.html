@@ -15,8 +15,8 @@
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label> Type </mat-label>
-                                <mat-select>
-                                    <mat-option *ngFor="let type of userType"  name="userType" id="userType" [value]="type.name"> 
+                                <mat-select [(ngModel)]="data.userType" name="userType" id="userType">
+                                    <mat-option *ngFor="let type of userType"   [value]="type.name"> 
                                         {{type.name}}
                                     </mat-option>
                                 </mat-select>
@@ -25,9 +25,9 @@
                    <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>Level</mat-label>
-                                <mat-select>
-                                    <mat-option *ngFor="let level of userLevel"  name="level" id="level" [value]="level.level"> 
-                                        {{level.level}}
+                                <mat-select  [(ngModel)]="data.level" name="level" id="level">
+                                    <mat-option *ngFor="let user of level" [value]="user"> 
+                                        {{user}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -38,9 +38,9 @@
                     <div class="col-md-3"> 
                     <mat-form-field appearance="outline">
                         <mat-label>{{ "Mission" }}</mat-label>
-                            <mat-select [(value)]="selectedMission" required>
-                                <mat-option *ngFor="let store of storedMissions"  name="mission" id="mission" [value]="store.name"> 
-                                    {{store.name}}
+                            <mat-select [(ngModel)]="data.mission" name="mission" id="mission" required>
+                                <mat-option *ngFor="let store of storedMissions"   [value]="store"> 
+                                    {{store}}
                                 </mat-option>
                             </mat-select>
                             <!-- <mat-error *ngIf="missionSelect.invalid">Select a mission</mat-error> -->
@@ -68,6 +68,9 @@
                                 </mat-select>
                             </mat-form-field>
                     </div> -->
+                    <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
+                        <button class="col-md-5" mat-raised-button color="primary" (click)="editUser(data)">Edit User</button>
+                    </div>
                 </div>
 
 

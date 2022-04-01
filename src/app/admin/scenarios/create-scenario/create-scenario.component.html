@@ -1,18 +1,19 @@
+<!-- <div class="row main-div" style="padding-bottom: 45px;" *ngIf="viewType"> -->
+<mat-dialog-content class="row main-div" style="padding-bottom: 45px;" [ngStyle]="styleObject()" >
 
-<div class="row main-div" style="padding-bottom: 45px;">
     <div class="col-md-10"> 
         <mat-card>
             <h1  class="text-center">{{  viewType == true ? 'Create a Scenario' : 'Edit a Scenario'}}</h1>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
             <!-- <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading"> -->
-            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="createScenario(data); dialogForm.resetForm()" #dialogForm="ngForm">
+            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="dialogSave(data); dialogForm.resetForm()" #dialogForm="ngForm">
 
                 <div class="row main-div"> 
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Mission" }}</mat-label>
-                                <mat-select [(value)]="selectedMission" required>
-                                    <mat-option *ngFor="let mission of filteredMissions" name="mission" id="mission" [value]="mission" > 
+                                <mat-select [(ngModel)]="data.mission"  name="mission" id="mission" required>
+                                    <mat-option *ngFor="let mission of missions" [value]="mission" > 
                                         {{mission}}
                                     </mat-option>
                                 </mat-select>
@@ -22,8 +23,8 @@
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Level" }}</mat-label>
-                                <mat-select [(value)]="selectedLevel">
-                                    <mat-option *ngFor="let level of levels"  name="level" id="level" [value]="level" required> 
+                                <mat-select [(ngModel)]="data.level" name="level" id="level">
+                                    <mat-option *ngFor="let level of levels"  [value]="level" required> 
                                         {{level}}
                                     </mat-option>
                                 </mat-select>
@@ -33,8 +34,8 @@
                     <div class="col-md-3"> 
                         <mat-form-field appearance="outline">
                             <mat-label>{{ "Type" }}</mat-label>
-                                <mat-select [(value)]="selectedType">
-                                    <mat-option *ngFor="let type of types" name="type" id="type" [value]="type"> 
+                                <mat-select [(ngModel)]="data.type"  name="type" id="type">
+                                    <mat-option *ngFor="let type of types" [value]="type"> 
                                         {{type}}
                                     </mat-option>
                                 </mat-select>
@@ -98,8 +99,8 @@
                     <div class="col-md-3">
                         <h3 class="h3-center-margin">Total Points</h3>
                         <mat-form-field appearance="outline" >
-                            <input style="text-align: center;" matInput  [(ngModel)]="sumOf100" min="100" max="100" id="grandTotal" name="grandTotal" type="number" 
-                            placeholder="Sum of values must be 100"(input)="onUpdateSum()"  #grandTotal="ngModel" required/>
+                            <input style="text-align: center;" matInput  [(ngModel)]="data.grandTotal" min="100" max="100" id="grandTotal" name="grandTotal" type="number" 
+                            placeholder="Sum of values must be 100" (input)="onUpdateSum()"  #grandTotal="ngModel" required/>
                             <!-- <p>{{data?.scoreCard?.weight + data?.scoreCard?.weight2}}</p> -->
                         </mat-form-field>
                     </div>
@@ -185,11 +186,14 @@
                 </div>
                 
                 <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
-                    <button class="col-md-5" mat-raised-button color="primary">Create Scenario</button>
+                    <button *ngIf="viewType" class="col-md-5" mat-raised-button color="primary">Create Scenario</button>
+                    <button *ngIf="!viewType" class="col-md-5" mat-raised-button color="primary">Edit Scenario</button>
                 </div>
 
          </form>
 
         </mat-card> 
     </div>
-</div>
+
+</mat-dialog-content>
+<!-- </div> -->

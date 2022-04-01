@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 import { AdminService } from '../../admin.service';
 
 @Component({
@@ -8,11 +9,20 @@ import { AdminService } from '../../admin.service';
 })
 export class AssignScenariosComponent implements OnInit {
   isLoading = false;
+  data: any;
   users: any;
+  user: any;
+  type3: any;
+  storedType3: any;
+  filteredUserType3s: any;
   selectedType3: any;
   selectedTitle: any;
   selectedUser: any;
-  constructor(public adminService: AdminService) { }
+  empty: any;
+
+  constructor(public adminService: AdminService) {
+    this.storedType3 = [];
+   }
 
   ngOnInit(): void {
     this.getAssignedScenarioView()
@@ -21,36 +31,48 @@ export class AssignScenariosComponent implements OnInit {
   getAssignedScenarioView() {
     this.adminService.getAssignedScenarios().subscribe(result =>{
       this.users = result.user
-      this.selectedType3 = result.type3
-      // result.array.forEach(element => {
-      //   console.log(element)
-      // });
-
-      console.log(result)
-
-      // this.users.forEach(element => {
-      //   console.log(element.email)
-
-      //   if(element.email){
-      //     console.log(element._id)
-      //   }
-      // });
-      // console.log(this.selectedType3[0].title)
+      this.type3 = result.type3
     })
   }
 
   assignScenario(){
     
-    var data = {
+    this.data = {
       user: this.selectedUser,
       scenarioId: this.selectedTitle._id
     }
-    console.log("This data ", data)
-    this.adminService.assignScenario(data).subscribe(result =>{
-      console.log("This is the data ", result)
-    })
-    this.selectedUser = ""
-    this.selectedTitle= ""
+      this.adminService.assignScenario(this.data).subscribe(result =>{
+        this.getAssignedScenarioView()
+      })
+      this.selectedUser = ""
+      this.selectedTitle= "" 
+    }
+
+    onUpdateUser(){
+      this.selectedType3 = []
+      this.storedType3 = []
+      this.filteredUserType3s = []
+      var filteredType3s = []
+      this.empty = false;
+
+      //Here we take the user
+      this.users.forEach(element => {
+        if(element.email == this.selectedUser) this.user = element
+      });
+  
+      //Here we take the assigned type3s
+      this.user.assignedType3.forEach(element => {
+        if(element.scenarioType3Id) this.storedType3.push(element.scenarioType3Id)
+      }); 
+
+      //Here we filter them
+      this.filteredUserType3s = this.storedType3.filter((item, i, ar) => ar.indexOf(item) === i)
+
+      //Here we insert only non yet assigned scenarios to the user
+      filteredType3s =  this.type3.filter(element => !this.filteredUserType3s.includes(element._id))
+      this.selectedType3 = filteredType3s
+
+      if(this.selectedType3.length==0) this.empty = true;
   }
 
 }

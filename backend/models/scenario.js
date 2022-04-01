@@ -33,7 +33,6 @@ const scenarioSchema = new Schema({
     type: String,
   },
   scoreCard: {
-   
       question: String,
       weight: Number,
       question2: String,
@@ -44,9 +43,10 @@ const scenarioSchema = new Schema({
       weight4: Number,
       question5: String,
       weight5: Number,
-    
   },
-  
+  grandTotal: {
+    type: Number
+  }
   // userId: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'User',

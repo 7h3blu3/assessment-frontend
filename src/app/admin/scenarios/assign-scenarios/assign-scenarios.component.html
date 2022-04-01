@@ -11,8 +11,8 @@
                     <div class="col-md-5"> 
                         <mat-form-field appearance="outline">
                             <mat-label> User </mat-label>
-                                <mat-select [(value)]="selectedUser">
-                                    <mat-option *ngFor="let user of users" name="email" id="email" [value]="user.email"> 
+                                <mat-select [(value)]="selectedUser" (selectionChange)="onUpdateUser()">
+                                    <mat-option *ngFor="let user of users" name="email" id="email"  [value]="user.email"> 
                                         {{user.email}}
                                     </mat-option>
                                 </mat-select>
@@ -21,7 +21,7 @@
                    <div class="col-md-5"> 
                         <mat-form-field appearance="outline">
                             <mat-label>Scenario Type3</mat-label>
-                                <mat-select [(value)]="selectedTitle">
+                                <mat-select [(value)]="selectedTitle" [disabled]="empty">
                                     <mat-option *ngFor="let scenario of selectedType3"  name="selectedType3" id="selectedType3" [value]="scenario"> 
                                         {{scenario.title}}
                                     </mat-option>
@@ -31,9 +31,15 @@
                             
                     </div>
                     
+
                 </div>
+
+                <div style="text-align: center;">
+                    <p *ngIf="empty" style="color: red;">There are no live scenarios that can be assigned to {{ user.email}} </p>
+                </div>
+
                 <div class="row main-div">
-                    <button class="col-md-5" mat-raised-button color="primary">Assign Scenario</button>
+                    <button [disabled]="empty" class="col-md-5" mat-raised-button color="primary">Assign Scenario</button>
                 </div>
          </form>
 

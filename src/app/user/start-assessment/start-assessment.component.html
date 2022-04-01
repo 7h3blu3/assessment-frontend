@@ -2,57 +2,48 @@
 <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
   <a class="col-md-5" mat-raised-button color="primary" href="/assessment">Start Assesment</a>
 </div>
-<mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="user.length > 0">
+<mat-accordion displayMode="flat" class="mat-table" multi="true">
+  <!-- <mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="user.length > 0"> -->
 
   <section matSort class="mat-elevation-z2 mat-header-row">
     <span class="section-header" mat-sort-header="Title">Scenario Title</span>
     <span class="section-header" mat-sort-header="Mission">Mission</span>
     <span class="section-header" mat-sort-header="Level">Level</span>
-    <span class="section-header" mat-sort-header="Result">Result</span>
+    <span class="section-header" mat-sort-header="Status">Status</span>
     <span class="section-header" mat-sort-header="Passing Grade">Passing Grade</span>
-    <span class="section-header" mat-sort-header="Score">Score</span>
+    <span class="section-header" mat-sort-header="CurrentGrade">CurrentGrade</span>
     <span class="section-header" mat-sort-header="Feedback">Feedback</span>
 
   </section>
 
-    <mat-expansion-panel *ngFor="let user of user">
+    <mat-expansion-panel *ngFor="let gradeData of this.data.finalGrade">
       <mat-expansion-panel-header class="mat-row ripple-color">
         <!-- <mat-panel-title>
           {{ scenario.title }}
         </mat-panel-title> -->
-        <span class="mat-cell">{{user.email}}</span>
-        <!-- <span class="mat-cell">{{user.title}}</span>
+        <span class="mat-cell">{{gradeData.scenarioTitle}}</span>
+        <span class="mat-cell">{{gradeData.scenarioMission}}</span>
+        <span class="mat-cell">{{gradeData.scenarioLevel}}</span>
+        <span class="mat-cell">{{gradeData.status}}</span>
+        <span class="mat-cell">{{gradeData.passingGrade}}</span>
+        <span class="mat-cell">{{gradeData.currentGrade}}</span>
+        <!-- <span class="mat-cell">{{gradeData.feedback}}</span> -->
 
-        <span class="mat-cell">{{user.mission}}</span>
-        <span class="mat-cell">{{user.level}}</span>
-        <span class="mat-cell">{{user.result}}</span>
-        <span class="mat-cell">{{user.passingGrade}}</span>
-        <span class="mat-cell">{{user.score}}</span>
-        <span class="mat-cell">{{user.feedback}}</span> -->
         <span class="mat-cell text"> <mat-panel-description>
-          Portion of the feedback will be shown right here!
+          {{gradeData.feedback}}
         </mat-panel-description></span>
       </mat-expansion-panel-header>
 
       <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-12">
           <h2>Feedback</h2>
-        </div>
-        <div class="col-sm-2">
-          <h2>Score Card</h2>
         </div>
      </div> 
 
-      <!-- <div class="row">
-        <div class="col-sm-10">
-          <p>{{user.feedback}}</p>
-        </div>
-        <div  class="col-sm-2">
-          <p>{{ scenario.scoreCard }}</p>
-        </div>
-      </div> -->
 
-
+      <div class="col-sm-12">
+        <p>{{gradeData.feedback}}</p>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
   <p class="info-text mat-body-1" *ngIf="user.length <= 0">No scenarios added yet!</p>

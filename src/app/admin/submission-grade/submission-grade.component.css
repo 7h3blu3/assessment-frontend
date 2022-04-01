@@ -29,7 +29,26 @@ mat-spinner {
   .textArea-margin {
     margin-right: 20px;
   }
-  
+
+ ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1px 0 5px 0;
+} 
+
+/*
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0 0 0 0;
+  margin-top: -0.25em;
+  position: relative;
+} */
+
+::ng-deep .mat-form-field-wrapper{
+  margin-bottom: -1.25em;
+}
+:focus {
+  outline: 0 !important;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
+}
+
   textarea {
     
     font-size: 1em;
@@ -74,3 +93,10 @@ mat-spinner {
     border-top: 1px solid #ccc;
     padding-bottom: 5px;
   }
+
+  input[disabled] {
+    /* styles when the element is disabled */
+    background-color: #ddd;
+    color: black;
+    opacity: 100%;
+}

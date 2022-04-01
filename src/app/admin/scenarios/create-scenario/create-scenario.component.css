@@ -39,6 +39,10 @@ mat-spinner {
    .padding-bottom {
      padding-bottom: 10px;
    }
+   
+.mat-dialog-content {
+    overflow: hidden;
+}
 
    /* mat-form-field label {
     font-size: 20px;
@@ -50,4 +54,8 @@ mat-spinner {
 
   textarea.mat-input-element {
     padding: 5px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0;
 }

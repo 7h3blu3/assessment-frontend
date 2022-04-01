@@ -45,13 +45,15 @@ const userSchema = new Schema({
   },
   finalGrade:{
     type: [{
+      _id : false,
+      scenarioId: String,
       scenarioDescription: String,
       userResponse: String,
       scenarioTitle: String,
       scenarioMission: String,
       scenarioLevel: String,
       passingGrade: Number,
-      // total,
+      status: String,
       currentGrade: Number,
       feedback: String
       }]

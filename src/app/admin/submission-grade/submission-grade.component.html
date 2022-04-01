@@ -39,27 +39,118 @@
                     <div class="row main-div" style="padding-top: 40px;"> 
                    
                         <mat-card class="example-card" class="row col-sm-11">
-                        <div class="row col-sm-10">
-                            <div  class="col-sm-5">
-                              <p>{{data.scenarios.scoreCard.question}}</p>
-                              <p>{{data.scenarios.scoreCard.question2}}</p>
-                              <p>{{data.scenarios.scoreCard.question3}}</p>
-                              <p>{{data.scenarios.scoreCard.question4}}</p>
-                              <p>{{data.scenarios.scoreCard.question5}}</p>
+                            <div class="row main-div"> 
+                                <div class="col-md-3">
+                                    <h3 class="h3-center-margin">Passing Grade</h3>
+                                    <mat-form-field appearance="outline" >
+                                        <input style="text-align: center;" matInput  [(ngModel)]="data.scenarios.passingGrade"id="passingGrade"
+                                         name="passingGrade" type="number" required readonly/>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <h3 class="h3-center-margin">Total Points</h3>
+                                    <mat-form-field appearance="outline" >
+                                        <input style="text-align: center;" matInput [(ngModel)]="sumOfValues" min="100" max="100" 
+                                        id="sumOfValues" name="sumOfValues" type="number" [value]="sumOfValues"
+                                        placeholder="0" required disabled/>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <h3 class="h3-center-margin">Status</h3>
+                                    <mat-form-field appearance="outline" >
+                                        <input style="text-align: center;" matInput  [(ngModel)]="status" id="status" 
+                                        name="status" type="text" required readonly />
+                                    </mat-form-field>
+                                </div>
+                                
                             </div>
-                            <div class="col-sm-1">
-                              <p>{{data.scenarios.scoreCard.weight}}</p>
-                              <p>{{data.scenarios.scoreCard.weight2}}</p>
-                              <p>{{data.scenarios.scoreCard.weight3}}</p>
-                              <p>{{data.scenarios.scoreCard.weight4}}</p>
-                              <p>{{data.scenarios.scoreCard.weight5}}</p>
+                            
+                        <div class="row col-sm-12">
+                            <div class="col-sm-8">
+                                <h2>Questions</h2>
+                                <mat-form-field>
+                                    <input  matInput [(ngModel)]="data.scenarios.scoreCard.question" id="question" name="question" type="text" 
+                                    required readonly/>
+                                </mat-form-field>
+                                <mat-form-field >
+                                    <input  matInput [(ngModel)]="data.scenarios.scoreCard.question2" id="question2" name="question2" type="text" 
+                                    required readonly/>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="data.scenarios.scoreCard.question3">
+                                    <input  matInput [(ngModel)]="data.scenarios.scoreCard.question3" id="question3" name="question3" type="text" 
+                                    required readonly/>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="data.scenarios.scoreCard.question4">
+                                    <input  matInput [(ngModel)]="data.scenarios.scoreCard.question4" id="question4" name="question4" type="text" 
+                                    required readonly/>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="data.scenarios.scoreCard.question5">
+                                    <input  matInput [(ngModel)]="data.scenarios.scoreCard.question5" id="question5" name="question5" type="text" 
+                                    required readonly/>
+                                </mat-form-field>
                             </div>
-                            <div  class="col-sm-3">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>{{ "Grade" }}</mat-label>
-                                        <mat-select required>
-                                            <mat-option *ngFor="let score of gradeScore" name="gradeScore" id="gradeScore" [value]="gradeScore" > 
-                                                {{score}}
+
+                            <div class="col-sm-2">
+                                <h2>Weight</h2>
+                               <mat-form-field>
+                                    <input style="text-align: center;"matInput min="0" max="100"[(ngModel)]="data.scenarios.scoreCard.weight" id="weight" name="weight" type="number" #weight="ngModel" 
+                            readonly value="100"/> 
+                                </mat-form-field> 
+                                <mat-form-field>
+                                    <input style="text-align: center;"matInput min="0" max="100"[(ngModel)]="data.scenarios.scoreCard.weight2" id="weight2" name="weight2" type="number" #weight="ngModel" 
+                            readonly value="100"/> 
+                                </mat-form-field> 
+                                <mat-form-field *ngIf="data.scenarios.scoreCard.weight3">
+                                    <input style="text-align: center;"matInput min="0" max="100"[(ngModel)]="data.scenarios.scoreCard.weight3" id="weight3" name="weight3" type="number" #weight="ngModel" 
+                            readonly value="100"/> 
+                                </mat-form-field> 
+                                <mat-form-field *ngIf="data.scenarios.scoreCard.weight4">
+                                    <input style="text-align: center;"matInput min="0" max="100"[(ngModel)]="data.scenarios.scoreCard.weight4" id="weight4" name="weight4" type="number" #weight="ngModel" 
+                            readonly value="100"/> 
+                                </mat-form-field> 
+                                <mat-form-field *ngIf="data.scenarios.scoreCard.weight5">
+                                    <input style="text-align: center;"matInput min="0" max="100"[(ngModel)]="data.scenarios.scoreCard.weight5" id="weight5" name="weight5" type="number" #weight="ngModel" 
+                            readonly value="100"/> 
+                                </mat-form-field> 
+                            </div>
+
+                            <div  class="col-sm-2">
+                                <h2>Grade</h2>
+                                    <mat-form-field>
+                                        <mat-select [(ngModel)]="currentScore" name="currentScore" id="currentScore" (selectionChange)="onUpdateSum('weight')" required>
+                                            <mat-option *ngFor="let score of gradeScore" [value]="score"> 
+                                                {{score + "%"}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-select [(ngModel)]="currentScore2" name="currentScore2" id="currentScore2" (selectionChange)="onUpdateSum('weight2')" required>
+                                            <mat-option *ngFor="let score of gradeScore" [value]="score"  > 
+                                                {{score + "%"}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field *ngIf="data.scenarios.scoreCard.weight3">
+                                        <mat-select [(ngModel)]="currentScore3" name="currentScore3" id="currentScore3" (selectionChange)="onUpdateSum('weight3')" required>
+                                            <mat-option *ngFor="let score of gradeScore" [value]="score"  > 
+                                                {{score + "%"}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="data.scenarios.scoreCard.weight4">
+                                        <mat-select [(ngModel)]="currentScore4" name="currentScore4" id="currentScore4" (selectionChange)="onUpdateSum('weight4')" required>
+                                            <mat-option *ngFor="let score of gradeScore" [value]="score"  > 
+                                                {{score + "%"}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="data.scenarios.scoreCard.weight5">
+                                        <mat-select [(ngModel)]="currentScore5" name="currentScore5" id="currentScore5" (selectionChange)="onUpdateSum('weight5')" required>
+                                            <mat-option *ngFor="let score of gradeScore" [value]="score"  > 
+                                                {{score + "%"}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>

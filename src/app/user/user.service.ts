@@ -48,27 +48,10 @@ export class UserService {
       return observableThrowError(errMsg);
     }
 
-    // getStartAssesment() {
-    //     return this.http.get<User>("http://localhost:3000/start-assessment").pipe(map(res => { return res;}))
-    // }
-
-
-    // I think the upper one has a way to be used easier
     getStartAssesment() {
-        this.http
-          .get<{ message: string; user: User[] }>(
-            'http://localhost:3000/start-assessment'
-          )
-          .subscribe((userData) => {
-            this.user = userData.user;
-            this.userUpdated.next([...this.user]);
-          });
-      }
-    
-      
-      getUserUpdateListener() {
-        return this.userUpdated.asObservable();
-      }
+        return this.http.get("http://localhost:3000/start-assessment").pipe(map(res => { return res }), catchError(this.handleError))
+    }
+   
 
       submitInput(data): Observable<any> {
         // Swal.fire({
