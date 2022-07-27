@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { throwError as observableThrowError, Observable, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
+import { environment } from 'src/environments/environment.prod';
 
 import { SignUp } from './auth-data.model';
 import { Login } from './auth-data.model';
@@ -51,7 +52,7 @@ export class AuthService {
     const authData: Login = { email: email, password: password };
     return this.http
       .post<{ userId: string; userType: string; message: string }>(
-        'http://localhost:3000/login', authData).pipe(map(res => { return res }), catchError(this.handleError))
+        environment.apiUrl + '/login', authData).pipe(map(res => { return res }), catchError(this.handleError))
       .subscribe((response) => {
         console.log('Login response ' , response);
       });
@@ -61,7 +62,7 @@ export class AuthService {
     const authData: SignUp = { email: email, password: password, mission:mission };
     var userData: any;
     return this.http
-      .post('http://localhost:3000/signup', authData).pipe(map(res => { return res }), catchError(this.handleError))
+      .post(environment.apiUrl + '/signup', authData).pipe(map(res => { return res }), catchError(this.handleError))
       .subscribe((response) => {
         userData = response
         Swal.fire({
@@ -84,7 +85,7 @@ export class AuthService {
   }
 
   getSignUpData(): Observable<any>{
-    return this.http.get("http://localhost:3000/signup").pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get(environment.apiUrl +"/signup").pipe(map(res => { return res }), catchError(this.handleError))
   }
 
 

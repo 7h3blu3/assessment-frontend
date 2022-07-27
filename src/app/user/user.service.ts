@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { throwError as observableThrowError, Observable, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
-
+import { environment } from 'src/environments/environment.prod';
 
 import { User } from './user.model';
 import Swal from 'sweetalert2';
@@ -49,7 +49,7 @@ export class UserService {
     }
 
     getStartAssesment() {
-        return this.http.get("http://localhost:3000/start-assessment").pipe(map(res => { return res }), catchError(this.handleError))
+        return this.http.get(environment.apiUrl +"/start-assessment").pipe(map(res => { return res }), catchError(this.handleError))
     }
    
 
@@ -60,7 +60,7 @@ export class UserService {
         //   allowOutsideClick: false,
         // });
         // Swal.showLoading();
-        return this.http.post<any>('http://localhost:3000/assessment', data)
+        return this.http.post<any>(environment.apiUrl + '/assessment', data)
         .pipe(map(res => {
           console.log("Do we even get here")
           // Swal.fire({
@@ -76,7 +76,7 @@ export class UserService {
     }
 
       getUserSubmission(): Observable<any> {
-        return this.http.get( 'http://localhost:3000/assessment').pipe(map(res => { return res }), catchError(this.handleError))
+        return this.http.get( environment.apiUrl + '/assessment').pipe(map(res => { return res }), catchError(this.handleError))
       }
 }
 

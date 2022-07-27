@@ -5,6 +5,7 @@ import { throwError as observableThrowError, Observable, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { Scenarios, ScenariosBackup } from './scenarios.model';
 import { UserId, Users } from './users.model';
+import { environment } from 'src/environments/environment.prod';
 
 import Swal from 'sweetalert2';
 
@@ -54,7 +55,7 @@ export class AdminService {
   }
 
   getUsers(): Observable<any>{
-    return this.http.get("http://localhost:3000/admin/list-users")
+    return this.http.get(environment.apiUrl +"/admin/list-users")
     .pipe(map(res => 
       { 
         return res })
@@ -65,7 +66,7 @@ export class AdminService {
   getScenarios() {
     this.http
       .get<{ message: string; scenarios: any }>(
-        'http://localhost:3000/admin/list-scenarios'
+        environment.apiUrl + '/admin/list-scenarios'
       ).pipe(map((scenariosData) => 
       {
         return scenariosData.scenarios.map(scenario => {
@@ -96,11 +97,11 @@ export class AdminService {
   }
 
   getArchivedUsers(): Observable<any>{
-    return this.http.get("http://localhost:3000/admin/archived-users").pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get(environment.apiUrl +"/admin/archived-users").pipe(map(res => { return res }), catchError(this.handleError))
   }
 
   getLevelMissionType(): Observable<any>{
-    return this.http.get("http://localhost:3000/admin/levelMissionType").pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get(environment.apiUrl +"/admin/levelMissionType").pipe(map(res => { return res }), catchError(this.handleError))
   }
 
   archiveUsers(userId:string) {
@@ -108,7 +109,7 @@ export class AdminService {
     const userData: UserId = {id: userId};
     
         return this.http
-        .post('http://localhost:3000/admin/archived-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
+        .post(environment.apiUrl + '/admin/archived-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
         .subscribe((response) => {
           const updatedUsers = this.users.filter(user => user._id !== userId)
           this.users = updatedUsers
@@ -123,7 +124,7 @@ export class AdminService {
     const userData: UserId = {id: userId};
     
         return this.http
-        .post('http://localhost:3000/admin/restore-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
+        .post(environment.apiUrl + '/admin/restore-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
         .subscribe((response) => {
           
           console.log("this is the response ", response)
@@ -138,7 +139,7 @@ export class AdminService {
     });
     Swal.showLoading();
         return this.http
-        .post('http://localhost:3000/admin/assign-scenarios', data).pipe(map(res => { 
+        .post(environment.apiUrl + '/admin/assign-scenarios', data).pipe(map(res => { 
           console.log("What is the data", data)
       Swal.fire({
         title: 'Scenario Assigned.',
@@ -152,12 +153,12 @@ export class AdminService {
   }
   
   getArchivedScenarios(): Observable<any> {
-    return this.http.get( 'http://localhost:3000/admin/archived-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get( environment.apiUrl + '/admin/archived-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
   }
 
   archiveScenarios(scenarioId, data): Observable<any> {
 
-        return this.http.post<any>('http://localhost:3000/admin/archive-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
+        return this.http.post<any>(environment.apiUrl + '/admin/archive-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
   }
 
   restoreScenarios(scenarioId:string) {
@@ -165,7 +166,7 @@ export class AdminService {
     var userBackup: any
     
         return this.http
-        .post('http://localhost:3000/admin/restore-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
+        .post(environment.apiUrl + '/admin/restore-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
         .subscribe((response) => {
           
           console.log("this is the response ", response)
@@ -174,16 +175,16 @@ export class AdminService {
  
 
   getAssignedScenarios(): Observable<any> {
-    return this.http.get( 'http://localhost:3000/admin/assign-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get( environment.apiUrl + '/admin/assign-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
   }
 
   getUserSubmission(): Observable<any> {
-    return this.http.get( 'http://localhost:3000/admin/assign-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get( environment.apiUrl + '/admin/assign-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
   }
   
 
   // getSignUpData(): Observable<any>{
-  //   return this.http.get("http://localhost:3000/signup").pipe(map(res => { return res }), catchError(this.handleError))
+  //   return this.http.get(environment.apiUrl +"/signup").pipe(map(res => { return res }), catchError(this.handleError))
   // }
   
  
@@ -206,7 +207,7 @@ export class AdminService {
       allowOutsideClick: false,
     });
     Swal.showLoading();
-    return this.http.post<any>('http://localhost:3000/admin/create-scenarios', data)
+    return this.http.post<any>(environment.apiUrl + '/admin/create-scenarios', data)
     .pipe(map(res => {
       console.log("Do we even get here")
       Swal.fire({
@@ -231,7 +232,7 @@ editUser(data): Observable<any> {
   });
   Swal.showLoading();
 
-  return this.http.post<any>('http://localhost:3000/admin/edit-users', data)
+  return this.http.post<any>(environment.apiUrl + '/admin/edit-users', data)
   .pipe(map(res => {
     Swal.fire({
       title: 'User <strong>' + data.email + '</strong> has been Edited!',
@@ -253,7 +254,7 @@ editScenario(data): Observable<any> {
   });
   Swal.showLoading();
 
-  return this.http.post<any>('http://localhost:3000/admin/edit-scenarios', data)
+  return this.http.post<any>(environment.apiUrl + '/admin/edit-scenarios', data)
   .pipe(map(res => {
     Swal.fire({
       title: 'Scenario <strong>' + data.title + '</strong> has been Edited!',
@@ -274,7 +275,7 @@ gradeUser(data, userId:any, scenarioId: any): Observable<any> {
   //   allowOutsideClick: false,
   // });
   // Swal.showLoading();
-  return this.http.post<any>('http://localhost:3000/admin/submission-grade/'  + userId + "/" + scenarioId, data)
+  return this.http.post<any>(environment.apiUrl + '/admin/submission-grade/'  + userId + "/" + scenarioId, data)
   .pipe(map(res => {
     // console.log("Do we even get here")
     Swal.fire({
@@ -290,12 +291,12 @@ gradeUser(data, userId:any, scenarioId: any): Observable<any> {
 }
 
 getSubmissionGrade(userId:any, scenarioId: any): Observable<any>{
-  return this.http.get("http://localhost:3000/admin/submission-grade/" + userId + "/" + scenarioId).pipe(map(res => { return res }), catchError(this.handleError))
+  return this.http.get(environment.apiUrl +"/admin/submission-grade/" + userId + "/" + scenarioId).pipe(map(res => { return res }), catchError(this.handleError))
 }
 
   // getCreateScenarios() {
   //   this.http.get<{ filteredMissions: [] }>(
-  //     'http://localhost:3000/admin/create-scenarios'
+  //     environment.apiUrl + '/admin/create-scenarios'
   //   ).subscribe((filteredMissionsData) => {
   //       this.missions = filteredMissionsData.filteredMissions
   //       this.missionsUpdated.next([...this.missions])
