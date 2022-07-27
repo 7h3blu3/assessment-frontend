@@ -3,13 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { throwError as observableThrowError, Observable, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
-
-
-import { EmailValidator } from '@angular/forms';
-
 import { Scenarios, ScenariosBackup } from './scenarios.model';
 import { UserId, Users } from './users.model';
-import { usersBackup } from './usersBackup.model';
 
 import Swal from 'sweetalert2';
 

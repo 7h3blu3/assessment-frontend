@@ -22,7 +22,7 @@ const userSchema = new Schema({
   },
   level: {
     type: String,
-    default: "Foundation"
+    default: "Professional"
   },
   assignedScenarios: {
     type: [{

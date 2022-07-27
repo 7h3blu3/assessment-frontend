@@ -52,14 +52,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     this.scenarioSub = this.adminService.getScenariosUpdateListener().subscribe((scenarios:Scenarios[]) => {
       this.scenarios = scenarios;
       this.isLoading = false;
-
-      console.log("scenarios " , this.scenarios)
       this.scenarios.forEach(element => this.scoreCard.push(element.scoreCard));
-      console.log("This is the scorecard ", this.scoreCard)
-      console.log("This is the scorecard ", this.scoreCard[0].question)
-
-
-
     })
     
   }
@@ -85,7 +78,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
 
   archiveScenario(scenarioId: string) {
     Swal.fire({
-    title: 'Are you sure you want to archive this user ?',
+    title: 'Are you sure you want to archive this Scenario ?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#FA4A1E',
@@ -95,21 +88,14 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     if (result.isConfirmed) {
       Swal.fire({
         title:'Archived!',
-        text:'User has been successfully archived.',
+        text:'Scenario has been successfully archived.',
         icon:'success',
         confirmButtonColor: '#3F51B5',
       })
-      // this.adminService.archiveScenarios(scenarioId)
-      // this.getScenarios()
       this.adminService.archiveScenarios(scenarioId, this.scenarios).subscribe((result) => {
-        console.log("Do we get in the result here ", result)
         this.getScenarios()
       })
     }
-    // setTimeout(()=>{
-    //   this.getScenarios()
-    // }, 10)
-     
   })
   
   }

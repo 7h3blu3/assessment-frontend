@@ -47,11 +47,7 @@ export class AuthService {
     return observableThrowError(errMsg);
   }
 
-  //** This is a post, must figure out how to make it work because I cannot check it in the browser as it is not get **/
-  //** Also I do not think we need a GET **/
-
   login(email: string, password: string, ) {
-    console.log('Is this triggered');
     const authData: Login = { email: email, password: password };
     return this.http
       .post<{ userId: string; userType: string; message: string }>(

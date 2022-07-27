@@ -17,7 +17,6 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
   missions: any;
   types: any;
   levels: any;
-  // data.grandTotal: any;
 
   count: number;
   inputQuestion1: any;
@@ -61,7 +60,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getScenarios()
     this.getLevelMissionType()
-
+    console.log("this.types ", this.types)
     console.log("This is the data on open ", this.data)
 
     if(this.url.path()==="/admin/create-scenarios"){
@@ -83,7 +82,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
 
   styleObject(): Object {
     if (this.viewType == true){
-        return {"max-height":"100vh", "overflow": "hidden"}
+        return {"max-height":"200vh", "overflow": "hidden"}
     }
     return {"max-height":"80vh", "overflow": "auto"}
 }
@@ -168,6 +167,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
 
   getLevelMissionType(){
     this.adminService.getLevelMissionType().subscribe(result => {
+      console.log(result)
       result.forEach(element => {
         if(element.level) this.levels.push(element.level)
       });

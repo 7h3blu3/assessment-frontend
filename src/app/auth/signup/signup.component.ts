@@ -38,7 +38,6 @@ export class SignupComponent implements OnInit, OnDestroy {
   getSignUpData(){
     this.authService.getSignUpData().subscribe(missions => {
       this.storedMissions = missions
-      console.log("What are the stored missions ", this.storedMissions)
     })
   }
 
@@ -48,20 +47,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       return;
     } 
     
-    // this.isLoading = true;
     console.log("Should be the selected mission", this.selectedMission)
     this.authService.createUser(form.value.email, form.value.password, this.selectedMission)
-    //   console.log(response)
-    //   this.email = response
-    //   console.log("What is in here ", this.email.result)
-    // })
-    // Swal.fire({
-    //   title: "Welcome " + form.value.email,
-    //   text: "Please wait a few moments",
-      
-    // })
-    // Swal.showLoading()
-    // this.router.navigate(['/']);
   }
 
   ngOnDestroy() {

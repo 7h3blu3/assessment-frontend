@@ -7,7 +7,7 @@ exports.getStartAssessment = (async (req, res, next) => {
   try {
     // Will need to use this user when we get session and delete below one
     // const user = await User.findById(req.session.user._id)
-    const user  = await User.findById("605dae4e0c8a8344b0febed0")
+    const user  = await User.findById("626be77695ed44839b8079c9")
     console.log("User id ", user._id.toString())
     if(!user) {
       return res.status(404).send()
@@ -25,7 +25,7 @@ exports.getAssessment = (async (req, res, next) => {
   try {
     //This will be hardcoded before we use the session
     // const user = await User.findById(req.session.user._id)
-    const user = await User.findById("605dae4e0c8a8344b0febed0")
+    const user = await User.findById("626be77695ed44839b8079c9")
     // console.log("Show me the user ", user)
     // console.log(user.assignedType3[0])
 
@@ -131,7 +131,7 @@ exports.getAssessment = (async (req, res, next) => {
 exports.postAssessment = (async (req, res, next) => {
   
   //This will be hardcoded before we use the session
-  const findUser = await User.findById("605dae4e0c8a8344b0febed0")
+  const findUser = await User.findById("626be77695ed44839b8079c9")
   // const findUser = await User.findById(req.session.user._id)
   
   console.log("This is the id ", findUser)
