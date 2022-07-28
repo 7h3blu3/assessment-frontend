@@ -40,14 +40,14 @@
                           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
 
-                        <mat-paginator #paginator
+                        <mat-paginator #paginator *ngIf="users.length > 0"
                       
                         [pageIndex]="0"
                         [pageSize]="10"
                         [pageSizeOptions]="[5, 10, 25, 100]"
                         ></mat-paginator>
                 </div>
-                <p class="info-text mat-body-1 text-center" *ngIf="users.length <= 0">No archived users added!</p>
+                <p class="info-text mat-body-1 text-center" *ngIf="users.length <= 0 && !isLoading">No archived users added!</p>
             </div>
             </mat-card>
             

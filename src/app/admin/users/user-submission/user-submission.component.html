@@ -8,7 +8,7 @@
             </div>
 
             <div class="row main-div">
-                <div class="col-md-10"> 
+                <div class="col-md-10" *ngIf="submittedScenarios.length > 0"> 
                     <table matSort mat-table [dataSource]="userData">
 
                         <ng-container matColumnDef="DATETAKEN">
@@ -49,7 +49,7 @@
                         [pageSizeOptions]="[5, 10, 25, 100]"
                         ></mat-paginator>
                 </div>
-
+                <p class="info-text mat-body-1 text-center" *ngIf="submittedScenarios.length <= 0 && !isLoading">No submitted scenarios added!</p>
             </div>
             </mat-card>
     </div>
