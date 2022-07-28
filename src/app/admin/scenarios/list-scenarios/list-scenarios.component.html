@@ -1,4 +1,9 @@
 <h1>List Of All Scenarios</h1>
+
+<div class="row main-div">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+</div>
+
 <mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="scenarios.length > 0">
 
   <section matSort class="mat-elevation-z2 mat-header-row">
@@ -81,7 +86,7 @@
   [pageSize]="10"
   [pageSizeOptions]="[5, 10, 25, 100]"
   ></mat-paginator>
-  <p class="info-text mat-body-1" *ngIf="scenarios.length <= 0">No scenarios added yet!</p>
+  <p class="info-text mat-body-1" *ngIf="scenarios.length <= 0 && !isLoading">No scenarios added yet!</p>
 
   <!-- <mat-accordion>
     <mat-expansion-panel hideToggle>
