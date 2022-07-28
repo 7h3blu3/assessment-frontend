@@ -99,3 +99,9 @@ border-left: thick solid #ff0000;
 hr{
 display:inline-block
 }
+
+.main-div{
+  padding-top: 30px;
+  display: flex;
+  justify-content: center;
+}
