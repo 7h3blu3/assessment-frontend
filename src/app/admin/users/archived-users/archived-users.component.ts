@@ -13,14 +13,17 @@ import Swal from 'sweetalert2';
 })
 export class ArchivedUsersComponent implements OnInit {
   isLoading = false;
+  users:any;
 
   userData = new MatTableDataSource()
-  constructor(private adminService: AdminService, private dialog:MatDialog) { }
+  constructor(private adminService: AdminService, private dialog:MatDialog) { 
+    this.users = [];
+   }
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
 
-  displayedColumns: string [] = ["EMAIL", "USERTYPE", "LEVEL", "MISSION", "ARCHIVE"
+  displayedColumns: string [] = ["EMAIL", "USERTYPE", "LEVEL", "MISSION", "RESTORE"
 ]
 
   ngOnInit(): void {
@@ -30,10 +33,10 @@ export class ArchivedUsersComponent implements OnInit {
   getUsers() {
     this.isLoading = true;
     this.adminService.getArchivedUsers().subscribe(result => {
-      const users = result
+      this.users = result
       if(result) {
 
-        this.userData = new MatTableDataSource(users)
+        this.userData = new MatTableDataSource(this.users)
 
         setTimeout(() => {
           this.userData.sort = this.sort

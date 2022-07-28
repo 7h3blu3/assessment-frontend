@@ -8,7 +8,7 @@
             </div>
 
             <div class="row main-div">
-                <div class="col-md-10"> 
+                <div class="col-md-10" *ngIf="users.length > 0"> 
                     <table matSort mat-table [dataSource]="userData">
 
                         <ng-container matColumnDef="EMAIL">
@@ -31,8 +31,8 @@
                             <td mat-cell *matCellDef="let element" > {{element.mission}} </td>
                           </ng-container>
 
-                          <ng-container matColumnDef="ARCHIVE">
-                            <th mat-header-cell *matHeaderCellDef> Archive </th>
+                          <ng-container matColumnDef="RESTORE">
+                            <th mat-header-cell *matHeaderCellDef> Restore </th>
                             <td mat-cell *matCellDef="let element"> <button class="btn-hidden" (click)="restoreUser(element._id)"><mat-icon>restore_from_trash</mat-icon></button></td>
                           </ng-container>
 
@@ -47,8 +47,9 @@
                         [pageSizeOptions]="[5, 10, 25, 100]"
                         ></mat-paginator>
                 </div>
-
+                <p class="info-text mat-body-1 text-center" *ngIf="users.length <= 0">No archived users added!</p>
             </div>
             </mat-card>
+            
     </div>
 </div>
