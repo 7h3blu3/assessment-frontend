@@ -19,6 +19,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   scenarios: Scenarios[] = []
   isLoading = false;
   scoreCard: any;
+  alertKeyword: string;
   // totalPosts = 0;
   // postsPerPage = 2;
   // currentPage = 1;
@@ -77,27 +78,72 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   }
 
   archiveScenario(scenarioId: string) {
-    Swal.fire({
-    title: 'Are you sure you want to archive this Scenario ?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#FA4A1E',
-    cancelButtonColor: '#3F51B5',
-    confirmButtonText: 'Archive!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title:'Archived!',
-        text:'Scenario has been successfully archived.',
-        icon:'success',
-        confirmButtonColor: '#3F51B5',
-      })
-      this.adminService.archiveScenarios(scenarioId, this.scenarios).subscribe((result) => {
-        this.getScenarios()
-      })
+    this.alertKeyword = "archive"
+      this.confirmAlert(this.alertKeyword).then((result) => {
+      if (result.isConfirmed) {
+        this.successAlert(this.alertKeyword)
+        this.adminService.archiveScenarios(scenarioId, this.scenarios).subscribe((result) => {
+          this.getScenarios()
+        })
+      }
+    })
+  }
+
+  cloneScenario(scenario) {
+    this.alertKeyword = "clone"
+    this.confirmAlert(this.alertKeyword).then((result) => {
+      if (result.isConfirmed) {
+        this.successAlert(this.alertKeyword);
+        this.adminService.cloneScenario(scenario.id, scenario).subscribe((result) => {
+          this.getScenarios()
+        })
+      }
+    })
+    console.log("scenarioId ", scenario.id)
+    console.log("scenarios ", scenario)
+  }
+
+
+  confirmAlert(keyword) {
+    let title, icon, confirmButtonColor, confirmButtonText;
+    if(keyword == "archive") {
+      title = "Are you sure you want to archive this Scenario ?";
+      icon = "warning";
+      confirmButtonColor = "#FA4A1E";
+      confirmButtonText = "Archive!";
     }
-  })
-  
+    else if (keyword == "clone") {
+      title = "Are you sure you want to clone this Scenario ?";
+      icon = "question";
+      confirmButtonColor = "#198C19";
+      confirmButtonText = "Clone!"
+    } 
+    return Swal.fire({
+      title: title,
+      icon: icon,
+      showCancelButton: true,
+      confirmButtonColor: confirmButtonColor,
+      cancelButtonColor: '#3F51B5',
+      confirmButtonText: confirmButtonText
+    })
+  }
+
+  successAlert(keyword) {
+    let title, text;
+    if(keyword == "archive") {
+      title = "Archived!";
+      text = "Scenario has been successfully archived.";
+    }
+    else if (keyword == "clone") {
+      title = "Cloned!";
+      text = "Scenario has been successfully cloned.";
+    } 
+    return Swal.fire({
+      title:title,
+      text:text,
+      icon:'success',
+      confirmButtonColor: '#3F51B5',
+    })
   }
 
   // onChangedPage(pageData: PageEvent) {

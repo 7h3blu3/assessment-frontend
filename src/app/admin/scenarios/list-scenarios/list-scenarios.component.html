@@ -75,7 +75,7 @@
       <mat-action-row>
         <button mat-button color="primary" (click)="openDialog(scenario)">EDIT</button>
         <button mat-button color="warn" (click)="archiveScenario(scenario.id)">Archive</button>
-        <button mat-button class="cloneButton">Clone</button>
+        <button mat-button class="cloneButton" (click)="cloneScenario(scenario)">Clone</button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>

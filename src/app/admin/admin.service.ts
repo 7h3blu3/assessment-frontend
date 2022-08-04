@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { throwError as observableThrowError, Observable, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
@@ -160,6 +160,11 @@ export class AdminService {
 
         return this.http.post<any>(environment.apiUrl + '/admin/archive-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
   }
+
+  cloneScenario(scenarioId, data): Observable<any> {
+
+    return this.http.post<any>(environment.apiUrl + '/admin/clone-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
+}
 
   restoreScenarios(scenarioId:string) {
 
