@@ -1,9 +1,11 @@
-import { Component, OnInit,Inject, ViewChild } from '@angular/core';
+import { Component, OnInit,Inject, ViewChild, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { AdminService } from '../../admin.service';
 import { SubmissionGradeComponent } from '../../submission-grade/submission-grade.component';
 import { Users } from '../../users.model';
@@ -14,13 +16,14 @@ import { Users } from '../../users.model';
   templateUrl: './user-submission.component.html',
   styleUrls: ['./user-submission.component.css']
 })
-export class UserSubmissionComponent implements OnInit {
-
+export class UserSubmissionComponent implements OnInit, OnDestroy {
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
   isLoading = false;
   submittedScenarios:any
   storeResult: any;
   userData = new MatTableDataSource()
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Users, private adminService: AdminService, private dialog:MatDialog) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Users, private adminService: AdminService, private dialog:MatDialog, private authService: AuthService) { 
     this.submittedScenarios = []
   }
 
@@ -42,6 +45,7 @@ export class UserSubmissionComponent implements OnInit {
   }
 
   getUsers() {
+    this.setAuthentication();
     this.isLoading = true;
     this.adminService.getUserSubmission().subscribe(result => {
       
@@ -87,5 +91,16 @@ export class UserSubmissionComponent implements OnInit {
     //   this.animal = result;
     // });
   }    
+
+  setAuthentication(){
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
 
 }

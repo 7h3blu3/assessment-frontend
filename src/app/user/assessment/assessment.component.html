@@ -1,7 +1,13 @@
 <div class="row main-div" style="padding-bottom: 45px;">
     <div class="col-md-10"> 
+        
+       
         <mat-card>
-            <h1  class="text-center">{{data.scenario.title}}</h1>
+            <div class="d-flex justify-content-around">  
+                <h1  class="text-center">{{data.scenario.title}}</h1>
+                <h1 >{{display}} Time Left....</h1> 
+            </div>
+          <hr>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
             <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="Submit(data); dialogForm.resetForm()" #dialogForm="ngForm">
                 <!-- <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" #dialogForm="ngForm"> -->

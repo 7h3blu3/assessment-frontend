@@ -1,6 +1,6 @@
 <h1>Welcome to the Assesment</h1>
 <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
-  <a class="col-md-5" mat-raised-button color="primary" href="/assessment">Start Assesment</a>
+  <a class="col-md-5" mat-raised-button color="primary" routerLink="/assessment">Start Assesment</a>
 </div>
 <mat-accordion displayMode="flat" class="mat-table" multi="true">
   <!-- <mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="user.length > 0"> -->
@@ -16,7 +16,7 @@
 
   </section>
 
-    <mat-expansion-panel *ngFor="let gradeData of this.data.finalGrade">
+    <mat-expansion-panel *ngFor="let gradeData of data.finalGrade">
       <mat-expansion-panel-header class="mat-row ripple-color">
         <!-- <mat-panel-title>
           {{ scenario.title }}
@@ -46,4 +46,5 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-  <p class="info-text mat-body-1" *ngIf="user.length <= 0">No scenarios added yet!</p>
+  <p class="info-text mat-body-1" *ngIf="user?.finalGrade.length <= 0">No scenarios added yet!</p>
+

@@ -35,6 +35,9 @@ import { LoginComponent } from './auth/login/login.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SignupComponent } from './auth/signup/signup.component';
 import { EditUsersComponent } from './admin/users/edit-users/edit-users.component';
+import { AuthInterceptor } from './auth/auth-interceptor';
+import { PendingChangesGuard } from './pending-changes/guard';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,7 @@ import { EditUsersComponent } from './admin/users/edit-users/edit-users.componen
     StartAssessmentComponent,
     LoginComponent,
     SignupComponent,
-    EditUsersComponent,
+    EditUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -75,8 +78,12 @@ import { EditUsersComponent } from './admin/users/edit-users/edit-users.componen
     MatTableModule,
     MatIconModule,
   ],
-  providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef , useValue: {} }],
+  providers: [
+    AuthGuard, PendingChangesGuard ,
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef , useValue: {} },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

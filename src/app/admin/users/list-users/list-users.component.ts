@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,20 +10,26 @@ import { Users } from '../../users.model';
 
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.css']
 })
-export class ListUsersComponent implements OnInit {
+export class ListUsersComponent implements OnInit, OnDestroy {
   users: Users[] = []
   private userSub: Subscription;
+
+  userId: string;
+  
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
 
   isLoading = false;
 
   userData = new MatTableDataSource()
-  constructor( private adminService: AdminService, private dialog:MatDialog, ) {}
+  constructor( private adminService: AdminService, private dialog:MatDialog, private authService: AuthService) {}
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
@@ -31,9 +37,23 @@ export class ListUsersComponent implements OnInit {
   displayedColumns: string [] = ["EMAIL", "USERTYPE", "LEVEL", "MISSION", "EDIT", "ARCHIVE"]
 
   ngOnInit(): void {
+   
     this.getUsers()
+
+
+    this.userId = this.authService.getUserId();
+
+    this.userId = this.authService.getUserId();
+    
+
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+
   }
 
+  
   // getUsers() {
   //   this.isLoading = true;
   //   this.adminService.getUsers()
@@ -119,4 +139,11 @@ export class ListUsersComponent implements OnInit {
     //   this.animal = result;
     // });
   }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
+
 }
+
+

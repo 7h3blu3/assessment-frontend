@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateScenarioComponent } from '../create-scenario/create-scenario.component';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-list-scenarios',
@@ -20,6 +21,8 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   isLoading = false;
   scoreCard: any;
   alertKeyword: string;
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
   // totalPosts = 0;
   // postsPerPage = 2;
   // currentPage = 1;
@@ -28,13 +31,14 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
-  constructor(public adminService: AdminService, public dialog: MatDialog) {
+  constructor(public adminService: AdminService, public dialog: MatDialog, private authService: AuthService) {
     this.scoreCard = [];
 
   }
 
   ngOnInit() {
-    this.getScenarios()
+    this.setAuthentication();
+    this.getScenarios();
 
     //https://stackblitz.com/edit/table-like-mat-accordion-xzo8ng?file=app%2Fapp.component.ts
     // setTimeout(() => {
@@ -46,6 +50,15 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   // ngOnChanges() {
   //   this.getScenarios()
   // }
+
+
+  setAuthentication(){
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+  }
+
   getScenarios()
   {
     this.isLoading = true;
@@ -178,5 +191,6 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.scenarioSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
   }
 }

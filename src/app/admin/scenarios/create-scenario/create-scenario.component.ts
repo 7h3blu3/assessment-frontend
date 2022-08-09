@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocationStrategy } from '@angular/common';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-create-scenario',
@@ -13,6 +14,8 @@ import { LocationStrategy } from '@angular/common';
   styleUrls: ['./create-scenario.component.css']
 })
 export class CreateScenarioComponent implements OnInit, OnDestroy {
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
   scenarios: Scenarios[] = []
   missions: any;
   types: any;
@@ -31,6 +34,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
     public router: Router,
     public adminService: AdminService, 
     private url:LocationStrategy,
+    private authService: AuthService,
     public dialogRef: MatDialogRef<CreateScenarioComponent>) {
     this.missions = [];
     this.levels = [];
@@ -58,6 +62,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
    
 
   ngOnInit(): void {
+    this.setAuthentication();
     this.getScenarios()
     this.getLevelMissionType()
     console.log("this.types ", this.types)
@@ -183,5 +188,13 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.scenarioSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
+  }
+
+  setAuthentication(){
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
   }
 }

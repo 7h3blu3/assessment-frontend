@@ -5,21 +5,25 @@ import { AdminService } from '../../admin.service';
 import { Subscription } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-archived-scenarios',
   templateUrl: './archived-scenarios.component.html',
   styleUrls: ['./archived-scenarios.component.css']
 })
-export class ArchivedScenariosComponent implements OnInit {
+export class ArchivedScenariosComponent implements OnInit, OnDestroy {
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
   scenarios: ScenariosBackup[] = []
   isLoading = false;
   private scenarioSub: Subscription;
   @ViewChild(MatSort, {static:false}) sort: MatSort;
-  constructor(public adminService: AdminService) {}
+  constructor(public adminService: AdminService, private authService: AuthService) {}
 
   ngOnInit() {
     this.getScenarios()
+    this.setAuthentication();
   }
 
 
@@ -68,5 +72,16 @@ export class ArchivedScenariosComponent implements OnInit {
   })
 
     console.log("Show me the data ", scenarioId)
+  }
+
+  setAuthentication(){
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }

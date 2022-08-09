@@ -29,10 +29,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       console.log("It is invalid")
       return;
     }
-    this.isLoading = true;
     console.log("This should be hashed ", form.value.password)
     this.authService.login(form.value.email, form.value.password);
-    this.router.navigate(['/admin/list-users']);
+    // this.router.navigate(['/admin/list-users']);
   }
 
   ngOnDestroy() {

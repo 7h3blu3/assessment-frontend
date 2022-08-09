@@ -1,22 +1,27 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from '../../admin.service';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-archived-users',
   templateUrl: './archived-users.component.html',
   styleUrls: ['./archived-users.component.css']
 })
-export class ArchivedUsersComponent implements OnInit {
+export class ArchivedUsersComponent implements OnInit, OnDestroy {
   isLoading = false;
   users:any;
 
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
+  
   userData = new MatTableDataSource()
-  constructor(private adminService: AdminService, private dialog:MatDialog) { 
+  constructor(private adminService: AdminService, private dialog:MatDialog, private authService: AuthService) { 
     this.users = [];
    }
 
@@ -27,6 +32,7 @@ export class ArchivedUsersComponent implements OnInit {
 ]
 
   ngOnInit(): void {
+    this.setAuthentication();
     this.getUsers()
   }
 
@@ -74,4 +80,14 @@ export class ArchivedUsersComponent implements OnInit {
     console.log("Show me the data ", userId)
   }
 
+  setAuthentication(){
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
 }

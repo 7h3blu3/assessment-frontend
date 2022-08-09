@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import Swal from 'sweetalert2';
 import { AdminService } from '../../admin.service';
 
@@ -7,7 +9,9 @@ import { AdminService } from '../../admin.service';
   templateUrl: './assign-scenarios.component.html',
   styleUrls: ['./assign-scenarios.component.css']
 })
-export class AssignScenariosComponent implements OnInit {
+export class AssignScenariosComponent implements OnInit, OnDestroy {
+  userIsAuthenticated = false;
+  private authStatusSub: Subscription;
   isLoading = false;
   data: any;
   users: any;
@@ -20,12 +24,13 @@ export class AssignScenariosComponent implements OnInit {
   selectedUser: any;
   empty: any;
 
-  constructor(public adminService: AdminService) {
+  constructor(public adminService: AdminService, private authService: AuthService) {
     this.storedType3 = [];
    }
 
   ngOnInit(): void {
     this.getAssignedScenarioView()
+    this.setAuthentication();
   }
 
   getAssignedScenarioView() {
@@ -75,4 +80,14 @@ export class AssignScenariosComponent implements OnInit {
       if(this.selectedType3.length==0) this.empty = true;
   }
 
+  setAuthentication(){
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
 }
