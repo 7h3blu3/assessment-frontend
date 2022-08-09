@@ -17,6 +17,7 @@ export class AuthService {
   private token: any;
   private tokenTimer: any;
   private userId: any;
+  private userType:any;
   private authStatusListener = new Subject<boolean>();
   alertsKeyword: string;
   constructor(private http: HttpClient, private router: Router) {}
@@ -108,13 +109,15 @@ export class AuthService {
         if (token) {
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration)
+          this.userType = response.userType
+          localStorage.setItem("userType", this.userType)
           this.isAuthenticated = true;
           this.userId = response.userId;
           this.authStatusListener.next(true);
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           this.saveAuthData(token, expirationDate, this.userId)
-          this.router.navigate(['/']);
+          this.checkRole(this.userType);
         }
       },error => {
         // this.authStatusListener.next(false)
@@ -140,6 +143,22 @@ export class AuthService {
     }
   }
 
+  checkRole(userType) {
+    if(userType == 'User')this.router.navigate(['/']);
+    else if (userType == 'Reviewer')this.router.navigate(['/admin/user-submission']);
+    else if (userType == 'Content Manager')this.router.navigate(['/admin/list-scenarios']);
+    else if (userType == 'Admin')this.router.navigate(['/admin/list-users']);
+    else {
+        Swal.fire({
+            title: 'An error has occurred',
+            icon: 'error',
+            html: 'No role has been assigned to this account, please reach out to administration',
+            confirmButtonColor:'#3F51B5',
+            allowOutsideClick: false,
+        });  
+    }
+  }
+
   logout() {
     this.token = null;
     this.isAuthenticated = false;
@@ -160,6 +179,8 @@ export class AuthService {
     localStorage.removeItem("token")
     localStorage.removeItem("expiration")
     localStorage.removeItem("userId")
+    localStorage.removeItem("userType")
+    
   }
 
   private setAuthTimer(duration: number) {
@@ -174,13 +195,15 @@ export class AuthService {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");
     const userId = localStorage.getItem("userId")
+    const userType = localStorage.getItem("userType")
     if (!token || !expirationDate) {
       return;
     }
     return {
         token: token,
         expirationDate: new Date(expirationDate),
-        userId: userId
+        userId: userId,
+        userType: userType
     }
 }
 

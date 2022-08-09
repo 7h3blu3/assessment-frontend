@@ -10,23 +10,27 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent implements OnInit {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
-  
-  admin = true;
-  reviewer =  false;
-  contentManager = false;
+  userType: any;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.setAuthentication();
+    this.setUserType();
+
   }
 
   setAuthentication() {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authListenerSubs = this.authService
-      .getAuthStatusListener()
-      .subscribe((isAuthenticated) => {
+    this.authListenerSubs = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.setUserType();
+
       });
+  }
+
+  setUserType() {
+    this.userType = localStorage.getItem("userType")
   }
 
   onLogout() {

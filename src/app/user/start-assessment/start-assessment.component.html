@@ -2,7 +2,10 @@
 <div class="row main-div" style="padding-bottom: 30px; padding-top: 30px;"> 
   <a class="col-md-5" mat-raised-button color="primary" routerLink="/assessment">Start Assesment</a>
 </div>
-<mat-accordion displayMode="flat" class="mat-table" multi="true">
+<div class="row main-div">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+</div>
+<mat-accordion *ngIf="!isLoading && user?.finalGrade.length > 0" displayMode="flat" class="mat-table" multi="true">
   <!-- <mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="user.length > 0"> -->
 
   <section matSort class="mat-elevation-z2 mat-header-row">
@@ -46,5 +49,4 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-  <p class="info-text mat-body-1" *ngIf="user?.finalGrade.length <= 0">No scenarios added yet!</p>
 

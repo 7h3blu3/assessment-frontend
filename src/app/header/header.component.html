@@ -45,42 +45,42 @@
 </mat-tab-group> -->
 
   <mat-toolbar color="primary">
-    <span><a *ngIf="admin" routerLink="/">Admin Panel</a></span>
+    <span><a *ngIf="userType=='Admin'" routerLink="/">Admin Panel</a></span>
     <span class="spacer"></span>
     <ul *ngIf="userIsAuthenticated">
       <li>
-        <a *ngIf="admin" mat-button routerLink="/admin/list-users" routerLinkActive="mat-accent">List Users</a>
+        <a *ngIf="userType=='Admin'" mat-button routerLink="/admin/list-users" routerLinkActive="mat-accent">List Users</a>
       </li>
       <li>
-        <a *ngIf="admin" mat-button routerLink="/admin/archived-users" routerLinkActive="mat-accent">Archived Users</a>
+        <a *ngIf="userType=='Admin'" mat-button routerLink="/admin/archived-users" routerLinkActive="mat-accent">Archived Users</a>
       </li>
       <li>
-        <a *ngIf="(admin || contentManager)" mat-button routerLink="/admin/create-scenarios" routerLinkActive="mat-accent">Create scenarios</a>
+        <a *ngIf="userType=='Admin' || userType=='Content Manager'" mat-button routerLink="/admin/create-scenarios" routerLinkActive="mat-accent">Create scenarios</a>
       </li>
       <li>
-        <a *ngIf="(admin || contentManager)" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">List scenarios</a>
+        <a *ngIf="userType=='Admin' || userType=='Content Manager'" mat-button routerLink="/admin/list-scenarios" routerLinkActive="mat-accent">List scenarios</a>
       </li>
       <li>
-        <a *ngIf="(admin || contentManager)" mat-button routerLink="/admin/archived-scenarios" routerLinkActive="mat-accent">Archived scenarios</a>
+        <a *ngIf="userType=='Admin' || userType=='Content Manager'" mat-button routerLink="/admin/archived-scenarios" routerLinkActive="mat-accent">Archived scenarios</a>
       </li>
       <li>
-        <a *ngIf="(admin || reviewer)" mat-button routerLink="/admin/assign-scenarios" routerLinkActive="mat-accent">Assign scenarios</a>
+        <a *ngIf="userType=='Admin' || userType=='Reviewer'" mat-button routerLink="/admin/assign-scenarios" routerLinkActive="mat-accent">Assign scenarios</a>
       </li>
       <li>
-        <a *ngIf="(admin || reviewer)" mat-button routerLink="/admin/user-submission" routerLinkActive="mat-accent">User submission</a>
+        <a *ngIf="userType=='Admin' || userType=='Reviewer'" mat-button routerLink="/admin/user-submission" routerLinkActive="mat-accent">User submission</a>
       </li>
     </ul>
     
     <span class="spacer"></span>
     <ul>
       <li>
-        <a *ngIf="(admin || reviewer || contentManager) && !userIsAuthenticated" mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+        <a *ngIf="(userType=='Admin' || userType=='Reviewer' || userType=='Content Manager') && !userIsAuthenticated" mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
       </li>
       <li>
-        <a *ngIf="(admin || reviewer || contentManager) && !userIsAuthenticated" mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+        <a *ngIf="(userType=='Admin' || userType=='Reviewer' || userType=='Content Manager') && !userIsAuthenticated" mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
       </li>
       <li>
-        <a *ngIf="(admin || reviewer || contentManager) && userIsAuthenticated" mat-button (click)="onLogout()" routerLinkActive="mat-accent">Logout</a>
+        <a *ngIf="(userType=='Admin' || userType=='Reviewer' || userType=='Content Manager' || userType=='User') && userIsAuthenticated" mat-button (click)="onLogout()" routerLinkActive="mat-accent">Logout</a>
       </li>
     </ul>
 

@@ -17,6 +17,8 @@ export class StartAssessmentComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authStatusSub: Subscription;
 
+  isLoading = false;
+
   constructor(@Inject(MAT_DIALOG_DATA)public data: any,private userService: UserService, private authService: AuthService) {
    }
 
@@ -26,6 +28,8 @@ export class StartAssessmentComponent implements OnInit, OnDestroy {
   }
 
   setUserData() {
+    this.isLoading = true;
+
     this.data = new Users().deserialize({
       finalGrade:
         {
@@ -45,6 +49,8 @@ export class StartAssessmentComponent implements OnInit, OnDestroy {
     this.userService.getStartAssesment().subscribe(result => {
       this.user = result
       this.data.finalGrade = this.user.finalGrade
+
+      this.isLoading = false;
     });
 
   }
