@@ -4,9 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from '../../admin.service';
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { HistoryLogService } from '../../history-log/history-log.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-archived-users',
@@ -16,22 +17,24 @@ import { Subscription } from 'rxjs';
 export class ArchivedUsersComponent implements OnInit, OnDestroy {
   isLoading = false;
   users:any;
-
+  alertKeyword: string;
+  historyContent: string;
+  userId: string;
   userIsAuthenticated = false;
   private authStatusSub: Subscription;
   
   userData = new MatTableDataSource()
-  constructor(private adminService: AdminService, private dialog:MatDialog, private authService: AuthService) { 
+  constructor(private adminService: AdminService, private dialog:MatDialog, private authService: AuthService, private historyLogSvc: HistoryLogService) { 
     this.users = [];
    }
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
 
-  displayedColumns: string [] = ["EMAIL", "USERTYPE", "LEVEL", "MISSION", "RESTORE"
-]
+  displayedColumns: string [] = ["EMAIL", "USERTYPE", "LEVEL", "MISSION", "RESTORE", "DELETE"]
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
     this.setAuthentication();
     this.getUsers()
   }
@@ -54,37 +57,75 @@ export class ArchivedUsersComponent implements OnInit, OnDestroy {
   }
 
   restoreUser(userId: string) {
-    Swal.fire({
-    title: 'Are you sure you want to restore this user ?',
-    icon: 'info',
-    showCancelButton: true,
-    confirmButtonColor: 'green',
-    cancelButtonColor: '#3F51B5',
-    confirmButtonText: 'Restore!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title:'Restored!',
-        text:'User has been successfully restored!',
-        icon:'success',
-        confirmButtonColor: '#3F51B5',
-      })
-      //This is the actual code
-      this.adminService.restoreUsers(userId)
-    }
-    setTimeout(()=>{
-      this.getUsers()
-    }, 10)
-  })
+    this.alertKeyword = "restore"
+    this.confirmAlert(this.alertKeyword).then((result) => {
+      if (result.isConfirmed) {
+          this.adminService.restoreUsers(userId).subscribe(result => {
+          this.successAlert(this.alertKeyword, result.email)
+          this.historyContent = "User " + result.email + " has been restored!"
+          this.addHistoryLog(this.historyContent);
+        })
+      } 
+      setTimeout(()=>{
+        this.getUsers()
+      }, 10)
+    })
+  }
 
-    console.log("Show me the data ", userId)
+  deleteUser(userId: string) {
+    this.alertKeyword = "delete"
+    this.confirmAlert(this.alertKeyword).then((result) => {
+      if (result.isConfirmed) {
+          this.adminService.deleteUser(userId).subscribe(result => {
+          this.successAlert(this.alertKeyword, result.email)
+          this.historyContent = "User " + result.email + " has been deleted!"
+          this.addHistoryLog(this.historyContent);
+        })
+      }
+    })
   }
 
   setAuthentication(){
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
+  }
+
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
+    }) 
+  }
+
+  confirmAlert(keyword) {
+    let title, icon, confirmButtonColor, confirmButtonText;
+    if(keyword == "restore") {
+      title = "Are you sure you want to restore this user ?";
+      icon = "question";
+      confirmButtonColor = "##198C19";
+      confirmButtonText = "Restore!";
+    }
+    else if (keyword == "delete") {
+      title = "Are you sure you want to delete this user ?";
+      icon = "warning";
+      confirmButtonColor = "#FA4A1E";
+      confirmButtonText = "Delete!"
+    } 
+    return this.adminService.confirmAlert(title, icon, confirmButtonColor, confirmButtonText);
+  }
+
+  successAlert(keyword, user) {
+    let title, html;
+    if(keyword == "restore") {
+      title = "Restored!";
+      html = "User <strong>" + user +"</strong> has been restored!";
+    }
+    else if (keyword == "delete") {
+      title = "Deleted!";
+      html = "User <strong>" + user +"</strong> has been deleted!";
+    } 
+    return this.adminService.successAlert(title, html);
   }
 
   ngOnDestroy() {

@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import Swal from 'sweetalert2';
 import { AdminService } from '../../admin.service';
+import { HistoryLogService } from '../../history-log/history-log.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-assign-scenarios',
@@ -13,6 +14,8 @@ export class AssignScenariosComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authStatusSub: Subscription;
   isLoading = false;
+  historyContent: string;
+  userId: string;
   data: any;
   users: any;
   user: any;
@@ -24,11 +27,12 @@ export class AssignScenariosComponent implements OnInit, OnDestroy {
   selectedUser: any;
   empty: any;
 
-  constructor(public adminService: AdminService, private authService: AuthService) {
+  constructor(public adminService: AdminService, private authService: AuthService, private historyLogSvc: HistoryLogService) {
     this.storedType3 = [];
    }
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
     this.getAssignedScenarioView()
     this.setAuthentication();
   }
@@ -41,13 +45,17 @@ export class AssignScenariosComponent implements OnInit, OnDestroy {
   }
 
   assignScenario(){
-    
     this.data = {
       user: this.selectedUser,
       scenarioId: this.selectedTitle._id
     }
       this.adminService.assignScenario(this.data).subscribe(result =>{
         this.getAssignedScenarioView()
+        this.adminService.getScenarioById(this.data.scenarioId).subscribe(scenarioData => {
+          this.historyContent = "Scenario " + scenarioData.title + " - " + scenarioData.level + " - " + scenarioData.mission + " - " + scenarioData.type + " was assigned to " + result.email + "."
+          this.addHistoryLog(this.historyContent);
+        })
+        
       })
       this.selectedUser = ""
       this.selectedTitle= "" 
@@ -84,7 +92,13 @@ export class AssignScenariosComponent implements OnInit, OnDestroy {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
+  }
+
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
+    }) 
   }
 
   ngOnDestroy() {

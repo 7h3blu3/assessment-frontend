@@ -64,6 +64,9 @@
         <a *ngIf="userType=='Admin' || userType=='Content Manager'" mat-button routerLink="/admin/archived-scenarios" routerLinkActive="mat-accent">Archived scenarios</a>
       </li>
       <li>
+        <a *ngIf="userType=='Admin'" mat-button routerLink="/admin/history-log" routerLinkActive="mat-accent">History Log</a>
+      </li>
+      <li>
         <a *ngIf="userType=='Admin' || userType=='Reviewer'" mat-button routerLink="/admin/assign-scenarios" routerLinkActive="mat-accent">Assign scenarios</a>
       </li>
       <li>

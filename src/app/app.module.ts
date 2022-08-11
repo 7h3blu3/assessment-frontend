@@ -38,6 +38,7 @@ import { EditUsersComponent } from './admin/users/edit-users/edit-users.componen
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { PendingChangesGuard } from './pending-changes/guard';
 import { AuthGuard } from './auth/auth.guard';
+import { HistoryLogComponent } from './admin/history-log/history-log.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { AuthGuard } from './auth/auth.guard';
     StartAssessmentComponent,
     LoginComponent,
     SignupComponent,
-    EditUsersComponent
+    EditUsersComponent,
+    HistoryLogComponent
   ],
   imports: [
     BrowserModule,

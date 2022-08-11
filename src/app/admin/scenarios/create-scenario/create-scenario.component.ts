@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocationStrategy } from '@angular/common';
 import { AuthService } from 'src/app/auth/auth.service';
+import { HistoryLogService } from '../../history-log/history-log.service';
 
 @Component({
   selector: 'app-create-scenario',
@@ -21,6 +22,8 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
   types: any;
   levels: any;
 
+  historyContent: string;
+  userId: string;
   count: number;
   inputQuestion1: any;
   viewType = false;
@@ -35,6 +38,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
     public adminService: AdminService, 
     private url:LocationStrategy,
     private authService: AuthService,
+    private historyLogSvc: HistoryLogService,
     public dialogRef: MatDialogRef<CreateScenarioComponent>) {
     this.missions = [];
     this.levels = [];
@@ -62,11 +66,10 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
    
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
     this.setAuthentication();
     this.getScenarios()
     this.getLevelMissionType()
-    console.log("this.types ", this.types)
-    console.log("This is the data on open ", this.data)
 
     if(this.url.path()==="/admin/create-scenarios"){
       this.viewType = true
@@ -157,14 +160,16 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
   dialogSave(data){
     if(this.viewType) {
       this.adminService.createScenarioService(data).subscribe(result => {
-      
-        console.log("This is the createScenario data " , result)
+        this.historyContent = "Scenario " + result.title + " - " + result.level + " - " + result.mission + " - " + result.type + " was created."
+        this.addHistoryLog(this.historyContent);
       })
     } else {
       var updatedData = this.getScenarioUpdatedData()
 
       console.log("updated data ", updatedData)
       this.adminService.editScenario(updatedData).subscribe(result => {
+        this.historyContent = "Scenario " + result.title + " - " + result.level + " - " + result.mission + " - " + result.type + " was created."
+        this.addHistoryLog(this.historyContent);
       })
       this.dialogRef.close()
     }
@@ -186,15 +191,21 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
     
   }
 
-  ngOnDestroy() {
-    this.scenarioSub.unsubscribe();
-    this.authStatusSub.unsubscribe();
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
+    }) 
   }
 
   setAuthentication(){
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
+  }
+
+  ngOnDestroy() {
+    this.scenarioSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
   }
 }

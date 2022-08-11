@@ -8,8 +8,10 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateScenarioComponent } from '../create-scenario/create-scenario.component';
 import { MatSort } from '@angular/material/sort';
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/auth.service';
+import { HistoryLogService } from '../../history-log/history-log.service';
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-scenarios',
@@ -21,6 +23,8 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   isLoading = false;
   scoreCard: any;
   alertKeyword: string;
+  historyContent: string;
+  userId: string;
   userIsAuthenticated = false;
   private authStatusSub: Subscription;
   // totalPosts = 0;
@@ -31,12 +35,17 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
-  constructor(public adminService: AdminService, public dialog: MatDialog, private authService: AuthService) {
+  constructor(
+    public adminService: AdminService, 
+    public dialog: MatDialog, 
+    private authService: AuthService, 
+    private historyLogSvc: HistoryLogService) {
     this.scoreCard = [];
 
   }
 
   ngOnInit() {
+    this.userId = this.authService.getUserId();
     this.setAuthentication();
     this.getScenarios();
 
@@ -56,6 +65,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
   }
 
@@ -96,6 +106,8 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
       if (result.isConfirmed) {
         this.successAlert(this.alertKeyword)
         this.adminService.archiveScenarios(scenarioId, this.scenarios).subscribe((result) => {
+          this.historyContent = "Scenario " + result.title + " - " + result.level + " - " + result.mission + " - " + result.type + " was archived."
+          this.addHistoryLog(this.historyContent);
           this.getScenarios()
         })
       }
@@ -108,14 +120,13 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
       if (result.isConfirmed) {
         this.successAlert(this.alertKeyword);
         this.adminService.cloneScenario(scenario.id, scenario).subscribe((result) => {
+          this.historyContent = "Scenario " + result.title + " - " + result.level + " - " + result.mission + " - " + result.type + " was cloned."
+          this.addHistoryLog(this.historyContent);
           this.getScenarios()
         })
       }
     })
-    console.log("scenarioId ", scenario.id)
-    console.log("scenarios ", scenario)
   }
-
 
   confirmAlert(keyword) {
     let title, icon, confirmButtonColor, confirmButtonText;
@@ -188,6 +199,10 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
   // this.adminService.archiveScenarios(scenarioId, this.scenarios)
 
   // }
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
+    }) 
+  }
 
   ngOnDestroy() {
     this.scenarioSub.unsubscribe();

@@ -8,6 +8,7 @@ import { Users } from '../users.model';
 import { userScenarios } from '../userScenarios.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { HistoryLogService } from '../history-log/history-log.service';
 @Component({
   selector: 'app-submission-grade',
   templateUrl: './submission-grade.component.html',
@@ -16,6 +17,8 @@ import { Subscription } from 'rxjs';
 export class SubmissionGradeComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authStatusSub: Subscription;
+  historyContent: string;
+  GradinguserId: string;
   userId: any;
   scenarioId: any;
   isLoading = false;
@@ -44,8 +47,10 @@ export class SubmissionGradeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private adminService: AdminService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private historyLogSvc: HistoryLogService
   ) {
+    this.GradinguserId = this.authService.getUserId();
     this.userId = this.route.snapshot.paramMap.get('userId');
     this.scenarioId = this.route.snapshot.paramMap.get('scenarioId');
 
@@ -64,6 +69,7 @@ export class SubmissionGradeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
     this.setAuthentication();
     this.getData();
     console.log(this.route.snapshot.paramMap);
@@ -107,7 +113,10 @@ export class SubmissionGradeComponent implements OnInit, OnDestroy {
 
   gradeUser(data) {
     var finalGradeData = this.finalGradeData(data);
-    this.adminService.gradeUser(finalGradeData, this.userId, this.scenarioId).subscribe((result) => {});
+    this.adminService.gradeUser(finalGradeData, this.userId, this.scenarioId).subscribe((result) => {
+      this.historyContent = "Graded scenario: "  + result.level + " - " + result.mission + " - " + this.data.scenarios.type
+      this.addHistoryLog(this.historyContent);
+    });
     this.router.navigate(['/admin/user-submission']);
   }
 
@@ -148,7 +157,12 @@ export class SubmissionGradeComponent implements OnInit, OnDestroy {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.GradinguserId = this.authService.getUserId();
       });
+  }
+
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.GradinguserId).subscribe((response) => {}) 
   }
 
   ngOnDestroy() {

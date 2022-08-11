@@ -10,6 +10,7 @@ import { userScenarios } from 'src/app/admin/userScenarios.model';
 import { Scenarios } from 'src/app/admin/scenarios.model';
 import { Users } from 'src/app/admin/users.model';
 import Swal from 'sweetalert2';
+import { HistoryLogService } from 'src/app/admin/history-log/history-log.service';
 
 @Component({
   selector: 'app-assessment',
@@ -18,7 +19,10 @@ import Swal from 'sweetalert2';
 })
 export class AssessmentComponent implements OnInit, OnDestroy {
   @HostListener('window:beforeunload')
+  userEmail: string; scenarioTitle: string; scenarioLevel: string; scenarioMission: string; scenarioType: string; scenarioFinishdate: string;
   dataSubmited = false;
+  historyContent: string;
+  userId: string;
   timeLeft: number;
   interval;
   display;
@@ -26,7 +30,12 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   private authStatusSub: Subscription;
   isLoading = false;
   submittedData: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public userService: UserService, private router: Router, private authService: AuthService) { 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public userService: UserService, 
+    private router: Router, 
+    private authService: AuthService, 
+    private historyLogSvc: HistoryLogService) { 
       this.submittedData = {};
       this.data = new userScenarios().deserialize({
       scenario: new Scenarios().deserialize({
@@ -55,18 +64,26 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
     this.setAuthentication();
     this.getAssessmentData()
 
-
-
+    
   }
 
   getAssessmentData() {
     this.userService.getUserSubmission().subscribe(result => {
+      console.log("result ", result)
       this.timeLeft = result.scenario.time
       this.data = result
 
+    if (localStorage.getItem("assessmentExpiration") === null){
+      this.setHistoryLogData(result);
+      this.historyContent = "User " + result.user.email + " has started " + result.scenario.title + " - " + result.scenario.level + " - " 
+    + result.scenario.mission + " - " + result.scenario.type + " at " + result.currentDate
+    this.addHistoryLog(this.historyContent);
+    }
+    
     this.getCurrentTimeLeft();
     this.startTimer(this.timeLeft * 60);
     })
@@ -109,12 +126,12 @@ export class AssessmentComponent implements OnInit, OnDestroy {
           confirmButtonColor: '#3F51B5',
         })
         var submittedData = this.submittedScenariosData(data)
-
-
         this.clearLocalStorageTimer();
         this.clearInterval();
         this.userService.submitInput(submittedData).subscribe(result  => {
-          
+          this.historyContent = "User " + this.userEmail + " has submitted " + this.scenarioTitle + " - " + this.scenarioLevel + " - " 
+          + this.scenarioMission + " - " + this.scenarioType + " with finish date " + this.scenarioFinishdate
+          this.addHistoryLog(this.historyContent);
         })
         this.router.navigate(['/']);
       }
@@ -126,6 +143,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
   }
 
@@ -187,6 +205,19 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     localStorage.removeItem("assessmentExpiration")
   }
 
+  setHistoryLogData(result) {
+      this.userEmail = result.user.email
+      this.scenarioTitle = result.scenario.title
+      this.scenarioLevel = result.scenario.level
+      this.scenarioMission = result.scenario.mission
+      this.scenarioType = result.scenario.type
+      this.scenarioFinishdate = result.finishDate
+  }
+
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
+    }) 
+  }
 
   ngOnDestroy() {
     this.authStatusSub.unsubscribe();

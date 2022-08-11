@@ -11,6 +11,7 @@ import { Users } from '../../users.model';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { HistoryLogService } from '../../history-log/history-log.service';
 
 @Component({
   selector: 'app-list-users',
@@ -21,6 +22,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   users: Users[] = []
   private userSub: Subscription;
 
+  historyContent: string;
   userId: string;
   
   userIsAuthenticated = false;
@@ -29,7 +31,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   userData = new MatTableDataSource()
-  constructor( private adminService: AdminService, private dialog:MatDialog, private authService: AuthService) {}
+  constructor( private adminService: AdminService, private dialog:MatDialog, private authService: AuthService, private historyLogSvc: HistoryLogService) {}
 
   @ViewChild(MatSort, {static:false}) sort: MatSort;
   @ViewChild(MatPaginator, {static:false}) paginator: MatPaginator;
@@ -39,16 +41,12 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
    
     this.getUsers()
-
-
     this.userId = this.authService.getUserId();
-
-    this.userId = this.authService.getUserId();
-    
 
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
 
   }
@@ -75,10 +73,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   //   })
   // }
 
-
-
-
-
   getUsers() {
     console.log("Does it get called")
     this.isLoading = true;
@@ -99,30 +93,30 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   }
 
   archiveUser(userId: string) {
-      Swal.fire({
-      title: 'Are you sure you want to archive this user ?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#FA4A1E',
-      cancelButtonColor: '#3F51B5',
-      confirmButtonText: 'Archive!'
-    }).then((result) => {
-      if (result.isConfirmed) {
         Swal.fire({
-          title:'Archived!',
-          text:'User has been successfully archived.',
-          icon:'success',
-          confirmButtonColor: '#3F51B5',
-        })
-        this.adminService.archiveUsers(userId)
-      }
-      setTimeout(()=>{
-        this.getUsers()
-      }, 10)
-    })
-      console.log("Show me the data ", userId)
-
-      
+        title: 'Are you sure you want to archive this user ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#FA4A1E',
+        cancelButtonColor: '#3F51B5',
+        confirmButtonText: 'Archive!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title:'Archived!',
+            text:'User has been successfully archived.',
+            icon:'success',
+            confirmButtonColor: '#3F51B5',
+          })
+          this.adminService.archiveUsers(userId).subscribe(result => {
+            this.historyContent = "User " + result.email + " has been archived!"
+            this.addHistoryLog(this.historyContent);
+          })
+        }
+        setTimeout(()=>{
+          this.getUsers()
+        }, 10)
+      })
     }
 
   showUser(element) {
@@ -138,6 +132,11 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     //   console.log('The dialog was closed');
     //   this.animal = result;
     // });
+  }
+
+  addHistoryLog(historyContent){
+    this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
+    }) 
   }
 
   ngOnDestroy() {

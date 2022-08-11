@@ -1,0 +1,53 @@
+<div class="row main-div">
+    <div class="col-md-10"> 
+            
+      <div class="row main-div">
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+    </div>
+
+            <mat-card *ngIf="logData?.length > 0 && !isLoading">
+              <div class="d-flex">
+                <h1 class="text-center">History Log</h1>
+
+                <div class="align-self-end"><button class="btn-hidden" (click)="clearHistoryLog()"><mat-icon>delete_forever</mat-icon></button></div>
+                <div class="align-self-end">  <button class="btn-hidden" (click)="exportExcelFile()"><mat-icon>arrow_downward</mat-icon></button></div>
+
+              </div>
+         
+
+            <div class="row main-div" >
+                <div class="col-md-12"> 
+                    <table id="history-log-table" matSort mat-table [dataSource]="historyLogData">
+
+                        <ng-container matColumnDef="Initiator">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="Initiator"> Initiator </th>
+                            <td mat-cell *matCellDef="let element"> {{element.historyInitiator}} </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="timestamp">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="timestamp"> Timestamp </th>
+                            <td mat-cell *matCellDef="let element"> {{element.timestamp}} </td>
+                          </ng-container>
+                          
+                          <ng-container matColumnDef="Content">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="Content"> Content </th>
+                            <td mat-cell *matCellDef="let element" > {{element.historyContent}} </td>
+                          </ng-container>
+
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator #paginator
+                      
+                        [pageIndex]="0"
+                        [pageSize]="10"
+                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        ></mat-paginator>
+                </div>
+            </div>
+            <p class="text-center mat-body-1" *ngIf="logData.length <= 0 && !isLoading">History log is empty!</p>
+            </mat-card>
+    </div>
+    
+</div>

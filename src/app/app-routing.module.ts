@@ -15,6 +15,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { AssessmentComponent } from './user/assessment/assessment.component';
 import { StartAssessmentComponent } from './user/start-assessment/start-assessment.component';
 import { PendingChangesGuard } from './pending-changes/guard';
+import { HistoryLogComponent } from './admin/history-log/history-log.component';
 
 const routes: Routes = [
   { path: '', component: StartAssessmentComponent, canActivate:[AuthGuard] },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: "admin/archived-scenarios", component:ArchivedScenariosComponent, canActivate:[AuthGuard] },
   { path: "admin/assign-scenarios", component:AssignScenariosComponent, canActivate:[AuthGuard] },
   { path: "admin/user-submission", component:UserSubmissionComponent,canActivate:[AuthGuard] },
+  { path: "admin/history-log", component:HistoryLogComponent,canActivate:[AuthGuard] },
   { path: "admin/submission-grade/:userId/:scenarioId", component:SubmissionGradeComponent, canActivate:[AuthGuard] },
   { path: "login", component:LoginComponent },
   { path: "signup", component:SignupComponent },

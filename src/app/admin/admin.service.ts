@@ -92,6 +92,10 @@ export class AdminService {
       }),catchError(this.handleError)
   }
 
+  getScenarioById(scenarioId): Observable<any>{
+    return this.http.get(environment.apiUrl +"/admin/scenario/"+ scenarioId).pipe(map(res => { return res }), catchError(this.handleError))
+  }
+
   getScenariosUpdateListener() {
     return this.scenariosUpdated.asObservable();
   }
@@ -104,42 +108,39 @@ export class AdminService {
     return this.http.get(environment.apiUrl +"/admin/levelMissionType").pipe(map(res => { return res }), catchError(this.handleError))
   }
 
-  archiveUsers(userId:string) {
+  archiveUsers(userId:string): Observable<any> {
 
     const userData: UserId = {id: userId};
     
-        return this.http
-        .post(environment.apiUrl + '/admin/archived-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
-        .subscribe((response) => {
-          const updatedUsers = this.users.filter(user => user._id !== userId)
-          this.users = updatedUsers
-          console.log(updatedUsers)
-          // this.updatedU
-          console.log("this is the response ", response)
-    }) 
+        return this.http.post<any>(environment.apiUrl + '/admin/archived-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
+    //     .subscribe((response) => {
+    //       const updatedUsers = this.users.filter(user => user._id !== userId)
+    //       this.users = updatedUsers
+    //       console.log(updatedUsers)
+    //       // this.updatedU
+    //       console.log("this is the response ", response)
+    // }) 
   }
 
-  restoreUsers(userId:string) {
+  restoreUsers(userId:string): Observable<any> {
 
     const userData: UserId = {id: userId};
     
-        return this.http
-        .post(environment.apiUrl + '/admin/restore-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
-        .subscribe((response) => {
-          
-          console.log("this is the response ", response)
-    }) 
+        return this.http.post(environment.apiUrl + '/admin/restore-users/' + userId, userData).pipe(map(res => { return res }), catchError(this.handleError))
   }
 
-  assignScenario(data) {
+  deleteUser(userId:string): Observable<any> {
+    return this.http.delete(environment.apiUrl + '/admin/delete-user/' + userId).pipe(map(res => { return res }), catchError(this.handleError))
+  }
+
+  assignScenario(data): Observable<any> {
     Swal.fire({
       title: 'Saving your ' + data.title + ' scenario...',
       text: 'Please wait a few seconds.',
       allowOutsideClick: false,
     });
     Swal.showLoading();
-        return this.http
-        .post(environment.apiUrl + '/admin/assign-scenarios', data).pipe(map(res => { 
+      return this.http.post<any>(environment.apiUrl + '/admin/assign-scenarios', data).pipe(map(res => { 
           console.log("What is the data", data)
       Swal.fire({
         title: 'Scenario Assigned.',
@@ -153,7 +154,7 @@ export class AdminService {
   }
   
   getArchivedScenarios(): Observable<any> {
-    return this.http.get( environment.apiUrl + '/admin/archived-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
+    return this.http.get<any>(environment.apiUrl + '/admin/archived-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
   }
 
   archiveScenarios(scenarioId, data): Observable<any> {
@@ -166,18 +167,16 @@ export class AdminService {
     return this.http.post<any>(environment.apiUrl + '/admin/clone-scenario/' + scenarioId, data).pipe(map(res => { return res }), catchError(this.handleError))
 }
 
-  restoreScenarios(scenarioId:string) {
+  restoreScenarios(scenarioId:string): Observable<any> {
 
     var userBackup: any
     
-        return this.http
-        .post(environment.apiUrl + '/admin/restore-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
-        .subscribe((response) => {
-          
-          console.log("this is the response ", response)
-    }) 
+        return this.http.post<any>(environment.apiUrl + '/admin/restore-scenario/' + scenarioId, userBackup).pipe(map(res => { return res }), catchError(this.handleError))
   }
  
+  deleteScenario(scenarioId:string): Observable<any> {
+    return this.http.delete(environment.apiUrl + '/admin/delete-scenario/' + scenarioId).pipe(map(res => { return res }), catchError(this.handleError))
+  }
 
   getAssignedScenarios(): Observable<any> {
     return this.http.get( environment.apiUrl + '/admin/assign-scenarios').pipe(map(res => { return res }), catchError(this.handleError))
@@ -297,6 +296,26 @@ gradeUser(data, userId:any, scenarioId: any): Observable<any> {
 
 getSubmissionGrade(userId:any, scenarioId: any): Observable<any>{
   return this.http.get(environment.apiUrl +"/admin/submission-grade/" + userId + "/" + scenarioId).pipe(map(res => { return res }), catchError(this.handleError))
+}
+
+confirmAlert(title, icon, confirmButtonColor, confirmButtonText) {
+  return Swal.fire({
+    title: title,
+    icon: icon,
+    showCancelButton: true,
+    confirmButtonColor: confirmButtonColor,
+    cancelButtonColor: '#3F51B5',
+    confirmButtonText: confirmButtonText
+  })
+}
+
+successAlert(title, html) {
+  return Swal.fire({
+    title:title,
+    html:html,
+    icon:'success',
+    confirmButtonColor: '#3F51B5',
+  })
 }
 
   // getCreateScenarios() {
