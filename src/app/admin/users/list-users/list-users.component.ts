@@ -50,7 +50,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       });
 
   }
-
   
   // getUsers() {
   //   this.isLoading = true;
@@ -93,22 +92,10 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   }
 
   archiveUser(userId: string) {
-        Swal.fire({
-        title: 'Are you sure you want to archive this user ?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#FA4A1E',
-        cancelButtonColor: '#3F51B5',
-        confirmButtonText: 'Archive!'
-      }).then((result) => {
+        this.confirmAlert('archive').then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title:'Archived!',
-            text:'User has been successfully archived.',
-            icon:'success',
-            confirmButtonColor: '#3F51B5',
-          })
           this.adminService.archiveUsers(userId).subscribe(result => {
+            this.successAlert('success', result.email);
             this.historyContent = "User " + result.email + " has been archived!"
             this.addHistoryLog(this.historyContent);
           })
@@ -137,6 +124,26 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   addHistoryLog(historyContent){
     this.historyLogSvc.postHistoryLog(historyContent, this.userId).subscribe((response) => {
     }) 
+  }
+
+  confirmAlert(keyword) {
+    let title, icon, confirmButtonColor, confirmButtonText;
+    if(keyword == "archive") {
+      title = "Are you sure you want to archive this user ?";
+      icon = "warning";
+      confirmButtonColor = "#FA4A1E";
+      confirmButtonText = "Archive!";
+    }
+    return this.adminService.confirmAlert(title, icon, confirmButtonColor, confirmButtonText);
+  }
+
+  successAlert(keyword, user) {
+    let title, html;
+    if(keyword == "success") {
+      title = "Archived!";
+      html = "User <strong>" + user +"</strong> has been archived!";
+    }
+    return this.adminService.successAlert(title, html);
   }
 
   ngOnDestroy() {
