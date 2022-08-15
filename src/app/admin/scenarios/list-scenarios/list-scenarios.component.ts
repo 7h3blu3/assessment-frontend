@@ -104,8 +104,8 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     this.alertKeyword = "archive"
       this.confirmAlert(this.alertKeyword).then((result) => {
       if (result.isConfirmed) {
-        this.successAlert(this.alertKeyword)
         this.adminService.archiveScenarios(scenarioId, this.scenarios).subscribe((result) => {
+          this.successAlert(this.alertKeyword, result)
           this.historyContent = "Scenario " + result.title + " - " + result.level + " - " + result.mission + " - " + result.type + " was archived."
           this.addHistoryLog(this.historyContent);
           this.getScenarios()
@@ -118,8 +118,8 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     this.alertKeyword = "clone"
     this.confirmAlert(this.alertKeyword).then((result) => {
       if (result.isConfirmed) {
-        this.successAlert(this.alertKeyword);
         this.adminService.cloneScenario(scenario.id, scenario).subscribe((result) => {
+          this.successAlert(this.alertKeyword, result);
           this.historyContent = "Scenario " + result.title + " - " + result.level + " - " + result.mission + " - " + result.type + " was cloned."
           this.addHistoryLog(this.historyContent);
           this.getScenarios()
@@ -145,15 +145,15 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
     return this.adminService.confirmAlert(title, icon, confirmButtonColor, confirmButtonText);
   }
 
-  successAlert(keyword) {
+  successAlert(keyword, result) {
     let title, text;
     if(keyword == "archive") {
       title = "Archived!";
-      text = "Scenario has been successfully archived.";
+      text = "Scenario " + result.title + " has been successfully archived.";
     }
     else if (keyword == "clone") {
       title = "Cloned!";
-      text = "Scenario has been successfully cloned.";
+      text = "Scenario " + result.title + " has been successfully cloned.";
     } 
     return this.adminService.successAlert(title, text);
   }
