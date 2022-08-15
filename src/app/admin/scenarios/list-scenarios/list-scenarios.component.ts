@@ -142,14 +142,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
       confirmButtonColor = "#198C19";
       confirmButtonText = "Clone!"
     } 
-    return Swal.fire({
-      title: title,
-      icon: icon,
-      showCancelButton: true,
-      confirmButtonColor: confirmButtonColor,
-      cancelButtonColor: '#3F51B5',
-      confirmButtonText: confirmButtonText
-    })
+    return this.adminService.confirmAlert(title, icon, confirmButtonColor, confirmButtonText);
   }
 
   successAlert(keyword) {
@@ -162,12 +155,7 @@ export class ListScenariosComponent implements  OnInit, OnDestroy {
       title = "Cloned!";
       text = "Scenario has been successfully cloned.";
     } 
-    return Swal.fire({
-      title:title,
-      text:text,
-      icon:'success',
-      confirmButtonColor: '#3F51B5',
-    })
+    return this.adminService.successAlert(title, text);
   }
 
   // onChangedPage(pageData: PageEvent) {
