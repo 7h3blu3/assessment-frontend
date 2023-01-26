@@ -1,3 +1,104 @@
-<ng-container>
-  <app-list-scenarios-list [scenarios]="scenarios$ | async"></app-list-scenarios-list>
-</ng-container>
+<h1>List Of All Scenarios</h1>
+
+<div class="row main-div">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+</div>
+
+<mat-accordion displayMode="flat" class="mat-table" multi="true" *ngIf="scenarios.length > 0">
+
+  <section matSort class="mat-elevation-z2 mat-header-row">
+    <span class="section-header" mat-sort-header="Title">Title</span>
+    <span class="section-header" mat-sort-header="Mission">Mission</span>
+    <span class="section-header" mat-sort-header="Level">Level</span>
+    <span class="section-header" mat-sort-header="Type">Type</span>
+    <span class="section-header" mat-sort-header="Time">Time</span>
+    <span class="section-header" mat-sort-header="Passing Grade">Passing Grade</span>
+    <span class="section-header" mat-sort-header="Description">Description</span>
+
+  </section>
+
+    <mat-expansion-panel *ngFor="let scenario of scenarios">
+      <mat-expansion-panel-header class="mat-row ripple-color">
+        <!-- <mat-panel-title>
+          {{ scenario.title }}
+        </mat-panel-title> -->
+        <span class="mat-cell text">{{scenario.title}}</span>
+        <span class="mat-cell">{{scenario.mission}}</span>
+        <span class="mat-cell">{{scenario.level}}</span>
+        <span class="mat-cell">{{scenario.type}}</span>
+        <span class="mat-cell">{{scenario.time}}</span>
+        <span class="mat-cell">{{scenario.passingGrade}}</span>
+        <span class="mat-cell text"> <mat-panel-description>
+          {{scenario.description}}
+        </mat-panel-description></span>
+      </mat-expansion-panel-header>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>{{scenario.title}}</h2>
+        </div>
+        <div class="col-sm-5">
+          <h2>Question</h2>
+        </div>
+        <div class="col-sm-1">
+          <h2>Score</h2>
+        </div>
+     </div> 
+
+      <div class="row">
+        <div class="col-sm-6">
+          <p>{{scenario.description}}</p>
+        </div>
+        <div  class="col-sm-5">
+          <p>{{scenario.scoreCard.question}}</p>
+          <p>{{scenario.scoreCard.question2}}</p>
+          <p>{{scenario.scoreCard.question3}}</p>
+          <p>{{scenario.scoreCard.question4}}</p>
+          <p>{{scenario.scoreCard.question5}}</p>
+        </div>
+        <div class="col-sm-1">
+          <p>{{scenario.scoreCard.weight}}</p>
+          <p>{{scenario.scoreCard.weight2}}</p>
+          <p>{{scenario.scoreCard.weight3}}</p>
+          <p>{{scenario.scoreCard.weight4}}</p>
+          <p>{{scenario.scoreCard.weight5}}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div  class="col-sm-12">
+          <span class="horizontal-line"></span>
+          <span style="padding-right: 10px;">Logs:</span> <a href="{{scenario.logsUrl}}" target="_blank">{{scenario.logsUrl}}</a>
+        </div>
+      </div>
+
+      <mat-action-row>
+        <button mat-button color="primary" (click)="openDialog(scenario)">EDIT</button>
+        <button mat-button color="warn" (click)="archiveScenario(scenario.id)">Archive</button>
+        <button mat-button class="cloneButton" (click)="cloneScenario(scenario)">Clone</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <!-- <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="posts.length > 0"> </mat-paginator> -->
+  <mat-paginator #paginator *ngIf="scenarios.length > 0"
+                      
+  [pageIndex]="0"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  ></mat-paginator>
+  <p class="info-text mat-body-1" *ngIf="scenarios.length <= 0 && !isLoading">No scenarios added yet!</p>
+
+  <!-- <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          This is the expansion title
+        </mat-panel-title>
+        <mat-panel-description>
+          This is a summary of the content
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>This is the primary content of the panel.</p>
+    </mat-expansion-panel>
+
+  </mat-accordion> -->

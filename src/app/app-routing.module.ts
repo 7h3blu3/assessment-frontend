@@ -16,7 +16,6 @@ import { AssessmentComponent } from './user/assessment/assessment.component';
 import { StartAssessmentComponent } from './user/start-assessment/start-assessment.component';
 import { PendingChangesGuard } from './pending-changes/guard';
 import { HistoryLogComponent } from './admin/history-log/history-log.component';
-import { ListScenariosListComponent } from './admin/scenarios/list-scenarios-list/list-scenarios-list.component';
 
 const routes: Routes = [
   { path: '', component: StartAssessmentComponent, canActivate:[AuthGuard] },

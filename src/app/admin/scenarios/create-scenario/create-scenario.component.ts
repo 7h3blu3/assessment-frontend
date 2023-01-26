@@ -44,7 +44,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
     this.levels = [];
     this.types = [];
     this.count = 0;
-    if(!data._id) {
+    if(!data.id) {
       this.data = new Scenarios().deserialize({
         scoreCard: {
           // question:"",
@@ -142,7 +142,7 @@ export class CreateScenarioComponent implements OnInit, OnDestroy {
   getScenarioUpdatedData() {
     var updatedData = {}
 
-    updatedData["scenarioId"] = this.data._id 
+    updatedData["scenarioId"] = this.data.id 
     updatedData["mission"] = this.data.mission
     updatedData["level"] = this.data.level
     updatedData["type"] = this.data.type

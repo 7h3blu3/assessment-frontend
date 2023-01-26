@@ -39,7 +39,6 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { PendingChangesGuard } from './pending-changes/guard';
 import { AuthGuard } from './auth/auth.guard';
 import { HistoryLogComponent } from './admin/history-log/history-log.component';
-import { ListScenariosListComponent } from './admin/scenarios/list-scenarios-list/list-scenarios-list.component';
 
 @NgModule({
   declarations: [
@@ -59,8 +58,7 @@ import { ListScenariosListComponent } from './admin/scenarios/list-scenarios-lis
     LoginComponent,
     SignupComponent,
     EditUsersComponent,
-    HistoryLogComponent,
-    ListScenariosListComponent
+    HistoryLogComponent
   ],
   imports: [
     BrowserModule,

@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
         this.setUserType();
 
       });
-      console.log("userIsAuthenticated ", this.userIsAuthenticated)
   }
 
   setUserType() {
