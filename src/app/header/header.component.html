@@ -77,13 +77,13 @@
     <span class="spacer"></span>
     <ul>
       <li>
-        <a *ngIf="(userType=='Admin' || userType=='Reviewer' || userType=='Content Manager') && !userIsAuthenticated" mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+        <a *ngIf="!userIsAuthenticated" mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
       </li>
       <li>
-        <a *ngIf="(userType=='Admin' || userType=='Reviewer' || userType=='Content Manager') && !userIsAuthenticated" mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+        <a *ngIf="!userIsAuthenticated" mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
       </li>
       <li>
-        <a *ngIf="(userType=='Admin' || userType=='Reviewer' || userType=='Content Manager' || userType=='User') && userIsAuthenticated" mat-button (click)="onLogout()" routerLinkActive="mat-accent">Logout</a>
+        <a *ngIf="userIsAuthenticated" mat-button (click)="onLogout()" routerLinkActive="mat-accent">Logout</a>
       </li>
     </ul>
 

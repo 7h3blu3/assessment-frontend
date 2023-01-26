@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from '../../admin.service';
 import { EditUsersComponent } from '../edit-users/edit-users.component';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Users } from '../../users.model';
 
 import Swal from 'sweetalert2';

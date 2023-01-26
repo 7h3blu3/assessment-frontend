@@ -9,7 +9,7 @@
             </div>
           <hr>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
-            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="Submit(data); dialogForm.resetForm()" #dialogForm="ngForm">
+            <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" (ngSubmit)="Submit(data)" #dialogForm="ngForm">
                 <!-- <form ngNativeValidate id="createScenario_form" *ngIf="!isLoading" method="post" #dialogForm="ngForm"> -->
 
                    <div class="row main-div"> 
