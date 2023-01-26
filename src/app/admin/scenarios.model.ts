@@ -1,7 +1,7 @@
 import { Deserializable } from "../models/Desrializable.model";
 
 export class Scenarios implements Deserializable {
-  id: string;
+  _id: string;
   mission: string;
   level: string;
   title: string;

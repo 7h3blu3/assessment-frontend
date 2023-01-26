@@ -6,12 +6,12 @@
     </div>
 
             <mat-card *ngIf="logData?.length > 0 && !isLoading">
-              <div class="d-flex">
+              <div class="d-flex justify-content-between">
                 <h1 class="text-center">History Log</h1>
-
+                <div class="d-flex">
                 <div class="align-self-end"><button class="btn-hidden" (click)="clearHistoryLog()"><mat-icon>delete_forever</mat-icon></button></div>
                 <div class="align-self-end">  <button class="btn-hidden" (click)="exportExcelFile()"><mat-icon>arrow_downward</mat-icon></button></div>
-
+              </div>
               </div>
          
 
